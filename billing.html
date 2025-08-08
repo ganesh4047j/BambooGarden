@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🐼 Bamboo Garden Billing</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8fffe;
+      font-family: 'Inter', sans-serif;
+    }
+    .navbar {
+      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%) !important;
+      padding: 1rem 0;
+    }
+    .navbar-brand {
+      color: white !important;
+      font-weight: 700;
+    }
+    .navbar-brand::before {
+      content: '🐼 ';
+    }
+    .nav-link {
+      color: white !important;
+      margin: 0 0.5rem;
+      border-radius: 20px;
+      padding: 0.5rem 1rem !important;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255,255,255,0.2);
+    }
+    .header {
+      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+    .stats {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(74, 124, 89, 0.1);
+    }
+    .stat-box {
+      text-align: center;
+      padding: 1rem;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #4a7c59;
+    }
+    .bill-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 20px rgba(74, 124, 89, 0.1);
+      border-top: 4px solid #4a7c59;
+    }
+    .bill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .table-info h5 {
+      color: #2d4a35;
+      margin: 0;
+    }
+    .status-paid {
+      background: linear-gradient(135deg, #d1e7dd 0%, #75b798 100%);
+      color: #0f5132;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .status-unpaid {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      color: #856404;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .bill-table {
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    .bill-table th {
+      background: #4a7c59;
+      color: white;
+      border: none;
+    }
+    .total-section {
+      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    .btn-pay {
+      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+    }
+    .btn-print {
+      background: white;
+      color: #4a7c59;
+      border: 2px solid #4a7c59;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+    }
+    .filter-tabs {
+      background: white;
+      border-radius: 15px;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(74, 124, 89, 0.1);
+    }
+    .filter-tab {
+      background: transparent;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #6c757d;
+    }
+    .filter-tab.active {
+      background: #4a7c59;
+      color: white;
+    }
+    .no-bills {
+      text-align: center;
+      padding: 4rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(74, 124, 89, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#"> Bamboo Garden</a>
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link" href="admin.html">Admin</a>
+    </div>
+  </div>
+</nav>
+
+<div class="header">
+  <div class="container">
+    <h1>💰 Billing Dashboard</h1>
+    <p>Process payments and manage customer bills</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="stats">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="stat-box">
+          <div class="stat-number" id="unpaidCount">0</div>
+          <div>Unpaid Bills</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <div class="stat-number" id="paidCount">0</div>
+          <div>Paid Today</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <div class="stat-number" id="totalRevenue">₹0</div>
+          <div>Revenue</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <div class="stat-number" id="avgBill">₹0</div>
+          <div>Average Bill</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-tabs d-flex">
+    <button class="filter-tab active" onclick="filterBills('all', event)">All Bills</button>
+<button class="filter-tab" onclick="filterBills('unpaid', event)">Unpaid</button>
+<button class="filter-tab" onclick="filterBills('paid', event)">Paid</button>
+  </div>
+
+  <div id="billsContainer">
+    <div class="no-bills">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">🧾</div>
+      <h3>No Bills Yet</h3>
+      <p>Bills will appear when orders are ready from kitchen</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="paymentModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>💳 Process Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="paymentInfo">Table X - ₹XXX</p>
+        <h6>Payment Method</h6>
+        <div class="row">
+          <div class="col-6 col-md-3 mb-2">
+            <div class="text-center p-3 border rounded payment-method" data-method="cash">
+              <i class="bi bi-cash-coin" style="font-size: 2rem;"></i>
+              <div>Cash</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <div class="text-center p-3 border rounded payment-method" data-method="card">
+              <i class="bi bi-credit-card" style="font-size: 2rem;"></i>
+              <div>Card</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <div class="text-center p-3 border rounded payment-method" data-method="upi">
+              <i class="bi bi-phone" style="font-size: 2rem;"></i>
+              <div>UPI</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <div class="text-center p-3 border rounded payment-method" data-method="wallet">
+              <i class="bi bi-wallet2" style="font-size: 2rem;"></i>
+              <div>Wallet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="confirmPayment()">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="function.js"></script>
+
+</body>
+</html>

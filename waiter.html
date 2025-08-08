@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐼 Bamboo Garden Waiter</title>
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <!-- Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bamboo-green: #4a7c59;
+        --bamboo-light: #8fbc8f;
+        --bamboo-dark: #2d4a35;
+        --accent-gold: #ffd700;
+        --bg-primary: #f8fffe;
+        --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
+        --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
+        --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg-primary);
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: #2c3e50;
+        background-image: radial-gradient(
+            circle at 20% 80%,
+            rgba(74, 124, 89, 0.03) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(143, 188, 143, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      .navbar {
+        background: var(--gradient-green) !important;
+        box-shadow: var(--shadow-medium);
+        padding: 1rem 0;
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: white !important;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .navbar-brand::before {
+        content: "🐼";
+        font-size: 2rem;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.75rem 1.25rem !important;
+        border-radius: 25px;
+        margin: 0 0.25rem;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .dashboard-header {
+        background: var(--gradient-green);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dashboard-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 C20,20 40,0 60,20 C80,40 100,20 100,40 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+        background-size: 100px 100px;
+      }
+
+      .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .dashboard-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+      }
+
+      .table-selector {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--shadow-light);
+        margin-bottom: 2rem;
+        border: 1px solid rgba(74, 124, 89, 0.1);
+      }
+
+      .table-selector label {
+        font-weight: 600;
+        color: var(--bamboo-dark);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+      }
+
+      .form-select:focus {
+        border-color: var(--bamboo-green);
+        box-shadow: 0 0 0 0.2rem rgba(74, 124, 89, 0.25);
+        background-color: white;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--bamboo-dark);
+        margin-bottom: 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section-title::after {
+        content: "";
+        flex: 1;
+        height: 3px;
+        background: var(--gradient-green);
+        border-radius: 2px;
+        margin-left: 1rem;
+      }
+
+      .menu-categories {
+        background: white;
+        border-radius: 20px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .category-tab {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background: transparent;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #6c757d;
+        cursor: pointer;
+        flex: 1;
+        min-width: 120px;
+        max-width: 200px;
+      }
+
+      .category-tab.active {
+        background: var(--gradient-green);
+        color: white;
+        box-shadow: var(--shadow-light);
+        transform: translateY(-2px);
+      }
+
+      .category-tab:hover:not(.active) {
+        background: rgba(74, 124, 89, 0.1);
+        color: var(--bamboo-dark);
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .food-item-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-light);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(74, 124, 89, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .food-item-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-green);
+      }
+
+      .food-item-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+
+      .item-info {
+        flex: 1;
+      }
+
+      .item-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--bamboo-dark);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .item-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--bamboo-green);
+      }
+
+      .item-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .qty-btn {
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--bamboo-green);
+        background: white;
+        color: var(--bamboo-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .qty-btn:hover:not(:disabled) {
+        background: var(--bamboo-green);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .qty-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .qty-display {
+        background: var(--bamboo-light);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        min-width: 60px;
+        text-align: center;
+      }
+
+      .order-summary {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--shadow-light);
+        border: 1px solid rgba(74, 124, 89, 0.1);
+        position: sticky;
+        top: 2rem;
+      }
+
+      .summary-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--bamboo-dark);
+      }
+
+      .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f1f3f4;
+      }
+
+      .order-item:last-child {
+        border-bottom: none;
+      }
+
+      .order-item-name {
+        font-weight: 500;
+        color: var(--bamboo-dark);
+        flex: 1;
+      }
+
+      .order-item-qty {
+        background: var(--bamboo-light);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0 1rem;
+      }
+
+      .order-item-price {
+        font-weight: 700;
+        color: var(--bamboo-green);
+      }
+
+      .order-total {
+        background: var(--gradient-green);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        box-shadow: var(--shadow-light);
+      }
+
+      .submit-btn {
+        background: var(--gradient-green);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        color: white;
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .empty-cart {
+        text-align: center;
+        color: #6c757d;
+        padding: 2rem 0;
+      }
+
+      .empty-cart-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .bamboo-decoration {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        font-size: 3rem;
+        opacity: 0.3;
+        z-index: 1;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .search-box {
+        background: white;
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+      }
+
+      .search-input {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .search-input:focus {
+        border-color: var(--bamboo-green);
+        box-shadow: 0 0 0 0.2rem rgba(74, 124, 89, 0.25);
+        outline: none;
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-title {
+          font-size: 2rem;
+        }
+
+        .menu-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .category-tab {
+          flex: 1;
+          min-width: 100px;
+        }
+
+        .item-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="dashboard-header">
+      <div class="container">
+        <h1 class="dashboard-title">🍽️ Waiter Dashboard</h1>
+        <p class="dashboard-subtitle">
+          Take orders and manage table service with ease
+        </p>
+      </div>
+    </div>
+
+    <div class="container animate__animated animate__fadeInUp">
+      <!-- Table Selector -->
+      <div class="table-selector">
+        <label for="tableSelect" class="form-label">
+          <i class="bi bi-table"></i>
+          Select Table
+        </label>
+        <select class="form-select" id="tableSelect">
+          <option selected disabled>Choose a table number</option>
+          <option value="1">Table 1</option>
+          <option value="2">Table 2</option>
+          <option value="3">Table 3</option>
+          <option value="4">Table 4</option>
+          <option value="5">Table 5</option>
+          <option value="6">Table 6</option>
+          <option value="7">Table 7</option>
+          <option value="8">Table 8</option>
+          <option value="9">Table 9</option>
+          <option value="10">Table 10</option>
+          <option value="11">Table 11</option>
+          <option value="12">Table 12</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <!-- Menu Section -->
+        <div class="col-lg-8">
+          <h2 class="section-title">
+            <i class="bi bi-journal-bookmark"></i>
+            Menu
+          </h2>
+
+          <!-- Search Box -->
+          <div class="search-box">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="🔍 Search for dishes..."
+              id="searchInput"
+            />
+          </div>
+
+          <!-- Category Tabs -->
+          <div class="menu-categories">
+            <button class="category-tab active" data-category="all">
+              All Items
+            </button>
+            <button class="category-tab" data-category="salads">Salads</button>
+            <button class="category-tab" data-category="soups">Soups</button>
+            <button class="category-tab" data-category="starters">
+              Starters
+            </button>
+            <button class="category-tab" data-category="mains">
+              Main Course
+            </button>
+            <button class="category-tab" data-category="pizza">Pizza</button>
+            <button class="category-tab" data-category="beverages">
+              Beverages
+            </button>
+          </div>
+
+          <!-- Menu Items Grid -->
+          <div class="menu-grid" id="menuGrid">
+            <!-- Menu items will be populated here -->
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+          <h2 class="section-title">
+            <i class="bi bi-cart3"></i>
+            Order Summary
+          </h2>
+          <div class="order-summary">
+            <div class="summary-header">
+              <i class="bi bi-receipt"></i>
+              Current Order
+            </div>
+            <div id="orderItems">
+              <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <p>No items added yet</p>
+                <small>Start adding items to create an order</small>
+              </div>
+            </div>
+            <button class="submit-btn" id="submitOrder" disabled>
+              <i class="bi bi-send me-2"></i>Submit Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bamboo-decoration">🎋</div>
+
+    <!-- Success Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div
+        id="orderToast"
+        class="toast align-items-center text-white bg-success border-0"
+        role="alert"
+      >
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-check-circle-fill me-2"></i>Order submitted
+            successfully!
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Real Bamboo Garden Menu Data
+      const menu = {
+        salads: [
+          { name: "Arabian Chicken Salad", price: 160, icon: "🥗" },
+          { name: "Bombay Chicken Salad", price: 160, icon: "🥗" },
+          { name: "Chinese Kimchi", price: 90, icon: "🥗" },
+          { name: "Creamy Coleslaw", price: 120, icon: "🥗" },
+        ],
+        soups: [
+          { name: "Thai Lemon Basil Soup (Veg)", price: 90, icon: "🍜" },
+          { name: "Thai Lemon Basil Soup (Chicken)", price: 120, icon: "🍜" },
+          { name: "Tom Yum Soup (Veg)", price: 90, icon: "🍜" },
+          { name: "Tom Yum Soup (Chicken)", price: 120, icon: "🍜" },
+          { name: "Bamboo Soup (Veg)", price: 90, icon: "🍜" },
+          { name: "Bamboo Soup (Chicken)", price: 120, icon: "🍜" },
+          { name: "Creamy Chicken Soup", price: 120, icon: "🍜" },
+          { name: "Creamy Mushroom Soup", price: 90, icon: "🍜" },
+        ],
+        starters: [
+          { name: "Chilly Chicken", price: 180, icon: "🍗" },
+          { name: "Dragon Chicken", price: 220, icon: "🍗" },
+          { name: "Kung Pao Chicken", price: 220, icon: "🍗" },
+          { name: "Chicken 65", price: 160, icon: "🍗" },
+          { name: "Honey Chilly Prawns", price: 260, icon: "🍤" },
+          { name: "Garlic Prawns", price: 260, icon: "🍤" },
+          { name: "Dynamite Momos (Veg)", price: 130, icon: "🥟" },
+          { name: "Dynamite Momos (Non-Veg)", price: 160, icon: "🥟" },
+          { name: "Steamed Momos (Veg)", price: 120, icon: "🥟" },
+          { name: "Steamed Momos (Non-Veg)", price: 140, icon: "🥟" },
+        ],
+        mains: [
+          { name: "Chicken Thupka Bowl", price: 220, icon: "🍲" },
+          { name: "Seafood Thupka Bowl", price: 260, icon: "🍲" },
+          { name: "Veg Thupka Bowl", price: 189, icon: "🍲" },
+          { name: "Chicken Fried Rice", price: 160, icon: "🍚" },
+          { name: "Seafood Fried Rice", price: 180, icon: "🍚" },
+          { name: "Veg Fried Rice", price: 130, icon: "🍚" },
+          { name: "Penne Alfredo Chicken Pasta", price: 250, icon: "🍝" },
+          { name: "Chicken Marsala Spaghetti", price: 250, icon: "🍝" },
+          { name: "Bon Bon Best Pasta (Veg)", price: 220, icon: "🍝" },
+        ],
+        pizza: [
+          { name: "Margherita Pizza (Small)", price: 130, icon: "🍕" },
+          { name: "Margherita Pizza (Medium)", price: 230, icon: "🍕" },
+          { name: "Classic Chicken Pizza (Small)", price: 180, icon: "🍕" },
+          { name: "Classic Chicken Pizza (Medium)", price: 280, icon: "🍕" },
+          { name: "BBQ Chicken Pizza (Small)", price: 200, icon: "🍕" },
+          { name: "BBQ Chicken Pizza (Medium)", price: 300, icon: "🍕" },
+          { name: "Buffalo Chicken Pizza (Small)", price: 200, icon: "🍕" },
+          { name: "Buffalo Chicken Pizza (Medium)", price: 300, icon: "🍕" },
+        ],
+        beverages: [
+          { name: "Virgin Mojito", price: 90, icon: "🍹" },
+          { name: "Blueberry Mojito", price: 120, icon: "🍹" },
+          { name: "Mint Cooler", price: 60, icon: "🍹" },
+          { name: "Vanilla Milkshake", price: 120, icon: "🥤" },
+          { name: "Chocolate Milkshake", price: 120, icon: "🥤" },
+          { name: "Butter Scotch Milkshake", price: 130, icon: "🥤" },
+          { name: "Cold Coffee", price: 130, icon: "☕" },
+          { name: "Honey Cake Shake", price: 130, icon: "🥤" },
+        ],
+      };
+
+      let selectedItems = {};
+      let currentCategory = "all";
+
+      // Make updateQuantity globally available
+      window.updateQuantity = function (itemName, price, change) {
+        if (!selectedItems[itemName]) {
+          selectedItems[itemName] = { qty: 0, price: price };
+        }
+
+        selectedItems[itemName].qty += change;
+
+        if (selectedItems[itemName].qty <= 0) {
+          delete selectedItems[itemName];
+        }
+
+        renderMenu();
+        renderOrderSummary();
+      };
+
+      $(document).ready(function () {
+        renderMenu();
+
+        // Category tab switching
+        $(".category-tab").click(function () {
+          $(".category-tab").removeClass("active");
+          $(this).addClass("active");
+          currentCategory = $(this).data("category");
+          renderMenu();
+        });
+
+        // Search functionality
+        $("#searchInput").on("input", function () {
+          const searchTerm = $(this).val().toLowerCase();
+          filterMenuItems(searchTerm);
+        });
+
+        // Submit order
+        $("#submitOrder").click(function () {
+          const tableNo = $("#tableSelect").val();
+          if (!tableNo) {
+            alert("⚠️ Please select a table first!");
+            return;
+          }
+          if (Object.keys(selectedItems).length === 0) {
+            alert("⚠️ Please add at least one item to the order!");
+            return;
+          }
+
+          // Show loading state
+          const btn = $(this);
+          const originalText = btn.html();
+          btn.html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
+          btn.prop("disabled", true);
+
+          // Create order object
+          const orderId = Date.now();
+          const orderData = {
+            id: orderId,
+            table: tableNo,
+            items: selectedItems,
+            total: calculateTotal(),
+            timestamp: new Date().toISOString(),
+            waiterSubmitted: new Date().toLocaleTimeString(),
+          };
+
+          // Save to localStorage for kitchen to pick up
+          const submittedOrders = JSON.parse(
+            localStorage.getItem("bamboo_submitted_orders") || "[]"
+          );
+          submittedOrders.push(orderData);
+          localStorage.setItem(
+            "bamboo_submitted_orders",
+            JSON.stringify(submittedOrders)
+          );
+
+          // Also save individual order for billing
+          const orderHistory = JSON.parse(
+            localStorage.getItem("bamboo_order_history") || "[]"
+          );
+          orderHistory.push(orderData);
+          localStorage.setItem(
+            "bamboo_order_history",
+            JSON.stringify(orderHistory)
+          );
+
+          // Simulate order submission
+          setTimeout(() => {
+            console.log("Order submitted to kitchen:", orderData);
+
+            // Reset order
+            selectedItems = {};
+            renderOrderSummary();
+            $("#tableSelect").val("");
+
+            // Show success toast with order details
+            showOrderSuccessToast(tableNo, orderId);
+
+            // Reset button
+            btn.html(originalText);
+            btn.prop("disabled", true);
+
+            // Clear any saved drafts for this table
+            localStorage.removeItem(`bamboo_order_draft_table_${tableNo}`);
+          }, 1500);
+        });
+      });
+
+      function renderMenu() {
+        const grid = $("#menuGrid");
+        grid.empty();
+
+        const categoriesToShow =
+          currentCategory === "all" ? Object.keys(menu) : [currentCategory];
+
+        categoriesToShow.forEach((category) => {
+          if (menu[category]) {
+            menu[category].forEach((item) => {
+              const itemCard = createMenuItemCard(item, category);
+              grid.append(itemCard);
+            });
+          }
+        });
+      }
+
+      function createMenuItemCard(item, category) {
+        const quantity = selectedItems[item.name]?.qty || 0;
+
+        return `
+      <div class="food-item-card animate__animated animate__fadeInUp" data-name="${
+        item.name
+      }" data-category="${category}">
+        <div class="item-header">
+          <div class="item-info">
+            <div class="item-name">
+              ${item.icon} ${item.name}
+            </div>
+            <div class="item-price">₹${item.price}</div>
+          </div>
+        </div>
+        <div class="item-controls">
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
+          item.price
+        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
+            <i class="bi bi-dash"></i>
+          </button>
+          <div class="qty-display">${quantity}</div>
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
+          item.price
+        }, 1)">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+    `;
+      }
+
+      function renderOrderSummary() {
+        const container = $("#orderItems");
+        const submitBtn = $("#submitOrder");
+
+        if (Object.keys(selectedItems).length === 0) {
+          container.html(`
+        <div class="empty-cart">
+          <div class="empty-cart-icon">🛒</div>
+          <p>No items added yet</p>
+          <small>Start adding items to create an order</small>
+        </div>
+      `);
+          submitBtn.prop("disabled", true);
+          return;
+        }
+
+        let itemsHtml = "";
+        Object.entries(selectedItems).forEach(([name, { qty, price }]) => {
+          itemsHtml += `
+        <div class="order-item">
+          <span class="order-item-name">${name}</span>
+          <span class="order-item-qty">×${qty}</span>
+          <span class="order-item-price">₹${qty * price}</span>
+        </div>
+      `;
+        });
+
+        const total = calculateTotal();
+
+        container.html(`
+      ${itemsHtml}
+      <div class="order-total">
+        Total: ₹${total}
+      </div>
+    `);
+
+        submitBtn.prop("disabled", false);
+      }
+
+      function calculateTotal() {
+        return Object.values(selectedItems).reduce(
+          (total, { qty, price }) => total + qty * price,
+          0
+        );
+      }
+
+      function filterMenuItems(searchTerm) {
+        $(".food-item-card").each(function () {
+          const itemName = $(this).data("name").toLowerCase();
+          if (itemName.includes(searchTerm)) {
+            $(this).show().addClass("animate__fadeIn");
+          } else {
+            $(this).hide();
+          }
+        });
+      }
+
+      // Add interactive animations
+      $(document)
+        .on("mouseenter", ".food-item-card", function () {
+          $(this).addClass("animate__pulse");
+        })
+        .on("mouseleave", ".food-item-card", function () {
+          $(this).removeClass("animate__pulse");
+        });
+
+      // Clear search on Escape key
+      $(document).keydown(function (e) {
+        if (e.keyCode === 27) {
+          // Escape key
+          $("#searchInput").val("").trigger("input");
+        }
+      });
+
+      // Enhanced success toast with order details
+      function showOrderSuccessToast(tableNo, orderId) {
+        // Remove existing toasts
+        $(".custom-toast").remove();
+
+        const customToast = $(`
+      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div class="toast align-items-center text-white bg-success border-0 custom-toast" role="alert">
+          <div class="d-flex">
+            <div class="toast-body">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <strong>Order #${orderId
+                .toString()
+                .slice(-4)} submitted!</strong><br>
+              <small>Table ${tableNo} • Sent to kitchen • ${new Date().toLocaleTimeString()}</small>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+          </div>
+        </div>
+      </div>
+    `);
+
+        $("body").append(customToast);
+        const toast = new bootstrap.Toast(customToast.find(".toast"));
+        toast.show();
+
+        // Auto remove after toast is hidden
+        customToast.find(".toast").on("hidden.bs.toast", function () {
+          customToast.remove();
+        });
+      }
+
+      // Add real-time order status checking
+      function checkOrderStatus() {
+        const orderHistory = JSON.parse(
+          localStorage.getItem("bamboo_order_history") || "[]"
+        );
+        const kitchenOrders = JSON.parse(
+          localStorage.getItem("bamboo_kitchen_orders") || "{}"
+        );
+
+        // Show any orders that have been marked as ready
+        Object.values(kitchenOrders).forEach((order) => {
+          if (order.status === "ready") {
+            showOrderReadyNotification(order.table, order.id);
+          }
+        });
+      }
+
+      function showOrderReadyNotification(tableNo, orderId) {
+        const notificationKey = `notified_${orderId}`;
+        if (localStorage.getItem(notificationKey)) {
+          return; // Already notified
+        }
+
+        // Mark as notified
+        localStorage.setItem(notificationKey, "true");
+
+        // Show notification
+        const notification = $(`
+      <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1000;">
+        <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert" style="min-width: 300px;">
+          <h6 class="mb-1">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>Order Ready! 🎉</strong>
+          </h6>
+          <p class="mb-0">Table ${tableNo} order is ready for serving</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      </div>
+    `);
+
+        $("body").append(notification);
+
+        // Auto dismiss after 8 seconds
+        setTimeout(() => {
+          notification.find(".alert").alert("close");
+        }, 8000);
+
+        // Remove from DOM when closed
+        notification.find(".alert").on("closed.bs.alert", function () {
+          notification.remove();
+        });
+      }
+
+      // Check order status every 5 seconds
+      setInterval(checkOrderStatus, 5000);
+
+      // Add order history view
+      function showOrderHistory() {
+        const orderHistory = JSON.parse(
+          localStorage.getItem("bamboo_order_history") || "[]"
+        );
+
+        if (orderHistory.length === 0) {
+          alert("No orders submitted yet today.");
+          return;
+        }
+
+        let historyHtml = `
+      <div class="order-history-modal">
+        <div class="modal-header">
+          <h5>Today's Orders</h5>
+          <button type="button" class="btn-close" onclick="closeOrderHistory()"></button>
+        </div>
+        <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+    `;
+
+        orderHistory.reverse().forEach((order) => {
+          const itemCount = Object.keys(order.items).length;
+          const itemsText =
+            Object.keys(order.items).slice(0, 2).join(", ") +
+            (itemCount > 2 ? ` and ${itemCount - 2} more` : "");
+
+          historyHtml += `
+        <div class="border-bottom py-2 mb-2">
+          <div class="d-flex justify-content-between">
+            <strong>Table ${order.table} • Order #${order.id
+            .toString()
+            .slice(-4)}</strong>
+            <span class="badge bg-success">₹${order.total}</span>
+          </div>
+          <small class="text-muted">
+            ${itemsText} • ${new Date(order.timestamp).toLocaleString()}
+          </small>
+        </div>
+      `;
+        });
+
+        historyHtml += `
+        </div>
+        <div class="modal-footer">
+          <small class="text-muted">Total: ${orderHistory.length} orders today</small>
+        </div>
+      </div>
+    `;
+
+        // Create modal overlay
+        const modal = $(`
+      <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+           style="background: rgba(0,0,0,0.5); z-index: 1050;">
+        <div class="bg-white rounded-3 p-0 shadow-lg" style="max-width: 500px; width: 90%;">
+          ${historyHtml}
+        </div>
+      </div>
+    `);
+
+        $("body").append(modal);
+      }
+
+      function closeOrderHistory() {
+        $(".position-fixed").has(".order-history-modal").remove();
+      }
+
+      // Make functions globally available
+      window.showOrderHistory = showOrderHistory;
+      window.closeOrderHistory = closeOrderHistory;
+
+      // Add order history button to navbar
+      setTimeout(() => {
+        const historyButton = $(`
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="showOrderHistory()">
+          <i class="bi bi-clock-history me-2"></i>History
+        </a>
+      </li>
+    `);
+        $(".navbar-nav").append(historyButton);
+      }, 1000);
+
+      // Add keyboard shortcut for order history (Ctrl+H)
+      $(document).keydown(function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === "h") {
+          e.preventDefault();
+          showOrderHistory();
+        }
+      });
+    </script>
+  </body>
+</html>

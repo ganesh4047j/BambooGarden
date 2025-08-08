@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🐼 Bamboo Garden Kitchen</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bamboo-green: #4a7c59;
+      --bamboo-light: #8fbc8f;
+      --bamboo-dark: #2d4a35;
+      --accent-gold: #ffd700;
+      --bg-primary: #f8fffe;
+      --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
+      --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
+      --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-primary);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #2c3e50;
+    }
+
+    .navbar {
+      background: var(--gradient-green) !important;
+      box-shadow: var(--shadow-medium);
+      padding: 1rem 0;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: white !important;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar-brand::before {
+      content: '🐼';
+      font-size: 2rem;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1.25rem !important;
+      border-radius: 25px;
+      margin: 0 0.25rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: white !important;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .dashboard-header {
+      background: var(--gradient-green);
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 C20,20 40,0 60,20 C80,40 100,20 100,40 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100px 100px;
+    }
+
+    .dashboard-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dashboard-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    .order-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(74, 124, 89, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .order-card.new-order {
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      animation: newOrderPulse 2s ease-in-out;
+    }
+
+    @keyframes newOrderPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .order-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--gradient-green);
+    }
+
+    .order-card.new-order::before {
+      background: var(--accent-gold);
+      height: 6px;
+    }
+
+    .order-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .table-info {
+      flex: 1;
+    }
+
+    .table-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--bamboo-dark);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-time {
+      color: #6c757d;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .status-badge {
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .status-pending {
+      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .status-preparing {
+      background: linear-gradient(135deg, #cff4fc 0%, #74c0fc 100%);
+      color: #055160;
+      border: 1px solid #74c0fc;
+    }
+
+    .status-ready {
+      background: linear-gradient(135deg, #d1e7dd 0%, #75b798 100%);
+      color: #0f5132;
+      border: 1px solid #75b798;
+    }
+
+    .order-items {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e9ecef;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .item-name {
+      flex: 1;
+      font-weight: 500;
+      color: var(--bamboo-dark);
+      min-width: 200px;
+    }
+
+    .item-quantity {
+      background: var(--bamboo-light);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .item-price {
+      font-weight: 600;
+      color: var(--bamboo-dark);
+      font-size: 1.1rem;
+    }
+
+    .order-total {
+      background: var(--gradient-green);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow-light);
+    }
+
+    .status-btn {
+      background: var(--gradient-green);
+      border: none;
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+      color: white;
+    }
+
+    .status-btn.preparing {
+      background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+    }
+
+    .status-btn.ready {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .stats-row {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-light);
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--bamboo-green);
+      display: block;
+    }
+
+    .stat-label {
+      color: #6c757d;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    .bamboo-decoration {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 3rem;
+      opacity: 0.3;
+      z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .filter-tabs {
+      background: white;
+      border-radius: 15px;
+      padding: 0.5rem;
+      box-shadow: var(--shadow-light);
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: #6c757d;
+    }
+
+    .filter-tab.active {
+      background: var(--gradient-green);
+      color: white;
+      box-shadow: var(--shadow-light);
+    }
+
+    .no-orders {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+    }
+
+    .no-orders-icon {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      opacity: 0.3;
+    }
+
+    .new-order-alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-gold);
+      color: #856404;
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      box-shadow: var(--shadow-medium);
+      z-index: 1000;
+      font-weight: 600;
+      animation: slideInRight 0.5s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-title {
+        font-size: 2rem;
+      }
+      
+      .order-card {
+        padding: 1.5rem;
+      }
+      
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .item-name {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-header">
+    <div class="container">
+      <h1 class="dashboard-title">🔥 Kitchen Dashboard</h1>
+      <p class="dashboard-subtitle">Monitor and manage incoming orders in real-time</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="row">
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <span class="stat-number" id="pendingCount">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <span class="stat-number" id="preparingCount">0</span>
+            <span class="stat-label">Preparing</span>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <span class="stat-number" id="readyCount">0</span>
+            <span class="stat-label">Ready</span>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card">
+            <span class="stat-number" id="totalCount">0</span>
+            <span class="stat-label">Total Orders</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterOrders('all')">All Orders</button>
+      <button class="filter-tab" onclick="filterOrders('pending')">Pending</button>
+      <button class="filter-tab" onclick="filterOrders('preparing')">Preparing</button>
+      <button class="filter-tab" onclick="filterOrders('ready')">Ready</button>
+    </div>
+
+    <!-- Orders Container -->
+    <div id="ordersContainer">
+      <div class="no-orders">
+        <div class="no-orders-icon">🍽️</div>
+        <h3>No Orders Yet</h3>
+        <p>Waiting for new orders from waiters...</p>
+        <small class="text-muted">Orders will appear here automatically when submitted</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="bamboo-decoration">🎋</div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let orders = {};
+    let orderIdCounter = 1;
+    let currentFilter = 'all';
+
+    // Check for new orders from waiter dashboard
+    function checkForNewOrders() {
+      // Get submitted orders from localStorage
+      const submittedOrders = JSON.parse(localStorage.getItem('bamboo_submitted_orders') || '[]');
+      
+      submittedOrders.forEach(orderData => {
+        if (!orders[orderData.id]) {
+          // New order detected
+          addNewOrder(orderData);
+          showNewOrderAlert(orderData.table);
+          
+          // Play notification sound (if browser allows)
+          playNotificationSound();
+        }
+      });
+      
+      updateStats();
+      renderOrders();
+    }
+
+    function addNewOrder(orderData) {
+      const orderId = `order_${orderData.id}`;
+      orders[orderId] = {
+        id: orderId,
+        table: orderData.table,
+        items: orderData.items,
+        total: orderData.total,
+        status: 'pending',
+        timestamp: new Date(orderData.timestamp),
+        isNew: true
+      };
+    }
+
+    function showNewOrderAlert(tableNumber) {
+      // Remove existing alert if any
+      const existingAlert = document.querySelector('.new-order-alert');
+      if (existingAlert) {
+        existingAlert.remove();
+      }
+
+      // Create new alert
+      const alert = document.createElement('div');
+      alert.className = 'new-order-alert';
+      alert.innerHTML = `
+        <i class="bi bi-bell-fill me-2"></i>
+        <strong>New Order!</strong> Table ${tableNumber}
+      `;
+      
+      document.body.appendChild(alert);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (alert.parentNode) {
+          alert.remove();
+        }
+      }, 5000);
+    }
+
+    function playNotificationSound() {
+      // Create audio context for notification sound
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+        
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+      } catch (error) {
+        console.log('Audio notification not available');
+      }
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      const orderEntries = Object.entries(orders);
+      
+      if (orderEntries.length === 0) {
+        container.innerHTML = `
+          <div class="no-orders">
+            <div class="no-orders-icon">🍽️</div>
+            <h3>No Orders Yet</h3>
+            <p>Waiting for new orders from waiters...</p>
+            <small class="text-muted">Orders will appear here automatically when submitted</small>
+          </div>
+        `;
+        return;
+      }
+
+      let ordersHtml = '';
+      
+      // Filter orders based on current filter
+      const filteredOrders = orderEntries.filter(([id, order]) => {
+        return currentFilter === 'all' || order.status === currentFilter;
+      });
+
+      if (filteredOrders.length === 0) {
+        container.innerHTML = `
+          <div class="no-orders">
+            <div class="no-orders-icon">📋</div>
+            <h3>No ${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)} Orders</h3>
+            <p>No orders match the current filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort orders by timestamp (newest first)
+      filteredOrders.sort(([,a], [,b]) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      filteredOrders.forEach(([orderId, order]) => {
+        ordersHtml += createOrderCard(orderId, order);
+      });
+      
+      container.innerHTML = ordersHtml;
+    }
+
+    function createOrderCard(orderId, order) {
+      const timeDiff = Math.floor((Date.now() - new Date(order.timestamp)) / (1000 * 60));
+      const timeAgo = timeDiff === 0 ? 'Just now' : `${timeDiff} mins ago`;
+      
+      let itemsHtml = '';
+      Object.entries(order.items).forEach(([itemName, itemData]) => {
+        const emoji = getItemEmoji(itemName);
+        itemsHtml += `
+          <div class="order-item">
+            <span class="item-name">${emoji} ${itemName}</span>
+            <span class="item-quantity">×${itemData.qty}</span>
+            <span class="item-price">₹${itemData.qty * itemData.price}</span>
+          </div>
+        `;
+      });
+
+      const statusClass = `status-${order.status}`;
+      const newOrderClass = order.isNew ? 'new-order' : '';
+      
+      let buttonHtml = '';
+      if (order.status === 'pending') {
+        buttonHtml = `
+          <button class="status-btn" onclick="updateStatus('${orderId}')">
+            <i class="bi bi-play-circle me-2"></i>Start Preparing
+          </button>
+        `;
+      } else if (order.status === 'preparing') {
+        buttonHtml = `
+          <button class="status-btn preparing" onclick="updateStatus('${orderId}')">
+            <i class="bi bi-check-circle me-2"></i>Mark as Ready
+          </button>
+        `;
+      }
+
+      return `
+        <div class="order-card animate__animated animate__fadeInUp ${newOrderClass}" data-status="${order.status}" id="${orderId}">
+          <div class="order-header">
+            <div class="table-info">
+              <div class="table-number">
+                <i class="bi bi-table"></i>
+                Table ${order.table}
+              </div>
+              <div class="order-time">
+                <i class="bi bi-clock"></i>
+                ${new Date(order.timestamp).toLocaleTimeString()} - ${timeAgo}
+              </div>
+            </div>
+            <span class="status-badge ${statusClass}" id="status-${orderId}">
+              ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+            </span>
+          </div>
+
+          <div class="order-items">
+            ${itemsHtml}
+          </div>
+
+          <div class="order-total">
+            Total: ₹${order.total}
+          </div>
+
+          ${buttonHtml}
+        </div>
+      `;
+    }
+
+    function getItemEmoji(itemName) {
+      const emojiMap = {
+        'chicken': '🍗',
+        'biryani': '🍛',
+        'rice': '🍚',
+        'pasta': '🍝',
+        'pizza': '🍕',
+        'soup': '🍜',
+        'momos': '🥟',
+        'salad': '🥗',
+        'prawn': '🍤',
+        'mojito': '🍹',
+        'shake': '🥤',
+        'coffee': '☕',
+        'thupka': '🍲'
+      };
+
+      const lowerName = itemName.toLowerCase();
+      for (const [key, emoji] of Object.entries(emojiMap)) {
+        if (lowerName.includes(key)) {
+          return emoji;
+        }
+      }
+      return '🍽️'; // Default emoji
+    }
+
+    function updateStatus(orderId) {
+      const order = orders[orderId];
+      if (!order) return;
+
+      const card = document.getElementById(orderId);
+      const badge = document.getElementById(`status-${orderId}`);
+      const button = card.querySelector('.status-btn');
+
+      if (order.status === 'pending') {
+        order.status = 'preparing';
+        order.isNew = false; // Remove new status
+        
+        badge.className = 'status-badge status-preparing';
+        badge.innerText = 'Preparing';
+        
+        button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
+        button.className = 'status-btn preparing';
+        
+        // Add cooking animation
+        card.style.background = 'linear-gradient(45deg, #fff 25%, #f8f9fa 25%, #f8f9fa 50%, #fff 50%, #fff 75%, #f8f9fa 75%)';
+        card.style.backgroundSize = '20px 20px';
+        card.style.animation = 'slide 2s linear infinite';
+        card.classList.remove('new-order');
+        
+      } else if (order.status === 'preparing') {
+        order.status = 'ready';
+        
+        badge.className = 'status-badge status-ready';
+        badge.innerText = 'Ready';
+        
+        if (button) button.remove();
+        
+        // Add completion effect
+        card.style.background = 'white';
+        card.style.animation = 'none';
+        card.style.border = '2px solid #28a745';
+        
+        // Add ready notification
+        const readyNotification = document.createElement('div');
+        readyNotification.className = 'alert alert-success animate__animated animate__bounceIn';
+        readyNotification.innerHTML = '<strong>🎉 Order Ready!</strong> This order is ready to be served.';
+        readyNotification.style.marginTop = '1rem';
+        card.appendChild(readyNotification);
+        
+        // Update order in billing system
+        updateBillingSystem(orderId, order);
+      }
+      
+      updateStats();
+      
+      // Save updated orders
+      saveOrdersToStorage();
+    }
+
+    function updateBillingSystem(orderId, order) {
+      // Send ready orders to billing system
+      const readyOrders = JSON.parse(localStorage.getItem('bamboo_ready_orders') || '[]');
+      const existingIndex = readyOrders.findIndex(o => o.id === orderId);
+      
+      if (existingIndex === -1) {
+        readyOrders.push({
+          id: orderId,
+          table: order.table,
+          items: order.items,
+          total: order.total,
+          readyTime: new Date().toISOString()
+        });
+        localStorage.setItem('bamboo_ready_orders', JSON.stringify(readyOrders));
+      }
+    }
+
+    function updateStats() {
+      const pendingOrders = Object.values(orders).filter(o => o.status === 'pending').length;
+      const preparingOrders = Object.values(orders).filter(o => o.status === 'preparing').length;
+      const readyOrders = Object.values(orders).filter(o => o.status === 'ready').length;
+      const totalOrders = Object.keys(orders).length;
+
+      document.getElementById('pendingCount').textContent = pendingOrders;
+      document.getElementById('preparingCount').textContent = preparingOrders;
+      document.getElementById('readyCount').textContent = readyOrders;
+      document.getElementById('totalCount').textContent = totalOrders;
+    }
+
+    function filterOrders(filter) {
+      const tabs = document.querySelectorAll('.filter-tab');
+      
+      // Update active tab
+      tabs.forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      currentFilter = filter;
+      renderOrders();
+    }
+
+    function saveOrdersToStorage() {
+      localStorage.setItem('bamboo_kitchen_orders', JSON.stringify(orders));
+    }
+
+    function loadOrdersFromStorage() {
+      const savedOrders = localStorage.getItem('bamboo_kitchen_orders');
+      if (savedOrders) {
+        orders = JSON.parse(savedOrders);
+        updateStats();
+        renderOrders();
+      }
+    }
+
+    // Add cooking animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slide {
+        0% { background-position: 0 0; }
+        100% { background-position: 40px 40px; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      loadOrdersFromStorage();
+      checkForNewOrders();
+      
+      // Check for new orders every 2 seconds
+      setInterval(checkForNewOrders, 2000);
+      
+      // Update time stamps every minute
+      setInterval(() => {
+        renderOrders();
+      }, 60000);
+    });
+
+    // Clear completed orders older than 2 hours
+    function cleanupOldOrders() {
+      const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
+      
+      Object.keys(orders).forEach(orderId => {
+        const order = orders[orderId];
+        if (order.status === 'ready' && new Date(order.timestamp).getTime() < twoHoursAgo) {
+          delete orders[orderId];
+        }
+      });
+      
+      saveOrdersToStorage();
+      updateStats();
+      renderOrders();
+    }
+
+    // Run cleanup every hour
+    setInterval(cleanupOldOrders, 60 * 60 * 1000);
+
+    // Make functions globally available
+    window.updateStatus = updateStatus;
+    window.filterOrders = filterOrders;
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Press 'R' to refresh orders
+      if (e.key === 'r' || e.key === 'R') {
+        if (!e.ctrlKey && !e.metaKey) {
+          checkForNewOrders();
+          e.preventDefault();
+        }
+      }
+      
+      // Press numbers 1-4 to filter orders
+      if (e.key >= '1' && e.key <= '4') {
+        const filters = ['all', 'pending', 'preparing', 'ready'];
+        const filterIndex = parseInt(e.key) - 1;
+        if (filterIndex < filters.length) {
+          currentFilter = filters[filterIndex];
+          document.querySelectorAll('.filter-tab').forEach((tab, index) => {
+            tab.classList.toggle('active', index === filterIndex);
+          });
+          renderOrders();
+          e.preventDefault();
+        }
+      }
+    });
+
+    // Add visual feedback for real-time connection
+    function showConnectionStatus() {
+      const statusIndicator = document.createElement('div');
+      statusIndicator.id = 'connectionStatus';
+      statusIndicator.style.cssText = `
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #28a745;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 1001;
+        box-shadow: var(--shadow-light);
+      `;
+      statusIndicator.innerHTML = '<i class="bi bi-wifi me-2"></i>Connected - Listening for new orders';
+      
+      document.body.appendChild(statusIndicator);
+      
+      // Hide after 3 seconds
+      setTimeout(() => {
+        if (statusIndicator.parentNode) {
+          statusIndicator.style.opacity = '0';
+          statusIndicator.style.transition = 'opacity 0.5s';
+          setTimeout(() => statusIndicator.remove(), 500);
+        }
+      }, 3000);
+    }
+
+    // Show connection status on load
+    setTimeout(showConnectionStatus, 1000);
+
+    // Add order sound toggle
+    let soundEnabled = localStorage.getItem('kitchen_sound_enabled') !== 'false';
+    
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('kitchen_sound_enabled', soundEnabled);
+      
+      const soundButton = document.getElementById('soundToggle');
+      if (soundButton) {
+        soundButton.innerHTML = soundEnabled ? 
+          '<i class="bi bi-volume-up me-2"></i>Sound On' : 
+          '<i class="bi bi-volume-mute me-2"></i>Sound Off';
+        soundButton.className = soundEnabled ? 
+          'btn btn-success btn-sm' : 
+          'btn btn-secondary btn-sm';
+      }
+    }
+
+    // Add sound toggle button to header
+    function addSoundToggle() {
+      const header = document.querySelector('.dashboard-header .container');
+      const soundButton = document.createElement('button');
+      soundButton.id = 'soundToggle';
+      soundButton.onclick = toggleSound;
+      soundButton.style.cssText = `
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10;
+      `;
+      soundButton.className = soundEnabled ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm';
+      soundButton.innerHTML = soundEnabled ? 
+        '<i class="bi bi-volume-up me-2"></i>Sound On' : 
+        '<i class="bi bi-volume-mute me-2"></i>Sound Off';
+      
+      header.style.position = 'relative';
+      header.appendChild(soundButton);
+    }
+
+    // Initialize sound toggle
+    setTimeout(addSoundToggle, 500);
+
+    // Modify playNotificationSound to check if sound is enabled
+    const originalPlayNotificationSound = playNotificationSound;
+    playNotificationSound = function() {
+      if (soundEnabled) {
+        originalPlayNotificationSound();
+      }
+    };
+
+    // Add emergency clear all orders function (for testing)
+    window.clearAllOrders = function() {
+      if (confirm('Are you sure you want to clear all orders? This cannot be undone.')) {
+        orders = {};
+        localStorage.removeItem('bamboo_kitchen_orders');
+        localStorage.removeItem('bamboo_submitted_orders');
+        localStorage.removeItem('bamboo_ready_orders');
+        updateStats();
+        renderOrders();
+        alert('All orders cleared successfully!');
+      }
+    };
+
+    // Add order summary for shift end
+    window.getOrderSummary = function() {
+      const totalOrders = Object.keys(orders).length;
+      const completedOrders = Object.values(orders).filter(o => o.status === 'ready').length;
+      const totalRevenue = Object.values(orders).reduce((sum, order) => sum + order.total, 0);
+      
+      const summary = {
+        totalOrders,
+        completedOrders,
+        totalRevenue,
+        averageOrderValue: totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0,
+        completionRate: totalOrders > 0 ? Math.round((completedOrders / totalOrders) * 100) : 0
+      };
+      
+      console.log('Kitchen Summary:', summary);
+      return summary;
+    };
+
+    // Auto-save orders every 30 seconds
+    setInterval(() => {
+      if (Object.keys(orders).length > 0) {
+        saveOrdersToStorage();
+      }
+    }, 30000);
+  </script>
+</body>
+</html>

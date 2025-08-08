@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🐼 Bamboo Garden Login</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- Particles.js (optional for animated background) -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: linear-gradient(to right top, #224342, #c53b67, #224342);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .login-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .form-floating label {
+      color: #999;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 12px;
+      color: white;
+    }
+
+    .form-control::placeholder {
+      color: #ccc;
+    }
+
+    .btn-login {
+      background: #114b5f;
+      border: none;
+      padding: 12px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background: #0c3848;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 15px;
+      width: 64px;
+    }
+
+    @media screen and (max-width: 576px) {
+      .login-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Particles Background -->
+  <div id="particles-js"></div>
+
+  <div class="login-card" id="loginCard">
+    <img src="https://img.icons8.com/color/96/restaurant.png" class="logo" alt="logo" />
+    <h2>🐼 Bamboo Garden Login</h2>
+    <form id="loginForm">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="username" placeholder="Username" required />
+        <label for="username">Username</label>
+      </div>
+      <div class="form-floating mb-4">
+        <input type="password" class="form-control" id="password" placeholder="Password" required />
+        <label for="password">Password</label>
+      </div>
+      <button type="submit" class="btn btn-login w-100">Login</button>
+    </form>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase_config.js"></script>
+
+  <!-- Login Animation & Logic -->
+  <script>
+    gsap.from("#loginCard", {
+      opacity: 0,
+      y: 50,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 60
+        },
+        "color": {
+          "value": "#ffffff"
+        },
+        "opacity": {
+          "value": 0.3
+        },
+        "size": {
+          "value": 4
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 120,
+          "color": "#ffffff",
+          "opacity": 0.2,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 2
+        }
+      },
+      "interactivity": {
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          }
+        }
+      }
+    });
+
+    $('#loginForm').on('submit', function(e) {
+      e.preventDefault();
+      const username = $('#username').val().trim();
+      const password = $('#password').val().trim();
+
+      if (!username || !password) {
+        alert("Please enter username and password.");
+        return;
+      }
+
+      firebase.firestore().collection("users").doc(username).get()
+        .then((doc) => {
+          if (!doc.exists) {
+            alert("Username not found.");
+            return;
+          }
+
+          const data = doc.data();
+
+          if (data.password !== password) {
+            alert("Incorrect password.");
+            return;
+          }
+
+          const role = data.role;
+          if (role === "waiter") {
+            window.location.href = "waiter.html";
+          } else if (role === "admin") {
+            window.location.href = "admin.html";
+          } else if (role === "kitchen") {
+            window.location.href = "kitchen.html";
+          } else {
+            alert("Unknown role.");
+          }
+        })
+        .catch((error) => {
+          console.error("Login error:", error);
+          alert("Login failed.");
+        });
+    });
+  </script>
+
+</body>
+</html>
