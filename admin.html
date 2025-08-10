@@ -1,136 +1,471 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>📈 Admin Dashboard</title>
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f3f4f6;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .navbar {
-      background-color: #212529;
-    }
-    .navbar-brand {
-      color: #ffc107 !important;
-      font-weight: bold;
-    }
-    .dashboard-card {
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      padding: 20px;
-      background: white;
-    }
-    .table th, .table td {
-      vertical-align: middle;
-    }
-  </style>
-</head>
-<body>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand" href="#">🐼 Bamboo Garden</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="billing.html">Billing</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-<!-- Dashboard Content -->
-<div class="container animate__animated animate__fadeInUp">
-  <!-- Summary Cards -->
-  <div class="row g-4 mb-4">
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <h6>Total Orders</h6>
-        <h3 class="text-primary">12</h3>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <h6>Total Revenue</h6>
-        <h3 class="text-success">₹5,780</h3>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="dashboard-card text-center">
-        <h6>Unpaid Bills</h6>
-        <h3 class="text-danger">₹482</h3>
-      </div>
-    </div>
-  </div>
-
-  <!-- Orders Table -->
-  <div class="dashboard-card">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5>🧾 Orders List</h5>
-      <div>
-        <select class="form-select form-select-sm d-inline w-auto me-2">
-          <option selected>Today</option>
-          <option>This Week</option>
-          <option>All Time</option>
-        </select>
-        <button class="btn btn-sm btn-outline-primary" onclick="alert('📥 CSV Downloaded (mocked)')">
-          <i class="bi bi-download me-1"></i> Export CSV
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📈 Admin Dashboard</title>
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bamboo-green: #4a7c59;
+        --bamboo-light: #8fbc8f;
+        --bamboo-dark: #2d4a35;
+        --accent-gold: #ffd700;
+        --bg-primary: #f8fffe;
+        --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
+        --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
+        --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      }
+      body {
+        background: var(--bg-primary);
+        font-family: "Inter", sans-serif;
+        color: #2c3e50;
+      }
+      .navbar {
+        background: var(--gradient-green) !important;
+        box-shadow: var(--shadow-medium);
+        padding: 1rem 0;
+        backdrop-filter: blur(10px);
+      }
+      .navbar-brand {
+        color: white !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .navbar-brand::before {
+        content: "🐼";
+        font-size: 2rem;
+      }
+      .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.75rem 1.25rem !important;
+        border-radius: 25px;
+        margin: 0 0.25rem;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+      .dashboard-header {
+        background: var(--gradient-green);
+        color: white;
+        padding: 2rem 0 1rem 0;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-medium);
+      }
+      .dashboard-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 C20,20 40,0 60,20 C80,40 100,20 100,40 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+        background-size: 100px 100px;
+      }
+      .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+      }
+      .dashboard-card {
+        border-radius: 20px;
+        box-shadow: var(--shadow-light);
+        padding: 2rem;
+        background: white;
+        border: 1px solid rgba(74, 124, 89, 0.1);
+        margin-bottom: 2rem;
+      }
+      .summary-card {
+        background: var(--gradient-green);
+        color: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-light);
+        padding: 2rem 1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .summary-card h6 {
+        font-weight: 600;
+        opacity: 0.9;
+        margin-bottom: 0.5rem;
+      }
+      .summary-card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0;
+      }
+      .summary-card.text-danger {
+        background: linear-gradient(135deg, #ffbaba 0%, #ff5252 100%);
+        color: white;
+      }
+      .summary-card.text-success {
+        background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
+        color: white;
+      }
+      .summary-card.text-primary {
+        background: linear-gradient(135deg, #74c0fc 0%, #4a7c59 100%);
+        color: white;
+      }
+      .table {
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        box-shadow: var(--shadow-light);
+        margin-bottom: 0;
+        transition: box-shadow 0.3s;
+      }
+      .table th,
+      .table td {
+        vertical-align: middle;
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+        transition: background 0.2s, color 0.2s;
+      }
+      .table thead {
+        background: var(--gradient-green);
+        color: white;
+        letter-spacing: 1px;
+        font-size: 1.05rem;
+        border-bottom: 2px solid #8fbc8f;
+      }
+      .table tbody tr {
+        transition: box-shadow 0.3s, transform 0.2s, background 0.2s;
+        animation: fadeInRow 0.7s;
+      }
+      .table tbody tr:hover {
+        background: rgba(74, 124, 89, 0.07);
+        box-shadow: 0 2px 12px rgba(74, 124, 89, 0.08);
+        transform: scale(1.01);
+      }
+      @keyframes fadeInRow {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .badge.bg-success {
+        background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(74, 124, 89, 0.08);
+        letter-spacing: 0.5px;
+      }
+      .badge.bg-danger {
+        background: linear-gradient(135deg, #ff5252 0%, #ffbaba 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(255, 82, 82, 0.08);
+        letter-spacing: 0.5px;
+      }
+      .form-select {
+        border-radius: 16px;
+        border: 2px solid var(--bamboo-green);
+        padding: 0.5rem 2.2rem 0.5rem 1rem;
+        font-size: 1.05rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(74, 124, 89, 0.08);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        font-weight: 500;
+        color: var(--bamboo-dark);
+        appearance: none;
+        position: relative;
+      }
+      .form-select:focus,
+      .form-select:hover {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.15rem rgba(255, 215, 0, 0.15);
+        background-color: #f8fffe;
+        outline: none;
+      }
+      .form-select-sm {
+        font-size: 1rem;
+        padding: 0.4rem 2rem 0.4rem 0.8rem;
+        min-width: 120px;
+      }
+      /* Custom dropdown arrow */
+      .form-select {
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%234a7c59' stroke-width='2' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2em;
+      }
+      @media (max-width: 768px) {
+        .dashboard-title {
+          font-size: 2rem;
+        }
+        .dashboard-card,
+        .summary-card {
+          padding: 1rem;
+        }
+        .table th,
+        .table td {
+          font-size: 0.95rem;
+          padding: 0.5rem 0.5rem;
+        }
+        .table tbody tr:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Bamboo Garden</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="billing.html">Billing</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="container">
+        <h1 class="dashboard-title">📈 Admin Dashboard</h1>
+        <p class="dashboard-subtitle">
+          Overview of orders, revenue, and billing status
+        </p>
       </div>
     </div>
-    <table class="table table-bordered align-middle">
-      <thead class="table-light">
-        <tr>
-          <th>Table</th>
-          <th>Items</th>
-          <th>Time</th>
-          <th>Total</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Table 2</td>
-          <td>
-            Chicken Biryani ×2<br>
-            Masala Tea ×2
-          </td>
-          <td>12:48 PM</td>
-          <td>₹482</td>
-          <td><span class="badge bg-danger">Unpaid</span></td>
-        </tr>
-        <tr>
-          <td>Table 1</td>
-          <td>Paneer Butter Masala ×1</td>
-          <td>12:40 PM</td>
-          <td>₹180</td>
-          <td><span class="badge bg-success">Paid</span></td>
-        </tr>
-        <tr>
-          <td>Table 3</td>
-          <td>Veg Biryani ×2</td>
-          <td>12:35 PM</td>
-          <td>₹300</td>
-          <td><span class="badge bg-success">Paid</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Dashboard Content -->
+    <div class="container animate__animated animate__fadeInUp">
+      <!-- Summary Cards -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="summary-card text-white">
+            <h6>Total Orders</h6>
+            <h3 id="totalOrders">0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card text-white">
+            <h6>Total Revenue</h6>
+            <h3 id="totalRevenue">₹0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card text-white">
+            <h6>Unpaid Bills</h6>
+            <h3 id="unpaidBills">₹0</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="dashboard-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>🧾 Orders List</h5>
+          <div>
+            <select
+              id="periodSelect"
+              class="form-select form-select-sm d-inline w-auto me-2"
+            >
+              <option selected>Today</option>
+              <option>This Week</option>
+              <option>All Time</option>
+            </select>
+            <button id="exportBtn" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-download me-1"></i> Export XLSX
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive rounded-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Table</th>
+                <th>Items</th>
+                <th>Time</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <!-- Table rows will be rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add SheetJS for XLSX export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+      // --- Admin Dashboard Logic ---
+      // Helper: Get paid bills from billing page
+      function getPaidBills() {
+        const paidBills = JSON.parse(
+          localStorage.getItem("bamboo_paid_bills") || "[]"
+        );
+        const readyOrders = JSON.parse(
+          localStorage.getItem("bamboo_ready_orders") || "[]"
+        );
+        // Join paidBills with readyOrders for full bill info
+        return paidBills
+          .map((bill) => {
+            const order = readyOrders.find((o) => o.id === bill.id);
+            return order
+              ? {
+                  ...order,
+                  paidTime: bill.paidTime,
+                  paymentMethod: bill.paymentMethod,
+                }
+              : null;
+          })
+          .filter((b) => b);
+      }
+
+      // Filter bills by dropdown value
+      function filterBillsByPeriod(period) {
+        const bills = getPaidBills();
+        const now = new Date();
+        if (period === "Today") {
+          return bills.filter((b) => {
+            const paidDate = new Date(b.paidTime);
+            return paidDate.toDateString() === now.toDateString();
+          });
+        }
+        if (period === "This Week") {
+          const weekStart = new Date(now);
+          weekStart.setDate(now.getDate() - now.getDay());
+          weekStart.setHours(0, 0, 0, 0);
+          return bills.filter((b) => {
+            const paidDate = new Date(b.paidTime);
+            return paidDate >= weekStart && paidDate <= now;
+          });
+        }
+        // All Time
+        return bills;
+      }
+
+      // Update summary cards and table based on dropdown
+      function updateDashboard() {
+        const period = document.getElementById("periodSelect").value;
+        const bills = filterBillsByPeriod(period);
+        // Update summary cards
+        document.getElementById("totalOrders").textContent = bills.length;
+        const totalRevenue = bills.reduce((sum, b) => sum + b.total, 0);
+        document.getElementById("totalRevenue").textContent =
+          "₹" + totalRevenue;
+        const unpaid = bills
+          .filter((b) => !b.paidTime)
+          .reduce((sum, b) => sum + b.total, 0);
+        document.getElementById("unpaidBills").textContent = "₹" + unpaid;
+        // Update table
+        const tbody = document.getElementById("ordersTableBody");
+        tbody.innerHTML = bills
+          .map(
+            (bill) => `
+      <tr>
+        <td>Table ${bill.table}</td>
+        <td>
+          ${Object.entries(bill.items)
+            .map(([name, item]) => `${name} ×${item.qty}`)
+            .join("<br>")}
+        </td>
+        <td>${
+          bill.paidTime ? new Date(bill.paidTime).toLocaleTimeString() : ""
+        }</td>
+        <td>₹${bill.total}</td>
+        <td>
+          <span class="badge ${bill.paidTime ? "bg-success" : "bg-danger"}">
+            ${bill.paidTime ? "Paid" : "Unpaid"}
+          </span>
+        </td>
+      </tr>
+    `
+          )
+          .join("");
+      }
+
+      // Export filtered bills to XLSX
+      function exportToXLSX() {
+        const period = document.getElementById("periodSelect").value;
+        const bills = filterBillsByPeriod(period);
+        const data = bills.map((bill) => ({
+          Table: bill.table,
+          Items: Object.entries(bill.items)
+            .map(([name, item]) => `${name} ×${item.qty}`)
+            .join(", "),
+          Time: bill.paidTime ? new Date(bill.paidTime).toLocaleString() : "",
+          Total: bill.total,
+          Status: bill.paidTime ? "Paid" : "Unpaid",
+        }));
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Orders");
+        XLSX.writeFile(
+          wb,
+          `BambooGarden_Orders_${period.replace(" ", "_")}.xlsx`
+        );
+      }
+
+      // On dropdown change
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("periodSelect")
+          .addEventListener("change", updateDashboard);
+        document
+          .getElementById("exportBtn")
+          .addEventListener("click", exportToXLSX);
+        updateDashboard();
+      });
+    </script>
+  </body>
 </html>
