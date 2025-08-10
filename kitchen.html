@@ -438,6 +438,14 @@
       .no-orders {
         padding: 2rem 1rem;
       }
+      #soundToggle {
+        top: auto !important;
+        bottom: 1rem !important;
+        right: 1rem !important;
+        left: auto !important;
+        position: fixed !important;
+        z-index: 1002 !important;
+      }
     }
   </style>
 </head>
@@ -970,19 +978,41 @@
       const soundButton = document.createElement('button');
       soundButton.id = 'soundToggle';
       soundButton.onclick = toggleSound;
-      soundButton.style.cssText = `
-        position: absolute;
-        top: 3.5rem; /* moved lower to avoid notification overlap */
-        right: 1rem;
-        z-index: 10;
-      `;
       soundButton.className = soundEnabled ? 'btn btn-success btn-sm' : 'btn btn-secondary btn-sm';
       soundButton.innerHTML = soundEnabled ?
         '<i class="bi bi-volume-up me-2"></i>Sound On' :
         '<i class="bi bi-volume-mute me-2"></i>Sound Off';
 
+      // Responsive position: desktop absolute, mobile fixed
+      soundButton.style.cssText = `
+        position: absolute;
+        top: 3.5rem;
+        right: 1rem;
+        z-index: 10;
+      `;
       header.style.position = 'relative';
       header.appendChild(soundButton);
+
+      // Mobile: move to fixed position at bottom right
+      function updateSoundBtnPosition() {
+        if (window.innerWidth <= 768) {
+          soundButton.style.position = 'fixed';
+          soundButton.style.top = '';
+          soundButton.style.right = '1rem';
+          soundButton.style.bottom = '1rem';
+          soundButton.style.left = '';
+          soundButton.style.zIndex = '1002';
+        } else {
+          soundButton.style.position = 'absolute';
+          soundButton.style.top = '3.5rem';
+          soundButton.style.right = '1rem';
+          soundButton.style.bottom = '';
+          soundButton.style.left = '';
+          soundButton.style.zIndex = '10';
+        }
+      }
+      updateSoundBtnPosition();
+      window.addEventListener('resize', updateSoundBtnPosition);
     }
 
     // Initialize sound toggle
