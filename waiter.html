@@ -819,9 +819,7 @@
         const quantity = selectedItems[item.name]?.qty || 0;
 
         return `
-      <div class="food-item-card animate__animated animate__fadeInUp" data-name="${
-        item.name
-      }" data-category="${category}">
+      <div class="food-item-card" data-name="${item.name}" data-category="${category}">
         <div class="item-header">
           <div class="item-info">
             <div class="item-name">
@@ -831,15 +829,11 @@
           </div>
         </div>
         <div class="item-controls">
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1)" ${quantity <= 0 ? "disabled" : ""}>
             <i class="bi bi-dash"></i>
           </button>
           <div class="qty-display">${quantity}</div>
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, 1)">
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1)">
             <i class="bi bi-plus"></i>
           </button>
         </div>
