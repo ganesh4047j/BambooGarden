@@ -242,11 +242,58 @@
         .table td {
           font-size: 0.95rem;
           padding: 0.5rem 0.5rem;
+          white-space: normal;
+          word-break: break-word;
+        }
+        .table-responsive {
+          overflow-x: auto;
         }
         .table tbody tr:hover {
           transform: none;
           box-shadow: none;
         }
+        /* Navbar mobile menu fix */
+        .navbar-collapse {
+          background: var(--gradient-green);
+          box-shadow: var(--shadow-medium);
+          border-radius: 0 0 16px 16px;
+          margin-top: 0.5rem;
+        }
+        .navbar-nav .nav-link {
+          margin: 0.5rem 0;
+          padding: 0.75rem 1.25rem !important;
+          font-size: 1.1rem;
+          text-align: center;
+        }
+      }
+      /* Export button animation */
+      #exportBtn {
+        border-radius: 16px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(74,124,89,0.08);
+        transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        background: linear-gradient(135deg, #74c0fc 0%, #4a7c59 100%);
+        color: #fff;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+      #exportBtn:hover {
+        background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(74,124,89,0.12);
+        transform: translateY(-2px) scale(1.04);
+      }
+      #exportBtn:active {
+        transform: scale(0.98);
+      }
+      #exportBtn .bi-download {
+        animation: bounceIcon 1s infinite alternate;
+      }
+      @keyframes bounceIcon {
+        0% { transform: translateY(0);}
+        100% { transform: translateY(-4px);}
       }
     </style>
   </head>
@@ -260,6 +307,9 @@
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -309,7 +359,7 @@
 
       <!-- Orders Table -->
       <div class="dashboard-card">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
           <h5>🧾 Orders List</h5>
           <div>
             <select
@@ -320,7 +370,7 @@
               <option>This Week</option>
               <option>All Time</option>
             </select>
-            <button id="exportBtn" class="btn btn-sm btn-outline-primary">
+            <button id="exportBtn" class="btn btn-sm">
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -463,9 +513,27 @@
           .addEventListener("change", updateDashboard);
         document
           .getElementById("exportBtn")
-          .addEventListener("click", exportToXLSX);
+          .addEventListener("click", function () {
+            exportToXLSX();
+            this.classList.add("animate__animated", "animate__tada");
+            setTimeout(() => {
+              this.classList.remove("animate__animated", "animate__tada");
+            }, 700);
+          });
+        // Fix for Bootstrap mobile menu toggling (force collapse on nav-link click)
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            var navbarCollapse = document.getElementById('navbarNav');
+            if (navbarCollapse.classList.contains('show')) {
+              var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
+              bsCollapse.hide();
+            }
+          });
+        });
         updateDashboard();
       });
     </script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
