@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍳 Inventory & Stock Management</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bamboo-green: #4a7c59;
+      --bamboo-light: #8fbc8f;
+      --bamboo-dark: #2d4a35;
+      --accent-gold: #ffd700;
+      --bg-primary: #f8fffe;
+      --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
+      --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
+      --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+    }
+    body {
+      background: var(--bg-primary);
+      font-family: 'Inter', sans-serif;
+      color: #2c3e50;
+    }
+    .navbar {
+      background: var(--gradient-green) !important;
+      box-shadow: var(--shadow-medium);
+      padding: 1rem 0;
+      backdrop-filter: blur(10px);
+    }
+    .navbar-brand {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .navbar-brand::before {
+      content: "🐼";
+      font-size: 2rem;
+    }
+    .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1.25rem !important;
+      border-radius: 25px;
+      margin: 0 0.25rem;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: white !important;
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+    .dashboard-header {
+      background: var(--gradient-green);
+      color: white;
+      padding: 2rem 0 1rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-medium);
+    }
+    .dashboard-header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 C20,20 40,0 60,20 C80,40 100,20 100,40 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100px 100px;
+    }
+    .dashboard-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .dashboard-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+    .inventory-form {
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(74,124,89,0.1);
+    }
+    .form-label {
+      font-weight: 600;
+      color: var(--bamboo-dark);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .form-control, .form-select {
+      border-radius: 12px;
+      border: 2px solid #e9ecef;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      background-color: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--bamboo-green);
+      box-shadow: 0 0 0 0.2rem rgba(74,124,89,0.15);
+      background-color: white;
+    }
+    .inventory-table-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(74,124,89,0.1);
+    }
+    .inventory-table {
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-light);
+      margin-bottom: 0;
+      width: 100%;
+    }
+    .inventory-table th, .inventory-table td {
+      vertical-align: middle;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .inventory-table thead {
+      background: var(--gradient-green);
+      color: white;
+      letter-spacing: 1px;
+      font-size: 1.05rem;
+      border-bottom: 2px solid #8fbc8f;
+    }
+    .inventory-table tbody tr {
+      transition: box-shadow 0.3s, transform 0.2s, background 0.2s;
+      animation: fadeInRow 0.7s;
+    }
+    .inventory-table tbody tr:hover {
+      background: rgba(74,124,89,0.07);
+      box-shadow: 0 2px 12px rgba(74,124,89,0.08);
+      transform: scale(1.01);
+    }
+    @keyframes fadeInRow {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .badge.in-stock {
+      background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5em 1em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(74,124,89,0.08);
+      letter-spacing: 0.5px;
+    }
+    .badge.out-stock {
+      background: linear-gradient(135deg, #ff5252 0%, #ffbaba 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5em 1em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(255,82,82,0.08);
+      letter-spacing: 0.5px;
+    }
+
+    /* Enhanced Add Button */
+    .btn-add {
+      background: linear-gradient(45deg, #4a7c59 0%, #8fbc8f 50%, #4a7c59 100%);
+      background-size: 300% 100%;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 
+        0 8px 25px rgba(74, 124, 89, 0.3),
+        0 4px 12px rgba(74, 124, 89, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .btn-add::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-add::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 2px;
+      background: linear-gradient(45deg, #ffd700, #4a7c59, #8fbc8f, #ffd700);
+      background-size: 400% 100%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: exclude;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: borderGlow 3s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .btn-add:hover {
+      background-position: 100% 0;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        0 12px 35px rgba(74, 124, 89, 0.4),
+        0 6px 20px rgba(74, 124, 89, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-add:hover::before {
+      left: 100%;
+    }
+
+    .btn-add:hover::after {
+      opacity: 1;
+    }
+
+    .btn-add:active {
+      transform: translateY(-1px) scale(1.02);
+      transition: all 0.1s ease;
+    }
+
+    .btn-add:focus {
+      outline: none;
+      box-shadow: 
+        0 12px 35px rgba(74, 124, 89, 0.4),
+        0 6px 20px rgba(74, 124, 89, 0.3),
+        0 0 0 4px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-add i {
+      font-size: 1.4rem;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+    }
+
+    .btn-add:hover i {
+      transform: rotate(180deg) scale(1.1);
+    }
+
+    .btn-add .btn-text {
+      position: relative;
+      z-index: 2;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Pulse effect on form focus */
+    .inventory-form:focus-within .btn-add {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { 
+        box-shadow: 
+          0 8px 25px rgba(74, 124, 89, 0.3),
+          0 4px 12px rgba(74, 124, 89, 0.2);
+      }
+      50% { 
+        box-shadow: 
+          0 12px 35px rgba(74, 124, 89, 0.5),
+          0 6px 20px rgba(74, 124, 89, 0.4),
+          0 0 30px rgba(255, 215, 0, 0.2);
+      }
+    }
+
+    /* Loading state */
+    .btn-add.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .btn-add.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-delete {
+      background: linear-gradient(135deg, #ff5252 0%, #ffbaba 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .btn-delete:hover {
+      background: linear-gradient(135deg, #ffbaba 0%, #ff5252 100%);
+      color: #fff;
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+      .dashboard-title {
+        font-size: 2rem;
+      }
+      .dashboard-header, .inventory-form, .inventory-table-card {
+        padding: 1rem;
+      }
+      .inventory-table th, .inventory-table td {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.5rem;
+        white-space: normal;
+        word-break: break-word;
+      }
+      .table-responsive {
+        overflow-x: auto;
+      }
+      .btn-add {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <h1 class="navbar-brand">Bamboo Garden</h1>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="container">
+      <h1 class="dashboard-title">🍳 Inventory & Stock</h1>
+      <p class="dashboard-subtitle">
+        Register, monitor and manage all groceries and kitchen stock
+      </p>
+    </div>
+  </div>
+
+  <div class="container animate__animated animate__fadeInUp">
+    <!-- Inventory Form -->
+    <div class="inventory-form mb-4">
+      <form id="inventoryForm" class="row g-3">
+        <div class="col-md-5">
+          <label class="form-label" for="itemName"><i class="bi bi-box-seam me-2"></i>Item Name</label>
+          <input type="text" class="form-control" id="itemName" placeholder="e.g. Rice, Oil, Chicken" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="itemQty"><i class="bi bi-123 me-2"></i>Quantity</label>
+          <input type="number" class="form-control" id="itemQty" min="0" placeholder="e.g. 10" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="itemStatus"><i class="bi bi-flag me-2"></i>Status</label>
+          <select class="form-select" id="itemStatus" required>
+            <option value="in-stock">In Stock</option>
+            <option value="out-stock">Out of Stock</option>
+          </select>
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+          <button type="submit" class="btn btn-add">
+            <i class="bi bi-plus-circle"></i>
+            <span class="btn-text d-none d-lg-inline">Add Item</span>
+            <span class="btn-text d-lg-none">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="inventory-table-card">
+      <div class="table-responsive rounded-3">
+        <table class="inventory-table table table-bordered align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody">
+            <!-- Items will be rendered here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Inventory data stored in localStorage
+    function getInventory() {
+      return JSON.parse(localStorage.getItem('bamboo_inventory') || '[]');
+    }
+    function saveInventory(data) {
+      localStorage.setItem('bamboo_inventory', JSON.stringify(data));
+    }
+
+    function renderInventoryTable() {
+      const items = getInventory();
+      const tbody = $('#inventoryTableBody');
+      if (items.length === 0) {
+        tbody.html(`<tr><td colspan="4" class="text-center text-muted">No items registered yet.</td></tr>`);
+        return;
+      }
+      tbody.html(items.map((item, idx) => `
+        <tr class="animate__animated animate__fadeInUp">
+          <td>${escapeHtml(item.name)}</td>
+          <td>${item.qty}</td>
+          <td>
+            <span class="badge ${item.status === 'in-stock' ? 'in-stock' : 'out-stock'}">
+              ${item.status === 'in-stock' ? 'In Stock' : 'Out of Stock'}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-delete btn-sm" onclick="deleteInventoryItem(${idx})">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join(''));
+    }
+
+    function addInventoryItem(name, qty, status) {
+      const items = getInventory();
+      items.push({ name, qty, status });
+      saveInventory(items);
+      renderInventoryTable();
+    }
+
+    window.deleteInventoryItem = function(idx) {
+      const items = getInventory();
+      items.splice(idx, 1);
+      saveInventory(items);
+      renderInventoryTable();
+    };
+
+    // Utility function to escape HTML
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    $(document).ready(function() {
+      renderInventoryTable();
+
+      $('#inventoryForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const $submitBtn = $('.btn-add');
+        const $icon = $submitBtn.find('i');
+        const originalIcon = $icon.attr('class');
+        
+        // Add loading state
+        $submitBtn.addClass('loading');
+        $icon.attr('class', 'bi bi-arrow-clockwise');
+        
+        const name = $('#itemName').val().trim();
+        const qty = parseInt($('#itemQty').val(), 10);
+        const status = $('#itemStatus').val();
+        
+        if (!name || isNaN(qty) || qty < 0) {
+          alert('Please enter valid item details.');
+          $submitBtn.removeClass('loading');
+          $icon.attr('class', originalIcon);
+          return;
+        }
+        
+        // Simulate processing time for better UX
+        setTimeout(() => {
+          addInventoryItem(name, qty, status);
+          this.reset();
+          
+          // Remove loading state
+          $submitBtn.removeClass('loading');
+          $icon.attr('class', originalIcon);
+          
+          // Brief success animation
+          $submitBtn.find('.btn-text').text('Added!');
+          setTimeout(() => {
+            $submitBtn.find('.btn-text').text('Add Item');
+          }, 1000);
+        }, 500);
+      });
+
+      // Responsive menu fix for mobile
+      $('.navbar-nav .nav-link').on('click', function() {
+        var navbarCollapse = $('#navbarNav');
+        if (navbarCollapse.hasClass('show')) {
+          var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse[0]);
+          bsCollapse.hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
