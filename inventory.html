@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inventory & Stock Management</title>
+  <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
   <style>
     :root {
       --bamboo-green: #4a7c59;
@@ -335,6 +335,59 @@
       color: #fff;
       transform: scale(1.05);
     }
+    /* Animated file upload button */
+    .file-upload-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .file-upload-label {
+      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(74,124,89,0.13);
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .file-upload-label:hover {
+      background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(74,124,89,0.18);
+    }
+    .file-upload-label:active {
+      transform: scale(0.98);
+    }
+    .file-upload-label i {
+      font-size: 1.5rem;
+      transition: transform 0.2s;
+    }
+    .file-upload-label.uploading i {
+      animation: spin 1s linear infinite;
+    }
+    .file-upload-input {
+      display: none;
+    }
+    .file-upload-filename {
+      font-size: 1rem;
+      color: var(--bamboo-dark);
+      font-weight: 500;
+      margin-left: 0.5rem;
+      word-break: break-all;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     @media (max-width: 768px) {
       .dashboard-title {
         font-size: 2rem;
@@ -354,6 +407,19 @@
       .btn-add {
         padding: 0.8rem 1.5rem;
         font-size: 1rem;
+      }
+      .file-upload-label {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+      }
+      .file-upload-filename {
+        max-width: 100px;
+        font-size: 0.95rem;
+      }
+      .file-upload-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
       }
     }
   </style>
@@ -388,6 +454,16 @@
   </div>
 
   <div class="container animate__animated animate__fadeInUp">
+    <!-- File Upload for Bill/Inventory -->
+    <div class="file-upload-wrapper">
+      <label class="file-upload-label" id="fileUploadLabel">
+        <i class="bi bi-upload"></i>
+        <span class="file-upload-text">Upload Bill/Stock File</span>
+        <input type="file" class="file-upload-input" id="fileInput" accept=".txt,.csv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.rtf,.odt,.ods,.heic,.tiff,.svg,.ppt,.pptx,.eml,.msg,.html,.htm,.zip,.rar,.7z,.tar,.gz,.bz2,.xz,.md,.log,.ini,.conf,.yaml,.yml,.tex,.ps,.eps,.ai,.indd,.pages,.numbers,.key,.csv,.tsv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.rtf,.odt,.ods,.heic,.tiff,.svg,.ppt,.pptx,.eml,.msg,.html,.htm,.zip,.rar,.7z,.tar,.gz,.bz2,.xz,.md,.log,.ini,.conf,.yaml,.yml,.tex,.ps,.eps,.ai,.indd,.pages,.numbers,.key" />
+      </label>
+      <span class="file-upload-filename" id="fileUploadFilename"></span>
+    </div>
+
     <!-- Inventory Form -->
     <div class="inventory-form mb-4">
       <form id="inventoryForm" class="row g-3">
@@ -439,6 +515,8 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Add Tesseract.js for OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
   <script>
     // Inventory data stored in localStorage
     function getInventory() {
@@ -550,7 +628,75 @@
         }
       });
     });
+
+    // File upload and extraction logic
+    $(function() {
+      const $fileInput = $('#fileInput');
+      const $fileLabel = $('#fileUploadLabel');
+      const $fileText = $fileLabel.find('.file-upload-text');
+      const $fileIcon = $fileLabel.find('i');
+      const $fileName = $('#fileUploadFilename');
+
+      $fileInput.on('change', function(e) {
+        const file = this.files[0];
+        if (!file) return;
+        $fileName.text(file.name);
+        $fileLabel.addClass('uploading');
+        $fileText.text('Processing...');
+        $fileIcon.removeClass().addClass('bi bi-arrow-repeat');
+
+        // Only process text/csv/image/pdf for demo
+        if (file.type.startsWith('text/') || file.name.match(/\.(csv|txt|log|ini|conf|md|yaml|yml)$/i)) {
+          // Read as text
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            $fileText.text('Extracting...');
+            extractInventoryFromText(evt.target.result);
+          };
+          reader.readAsText(file);
+        } else if (file.type.startsWith('image/')) {
+          // OCR for images
+          $fileText.text('Extracting (OCR)...');
+          Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+            extractInventoryFromText(text);
+          }).catch(() => {
+            $fileText.text('Failed to extract text');
+            $fileLabel.removeClass('uploading');
+            $fileIcon.removeClass().addClass('bi bi-x-circle');
+          });
+        } else {
+          $fileText.text('Unsupported file');
+          $fileLabel.removeClass('uploading');
+          $fileIcon.removeClass().addClass('bi bi-x-circle');
+        }
+      });
+
+      function extractInventoryFromText(text) {
+        // Try to extract lines like: ItemName Qty or ItemName,Qty
+        // Example: Rice 10, Oil 5, Chicken 2
+        let lines = text.split(/\r?\n/).filter(l => l.trim());
+        let added = 0;
+        lines.forEach(line => {
+          // Try CSV or space split
+          let match = line.match(/^([A-Za-z0-9\s\-_.]+)[,:\s]+(\d{1,5})/);
+          if (match) {
+            let name = match[1].trim();
+            let qty = parseInt(match[2]);
+            if (name && !isNaN(qty)) {
+              addInventoryItem(name, qty, qty > 0 ? 'in-stock' : 'out-stock');
+              added++;
+            }
+          }
+        });
+        $fileLabel.removeClass('uploading');
+        $fileIcon.removeClass().addClass('bi bi-upload');
+        $fileText.text(added > 0 ? `Added ${added} items!` : 'No valid items found');
+        setTimeout(() => {
+          $fileText.text('Upload Bill/Stock File');
+          $fileName.text('');
+        }, 2000);
+      }
+    });
   </script>
 </body>
-
 </html>
