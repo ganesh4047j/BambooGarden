@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bamboo Garden Waiter</title>
-    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
+    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon" />
     <!-- Bootstrap 5 -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -482,7 +482,10 @@
         }
 
         .menu-grid {
-          grid-template-columns: repeat(2, 1fr); /* 2 cards per row for mobile */
+          grid-template-columns: repeat(
+            2,
+            1fr
+          ); /* 2 cards per row for mobile */
         }
 
         .category-tab {
@@ -499,7 +502,6 @@
     </style>
   </head>
   <body>
-
     <div class="dashboard-header">
       <div class="container">
         <h1 class="dashboard-title">🍽️ Waiter Dashboard</h1>
@@ -556,20 +558,61 @@
             <button class="category-tab active" data-category="all">
               All Items
             </button>
+
             <button class="category-tab" data-category="salads">Salads</button>
+
             <button class="category-tab" data-category="soups">Soups</button>
+
             <button class="category-tab" data-category="Veg_Starters">
               Veg Starters
             </button>
+
             <button class="category-tab" data-category="Chicken_Starters">
               Chicken Starters
             </button>
-            <button class="category-tab" data-category="mains">
-              Main Course
+
+            <button class="category-tab" data-category="Seafood_Starters">
+              Seafood Starters
             </button>
+
+            <button class="category-tab" data-category="Bamboo_Specials">
+              Bamboo Specials
+            </button>
+
+            <button class="category-tab" data-category="Thupka_Bowls">
+              Thupka And Ching Mai Bowls
+            </button>
+
+            <button class="category-tab" data-category="Continental_Fusion">
+              Continental And Fusion
+            </button>
+
             <button class="category-tab" data-category="pizza">Pizza</button>
-            <button class="category-tab" data-category="beverages">
-              Beverages
+
+            <button class="category-tab" data-category="pasta">Pasta</button>
+
+            <button class="category-tab" data-category="wings">Wings</button>
+
+            <button class="category-tab" data-category="soups">Soups</button>
+
+            <button class="category-tab" data-category="milkshakes">
+              Milk Shakes
+            </button>
+
+            <button class="category-tab" data-category="mojitos">
+              Mojitos
+            </button>
+
+            <button class="category-tab" data-category="momos">
+              Momos(Veg)
+            </button>
+
+            <button class="category-tab" data-category="NonVeg_Momos">
+              Momos(Non-Veg)
+            </button>
+
+            <button class="category-tab" data-category="Fried_Rice_And_Noodles">
+              Fried Rice And Noodles
             </button>
           </div>
 
@@ -640,6 +683,7 @@
           { name: "Chinese Kimchi", price: 90, icon: "🥗" },
           { name: "Creamy Coleslaw", price: 120, icon: "🥗" },
         ],
+
         soups: [
           { name: "Thai Lemon Basil Soup (Veg)", price: 90, icon: "🍜" },
           { name: "Thai Lemon Basil Soup (Chicken)", price: 120, icon: "🍜" },
@@ -650,6 +694,7 @@
           { name: "Creamy Chicken Soup", price: 120, icon: "🍜" },
           { name: "Creamy Mushroom Soup", price: 90, icon: "🍜" },
         ],
+
         Veg_Starters: [
           { name: "Chilly Mushroom", price: 160, icon: "🍗" },
           { name: "Chilly Gobi", price: 140, icon: "🍗" },
@@ -691,6 +736,7 @@
           { name: "Baby Corn Guizhou Pepper", price: 180, icon: "🍗" },
           { name: "Paneer Guizhou Pepper", price: 180, icon: "🍗" },
         ],
+
         Chicken_Starters: [
           { name: "Chilly Chicken", price: 180, icon: "🍗" },
           { name: "Dragon Chicken", price: 220, icon: "🍗" },
@@ -709,36 +755,183 @@
           { name: "Drumsticks Chicken", price: 199, icon: "🍗" },
           { name: "Kung Pao Chicken", price: 220, icon: "🍗" },
         ],
-        mains: [
+
+        Seafood_Starters: [
+          { name: "Honey Chilli Prawns", price: 260, icon: "🍗" },
+          { name: "Garlic Prawns", price: 260, icon: "🍗" },
+          { name: "black Pepper Fish", price: 260, icon: "🍗" },
+          { name: "Chilly Prawns", price: 250, icon: "🍗" },
+          { name: "Fish In Oyster Sauce", price: 240, icon: "🍗" },
+          { name: "Basil Prawns", price: 260, icon: "🍗" },
+          { name: "Kentucky Fish", price: 240, icon: "🍗" },
+          { name: "Kentucky Prawn", price: 250, icon: "🍗" },
+          { name: "Garlic Squid", price: 260, icon: "🍗" },
+          { name: "Lemon Pepper Prawn", price: 240, icon: "🍗" },
+          { name: "Calamari Fritters", price: 260, icon: "🍗" },
+          { name: "Prawn Salt and Pepper", price: 240, icon: "🍗" },
+          { name: "Honey Sesame Prawns", price: 260, icon: "🍗" },
+          { name: "Apollo Fish", price: 240, icon: "🍗" },
+          { name: "Prawn And Broccoli", price: 260, icon: "🍗" },
+          { name: "Lemon Basil Prawn", price: 260, icon: "🍗" },
+          { name: "Hunan Fish", price: 260, icon: "🍗" },
+        ],
+
+        Bamboo_Specials: [
+          { name: "Chicken Parmigiana With Fries", price: 240, icon: "🍲" },
+          { name: "Japan Chicken", price: 220, icon: "🍲" },
+          { name: "Dynamite Chicken", price: 220, icon: "🍲" },
+          { name: "Butter Garlic Prawns", price: 260, icon: "🍚" },
+          { name: "Dynamite Prawns", price: 260, icon: "🍚" },
+          { name: "Dynamite Chicken", price: 240, icon: "🍚" },
+          { name: "Prawn Beauzule", price: 260, icon: "🍝" },
+        ],
+
+        Thupka_Bowls: [
+          { name: "Veg Thupka Bowl", price: 189, icon: "🍲" },
           { name: "Chicken Thupka Bowl", price: 220, icon: "🍲" },
           { name: "Seafood Thupka Bowl", price: 260, icon: "🍲" },
-          { name: "Veg Thupka Bowl", price: 189, icon: "🍲" },
-          { name: "Chicken Fried Rice", price: 160, icon: "🍚" },
-          { name: "Seafood Fried Rice", price: 180, icon: "🍚" },
-          { name: "Veg Fried Rice", price: 130, icon: "🍚" },
-          { name: "Penne Alfredo Chicken Pasta", price: 250, icon: "🍝" },
-          { name: "Chicken Marsala Spaghetti", price: 250, icon: "🍝" },
-          { name: "Bon Bon Best Pasta (Veg)", price: 220, icon: "🍝" },
+          { name: "Ching Mai Chicken", price: 260, icon: "🍚" },
+          { name: "Ching Mai Prawn", price: 290, icon: "🍚" },
         ],
+
+        Continental_Fusion: [
+          { name: "Newyork Chicken Sandwich", price: 160, icon: "🍕" },
+          { name: "Crunchy Chicken Sandwich", price: 150, icon: "🍕" },
+          { name: "Bon Bon Chicken Sandwich", price: 150, icon: "🍕" },
+          { name: "Bon Bon Veg Sandwich", price: 90, icon: "🍕" },
+          { name: "Cheese And Chilli Toast", price: 130, icon: "🍕" },
+          { name: "Grilled Chicken Burger", price: 160, icon: "🍕" },
+          { name: "Mexican Double Cheese Burger", price: 180, icon: "🍕" },
+          { name: "Fiery Spicy Chicken Burger", price: 170, icon: "🍕" },
+          {
+            name: "Fried Chicken Burger With Bbq Sauce",
+            price: 160,
+            icon: "🍕",
+          },
+          { name: "Cheese And Mushrooms Hot Dog", price: 140, icon: "🍕" },
+          { name: "Cheese And Paneer", price: 140, icon: "🍕" },
+          { name: "Bon Bon Spl Foot Long", price: 170, icon: "🍕" },
+        ],
+
         pizza: [
-          { name: "Margherita Pizza (Small)", price: 130, icon: "🍕" },
-          { name: "Margherita Pizza (Medium)", price: 230, icon: "🍕" },
-          { name: "Classic Chicken Pizza (Small)", price: 180, icon: "🍕" },
-          { name: "Classic Chicken Pizza (Medium)", price: 280, icon: "🍕" },
-          { name: "BBQ Chicken Pizza (Small)", price: 200, icon: "🍕" },
-          { name: "BBQ Chicken Pizza (Medium)", price: 300, icon: "🍕" },
-          { name: "Buffalo Chicken Pizza (Small)", price: 200, icon: "🍕" },
-          { name: "Buffalo Chicken Pizza (Medium)", price: 300, icon: "🍕" },
+          { name: "MARGHERITA CHEESE PIZZA (Small)", price: 130, icon: "🍕" },
+          { name: "MARGHERITA CHEESE PIZZA (Medium)", price: 230, icon: "🍕" },
+          { name: "CLASSIC VEG PIZZA (Small)", price: 150, icon: "🍕" },
+          { name: "CLASSIC VEG PIZZA (Medium)", price: 250, icon: "🍕" },
+          { name: "CLASSIC CHICKEN PIZZA (Small)", price: 180, icon: "🍕" },
+          { name: "CLASSIC CHICKEN PIZZA (Medium)", price: 280, icon: "🍕" },
+          { name: "BBQ CHICKEN PIZZA (Small)", price: 200, icon: "🍕" },
+          { name: "BBQ CHICKEN PIZZA (Medium)", price: 300, icon: "🍕" },
+          { name: "MEXICAN CHICKEN PIZZA (Small)", price: 200, icon: "🍕" },
+          { name: "MEXICAN CHICKEN PIZZA (Medium)", price: 300, icon: "🍕" },
+          { name: "BUFFALO CHICKEN PIZZA (Small)", price: 200, icon: "🍕" },
+          { name: "BUFFALO CHICKEN PIZZA (Medium)", price: 300, icon: "🍕" },
         ],
-        beverages: [
-          { name: "Virgin Mojito", price: 90, icon: "🍹" },
-          { name: "Blueberry Mojito", price: 120, icon: "🍹" },
-          { name: "Mint Cooler", price: 60, icon: "🍹" },
-          { name: "Vanilla Milkshake", price: 120, icon: "🥤" },
-          { name: "Chocolate Milkshake", price: 120, icon: "🥤" },
-          { name: "Butter Scotch Milkshake", price: 130, icon: "🥤" },
+
+        pasta: [
+          { name: "Bon Bon Best Pasta Veg", price: 220, icon: "🍝" },
+          { name: "Macroni Cheese", price: 220, icon: "🧀" },
+          { name: "Penne In Spicy Tomato Olive", price: 240, icon: "🍝" },
+          { name: "Penne Alfredo Veg", price: 240, icon: "🍝" },
+          { name: "Bon Bon Best Pasta Chicken", price: 250, icon: "🍗" },
+          { name: "Chicken Marsala Spaghetti", price: 250, icon: "🍗" },
+          { name: "Penne Alfredo Chicken Pasta", price: 250, icon: "🍗" },
+          { name: "Penne Tikka Masala Chicken", price: 260, icon: "🍗" },
+        ],
+
+        wings: [
+          { name: "Fried Chicken", price: 199, icon: "🍗" },
+          { name: "Hot And Spicy", price: 190, icon: "🌶️" },
+          { name: "Cajun Spicy", price: 199, icon: "🌶️" },
+          { name: "Chilli Garlic", price: 199, icon: "🌶️" },
+          { name: "Barbeque Wings", price: 199, icon: "🍖" },
+          { name: "Peri Peri Wings", price: 199, icon: "🌶️" },
+        ],
+
+        soups: [
+          { name: "Cream Of Broccoli", price: 120, icon: "🥦" },
+          { name: "Mexican Tortilla Soup Chicken", price: 140, icon: "🍲" },
+        ],
+
+        milkshakes: [
+          { name: "Vanilla", price: 120, icon: "🥤" },
+          { name: "Chocolate", price: 120, icon: "🍫" },
+          { name: "Butter Scotch", price: 130, icon: "🥤" },
+          { name: "Four Berries", price: 160, icon: "🫐" },
+          { name: "Sachin Secret", price: 130, icon: "🥤" },
+          { name: "Milo Power", price: 130, icon: "🥤" },
           { name: "Cold Coffee", price: 130, icon: "☕" },
-          { name: "Honey Cake Shake", price: 130, icon: "🥤" },
+          { name: "Honey Cake Shake", price: 130, icon: "🍯" },
+          { name: "Peanut Butter Shake", price: 150, icon: "🥜" },
+          { name: "Nutella Shake", price: 180, icon: "🍫" },
+          { name: "Lotus Biscoff", price: 260, icon: "🍪" },
+        ],
+
+        mojitos: [
+          { name: "Virgin Mojito", price: 90, icon: "🍹" },
+          { name: "Blueberry Mojito", price: 120, icon: "🫐" },
+          { name: "Berries Punch", price: 130, icon: "🫐" },
+          { name: "Mint Cooler", price: 60, icon: "🌿" },
+        ],
+
+        momos: [
+          { name: "Steamed Veg Momos", price: 120, icon: "🥟" },
+          { name: "Fried Veg Momos", price: 130, icon: "🥟" },
+          { name: "Manchurian Veg Momos", price: 130, icon: "🥟" },
+          { name: "Japan Veg Momos", price: 120, icon: "🥟" },
+          { name: "Dynamite Veg Momos", price: 130, icon: "🥟" },
+          { name: "Hot Pepper Veg Momos", price: 130, icon: "🌶️" },
+        ],
+
+        NonVeg_Momos: [
+          { name: "Steamed Non-Veg Momos", price: 140, icon: "🥟" },
+          { name: "Fried Non-Veg Momos", price: 150, icon: "🥟" },
+          { name: "Manchurian Non-Veg Momos", price: 160, icon: "🥟" },
+          { name: "Japan Non-Veg Momos", price: 160, icon: "🥟" },
+          { name: "Dynamite Non-Veg Momos", price: 160, icon: "🥟" },
+          { name: "Hot Pepper Non-Veg Momos", price: 160, icon: "🌶️" },
+        ],
+
+        Fried_Rice_And_Noodles: [
+          { name: "Classic Veg", price: 130, icon: "🍚" },
+          { name: "Classic Egg", price: 150, icon: "🍳" },
+          { name: "Classic Chicken", price: 160, icon: "🍗" },
+          { name: "Classic Seafood", price: 180, icon: "🦐" },
+
+          { name: "Burnt Garlic Veg", price: 130, icon: "🧄" },
+          { name: "Burnt Garlic Egg", price: 150, icon: "🧄🍳" },
+          { name: "Burnt Garlic Chicken", price: 160, icon: "🧄🍗" },
+          { name: "Burnt Garlic Seafood", price: 180, icon: "🧄🦐" },
+
+          { name: "Thai Basil Veg", price: 130, icon: "🌿" },
+          { name: "Thai Basil Egg", price: 150, icon: "🌿🍳" },
+          { name: "Thai Basil Chicken", price: 160, icon: "🌿🍗" },
+          { name: "Thai Basil Seafood", price: 180, icon: "🌿🦐" },
+
+          { name: "Schezwan Veg", price: 130, icon: "🌶️" },
+          { name: "Schezwan Egg", price: 150, icon: "🌶️🍳" },
+          { name: "Schezwan Chicken", price: 160, icon: "🌶️🍗" },
+          { name: "Schezwan Seafood", price: 180, icon: "🌶️🦐" },
+
+          { name: "Pepper Corn Veg", price: 130, icon: "🌽" },
+          { name: "Pepper Corn Egg", price: 150, icon: "🌽🍳" },
+          { name: "Pepper Corn Chicken", price: 160, icon: "🌽🍗" },
+          { name: "Pepper Corn Seafood", price: 180, icon: "🌽🦐" },
+
+          { name: "Madras Masala Veg", price: 130, icon: "🍛" },
+          { name: "Madras Masala Egg", price: 150, icon: "🍛🍳" },
+          { name: "Madras Masala Chicken", price: 160, icon: "🍛🍗" },
+          { name: "Madras Masala Seafood", price: 180, icon: "🍛🦐" },
+
+          { name: "Lee Fu Veg", price: 130, icon: "🍜" },
+          { name: "Lee Fu Egg", price: 150, icon: "🍜🍳" },
+          { name: "Lee Fu Chicken", price: 160, icon: "🍜🍗" },
+          { name: "Lee Fu Seafood", price: 180, icon: "🍜🦐" },
+
+          { name: "555 Rice Veg", price: 130, icon: "🍚" },
+          { name: "555 Rice Egg", price: 150, icon: "🍚🍳" },
+          { name: "555 Rice Chicken", price: 160, icon: "🍚🍗" },
+          { name: "555 Rice Seafood", price: 180, icon: "🍚🦐" },
         ],
       };
 
@@ -870,7 +1063,9 @@
         const quantity = selectedItems[item.name]?.qty || 0;
 
         return `
-      <div class="food-item-card" data-name="${item.name}" data-category="${category}">
+      <div class="food-item-card" data-name="${
+        item.name
+      }" data-category="${category}">
         <div class="item-header">
           <div class="item-info">
             <div class="item-name">
@@ -880,11 +1075,15 @@
           </div>
         </div>
         <div class="item-controls">
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1)" ${quantity <= 0 ? "disabled" : ""}>
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
+          item.price
+        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
             <i class="bi bi-dash"></i>
           </button>
           <div class="qty-display">${quantity}</div>
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1)">
+          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
+          item.price
+        }, 1)">
             <i class="bi bi-plus"></i>
           </button>
         </div>
