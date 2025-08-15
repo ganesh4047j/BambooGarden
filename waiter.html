@@ -35,6 +35,9 @@
         --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
         --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
         --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        --cake-pink: #e91e63;
+        --cake-light: #f8bbd9;
+        --gradient-pink: linear-gradient(135deg, #e91e63 0%, #f8bbd9 100%);
       }
 
       * {
@@ -166,6 +169,53 @@
         background-color: white;
       }
 
+      .menu-type-selector {
+        background: white;
+        border-radius: 20px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .menu-type-btn {
+        padding: 1rem 2rem;
+        border: none;
+        background: transparent;
+        border-radius: 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #6c757d;
+        cursor: pointer;
+        flex: 1;
+        max-width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .menu-type-btn.active.food-menu {
+        background: var(--gradient-green);
+        color: white;
+        box-shadow: var(--shadow-light);
+        transform: translateY(-2px);
+      }
+
+      .menu-type-btn.active.cake-menu {
+        background: var(--gradient-pink);
+        color: white;
+        box-shadow: var(--shadow-light);
+        transform: translateY(-2px);
+      }
+
+      .menu-type-btn:hover:not(.active) {
+        background: rgba(74, 124, 89, 0.1);
+        color: var(--bamboo-dark);
+      }
+
       .section-title {
         font-size: 2rem;
         font-weight: 700;
@@ -177,11 +227,20 @@
         gap: 0.5rem;
       }
 
-      .section-title::after {
+      .section-title.food::after {
         content: "";
         flex: 1;
         height: 3px;
         background: var(--gradient-green);
+        border-radius: 2px;
+        margin-left: 1rem;
+      }
+
+      .section-title.cake::after {
+        content: "";
+        flex: 1;
+        height: 3px;
+        background: var(--gradient-pink);
         border-radius: 2px;
         margin-left: 1rem;
       }
@@ -212,8 +271,15 @@
         max-width: 200px;
       }
 
-      .category-tab.active {
+      .category-tab.active.food-category {
         background: var(--gradient-green);
+        color: white;
+        box-shadow: var(--shadow-light);
+        transform: translateY(-2px);
+      }
+
+      .category-tab.active.cake-category {
+        background: var(--gradient-pink);
         color: white;
         box-shadow: var(--shadow-light);
         transform: translateY(-2px);
@@ -226,7 +292,7 @@
 
       .menu-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+        grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
         margin-bottom: 2rem;
       }
@@ -240,9 +306,14 @@
         border: 1px solid rgba(74, 124, 89, 0.1);
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: 100%;
+        height: 100%;
       }
 
-      .food-item-card::before {
+      .food-item-card.food-item::before {
         content: "";
         position: absolute;
         top: 0;
@@ -250,6 +321,16 @@
         right: 0;
         height: 4px;
         background: var(--gradient-green);
+      }
+
+      .food-item-card.cake-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-pink);
       }
 
       .food-item-card:hover {
@@ -284,6 +365,10 @@
         color: var(--bamboo-green);
       }
 
+      .cake-item .item-price {
+        color: var(--cake-pink);
+      }
+
       .item-controls {
         display: flex;
         align-items: center;
@@ -307,10 +392,20 @@
         transition: all 0.3s ease;
       }
 
+      .cake-item .qty-btn {
+        border-color: var(--cake-pink);
+        color: var(--cake-pink);
+      }
+
       .qty-btn:hover:not(:disabled) {
         background: var(--bamboo-green);
         color: white;
         transform: scale(1.1);
+      }
+
+      .cake-item .qty-btn:hover:not(:disabled) {
+        background: var(--cake-pink);
+        color: white;
       }
 
       .qty-btn:disabled {
@@ -327,6 +422,11 @@
         font-weight: 600;
         min-width: 60px;
         text-align: center;
+      }
+
+      .cake-item .qty-display {
+        background: var(--cake-light);
+        color: var(--cake-pink);
       }
 
       .order-summary {
@@ -476,16 +576,152 @@
         outline: none;
       }
 
+      .weight-selector {
+        background: rgba(233, 30, 99, 0.1);
+        border-radius: 10px;
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .weight-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .weight-option:last-child {
+        margin-bottom: 0;
+      }
+
+      .weight-option input[type="radio"] {
+        margin: 0;
+      }
+
+      .weight-option label {
+        margin: 0;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .cake-add-controls {
+        justify-content: center;
+        margin-top: 1rem;
+      }
+
+      .cake-add-btn {
+        background: var(--gradient-pink);
+        border: none;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        gap: 0.5rem;
+        min-width: 120px;
+        max-width: 220px;
+      }
+
+      .cake-add-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        background: linear-gradient(135deg, #c2185b 0%, #e91e63 100%);
+      }
+
+      .cake-add-btn:active {
+        transform: translateY(0);
+      }
+
+      .cake-ordered-items {
+        background: rgba(233, 30, 99, 0.05);
+        border-radius: 10px;
+        padding: 0.75rem;
+        margin-top: 1rem;
+        border: 1px solid rgba(233, 30, 99, 0.2);
+      }
+
+      .ordered-item-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(233, 30, 99, 0.1);
+      }
+
+      .ordered-item-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .ordered-item-text {
+        font-weight: 500;
+        color: var(--cake-pink);
+        font-size: 0.9rem;
+      }
+
+      .ordered-item-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .ordered-qty-btn {
+        width: 28px;
+        height: 28px;
+        border: 2px solid var(--cake-pink);
+        background: white;
+        color: var(--cake-pink);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .ordered-qty-btn:hover:not(:disabled) {
+        background: var(--cake-pink);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .ordered-qty-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .ordered-qty {
+        background: var(--cake-light);
+        color: var(--cake-pink);
+        padding: 0.25rem 0.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        min-width: 30px;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+
       @media (max-width: 768px) {
         .dashboard-title {
           font-size: 2rem;
         }
 
         .menu-grid {
-          grid-template-columns: repeat(
-            2,
-            1fr
-          ); /* 2 cards per row for mobile */
+          grid-template-columns: repeat(2, 1fr);
         }
 
         .category-tab {
@@ -497,6 +733,10 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 0.5rem;
+        }
+
+        .menu-type-btn {
+          padding: 0.75rem 1rem;
         }
       }
     </style>
@@ -535,90 +775,132 @@
         </select>
       </div>
 
+      <!-- Menu Type Selector -->
+      <div class="menu-type-selector">
+        <button class="menu-type-btn active food-menu" data-menu="food">
+          <i class="bi bi-bowl-hot"></i>
+          Food Menu
+        </button>
+        <button class="menu-type-btn cake-menu" data-menu="cake">
+          <i class="bi bi-cake2"></i>
+          Cakes & Desserts
+        </button>
+      </div>
+
       <div class="row">
         <!-- Menu Section -->
         <div class="col-lg-8">
-          <h2 class="section-title">
-            <i class="bi bi-journal-bookmark"></i>
-            Menu
-          </h2>
+          <!-- Food Menu Section -->
+          <div id="foodMenuSection">
+            <h2 class="section-title food">
+              <i class="bi bi-journal-bookmark"></i>
+              Food Menu
+            </h2>
 
-          <!-- Search Box -->
-          <div class="search-box">
-            <input
-              type="text"
-              class="search-input"
-              placeholder="🔍 Search for dishes..."
-              id="searchInput"
-            />
+            <!-- Search Box -->
+            <div class="search-box">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="🔍 Search for dishes..."
+                id="searchInput"
+              />
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="menu-categories" id="foodCategories">
+              <button class="category-tab active food-category" data-category="all">
+                All Items
+              </button>
+              <button class="category-tab food-category" data-category="salads">Salads</button>
+              <button class="category-tab food-category" data-category="soups">Soups</button>
+              <button class="category-tab food-category" data-category="Veg_Starters">
+                Veg Starters
+              </button>
+              <button class="category-tab food-category" data-category="Chicken_Starters">
+                Chicken Starters
+              </button>
+              <button class="category-tab food-category" data-category="Seafood_Starters">
+                Seafood Starters
+              </button>
+              <button class="category-tab food-category" data-category="Bamboo_Specials">
+                Bamboo Specials
+              </button>
+              <button class="category-tab food-category" data-category="Thupka_Bowls">
+                Thupka And Ching Mai Bowls
+              </button>
+              <button class="category-tab food-category" data-category="Continental_Fusion">
+                Continental And Fusion
+              </button>
+              <button class="category-tab food-category" data-category="pizza">Pizza</button>
+              <button class="category-tab food-category" data-category="pasta">Pasta</button>
+              <button class="category-tab food-category" data-category="wings">Wings</button>
+              <button class="category-tab food-category" data-category="milkshakes">
+                Milk Shakes
+              </button>
+              <button class="category-tab food-category" data-category="mojitos">
+                Mojitos
+              </button>
+              <button class="category-tab food-category" data-category="momos">
+                Momos(Veg)
+              </button>
+              <button class="category-tab food-category" data-category="NonVeg_Momos">
+                Momos(Non-Veg)
+              </button>
+              <button class="category-tab food-category" data-category="Fried_Rice_And_Noodles">
+                Fried Rice And Noodles
+              </button>
+            </div>
+
+            <!-- Food Menu Items Grid -->
+            <div class="menu-grid" id="foodMenuGrid">
+              <!-- Food menu items will be populated here -->
+            </div>
           </div>
 
-          <!-- Category Tabs -->
-          <div class="menu-categories">
-            <button class="category-tab active" data-category="all">
-              All Items
-            </button>
+          <!-- Cake Menu Section -->
+          <div id="cakeMenuSection" style="display: none;">
+            <h2 class="section-title cake">
+              <i class="bi bi-cake2"></i>
+              Cakes & Desserts
+            </h2>
 
-            <button class="category-tab" data-category="salads">Salads</button>
+            <!-- Search Box for Cakes -->
+            <div class="search-box">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="🔍 Search for cakes..."
+                id="cakeSearchInput"
+              />
+            </div>
 
-            <button class="category-tab" data-category="soups">Soups</button>
+            <!-- Cake Category Tabs -->
+            <div class="menu-categories" id="cakeCategories">
+              <button class="category-tab active cake-category" data-cake-category="all">
+                All Cakes
+              </button>
+              <button class="category-tab cake-category" data-cake-category="freshCreamCakes">
+                Fresh Cream
+              </button>
+              <button class="category-tab cake-category" data-cake-category="bonBonExoticFlavours">
+                Exotic Flavours
+              </button>
+              <button class="category-tab cake-category" data-cake-category="dryCakes">
+                Dry Cakes
+              </button>
+              <button class="category-tab cake-category" data-cake-category="cheeseCakes">
+                Cheese Cakes
+              </button>
+              <button class="category-tab cake-category" data-cake-category="extras">
+                Extras
+              </button>
+            </div>
 
-            <button class="category-tab" data-category="Veg_Starters">
-              Veg Starters
-            </button>
-
-            <button class="category-tab" data-category="Chicken_Starters">
-              Chicken Starters
-            </button>
-
-            <button class="category-tab" data-category="Seafood_Starters">
-              Seafood Starters
-            </button>
-
-            <button class="category-tab" data-category="Bamboo_Specials">
-              Bamboo Specials
-            </button>
-
-            <button class="category-tab" data-category="Thupka_Bowls">
-              Thupka And Ching Mai Bowls
-            </button>
-
-            <button class="category-tab" data-category="Continental_Fusion">
-              Continental And Fusion
-            </button>
-
-            <button class="category-tab" data-category="pizza">Pizza</button>
-
-            <button class="category-tab" data-category="pasta">Pasta</button>
-
-            <button class="category-tab" data-category="wings">Wings</button>
-
-            <button class="category-tab" data-category="soups">Soups</button>
-
-            <button class="category-tab" data-category="milkshakes">
-              Milk Shakes
-            </button>
-
-            <button class="category-tab" data-category="mojitos">
-              Mojitos
-            </button>
-
-            <button class="category-tab" data-category="momos">
-              Momos(Veg)
-            </button>
-
-            <button class="category-tab" data-category="NonVeg_Momos">
-              Momos(Non-Veg)
-            </button>
-
-            <button class="category-tab" data-category="Fried_Rice_And_Noodles">
-              Fried Rice And Noodles
-            </button>
-          </div>
-
-          <!-- Menu Items Grid -->
-          <div class="menu-grid" id="menuGrid">
-            <!-- Menu items will be populated here -->
+            <!-- Cake Menu Items Grid -->
+            <div class="menu-grid" id="cakeMenuGrid">
+              <!-- Cake menu items will be populated here -->
+            </div>
           </div>
         </div>
 
@@ -693,6 +975,8 @@
           { name: "Bamboo Soup (Chicken)", price: 120, icon: "🍜" },
           { name: "Creamy Chicken Soup", price: 120, icon: "🍜" },
           { name: "Creamy Mushroom Soup", price: 90, icon: "🍜" },
+          { name: "Cream Of Broccoli", price: 120, icon: "🥦" },
+          { name: "Mexican Tortilla Soup Chicken", price: 140, icon: "🍲" },
         ],
 
         Veg_Starters: [
@@ -700,37 +984,30 @@
           { name: "Chilly Gobi", price: 140, icon: "🍗" },
           { name: "Chilly Baby Corn", price: 180, icon: "🍗" },
           { name: "Chilly Paneer", price: 180, icon: "🍗" },
-
           { name: "Mushroom Manchurian", price: 160, icon: "🍗" },
           { name: "Gobi Manchurian", price: 140, icon: "🍗" },
           { name: "Baby Corn Manchurian", price: 180, icon: "🍗" },
           { name: "Paneer Manchurian", price: 180, icon: "🍗" },
-
           { name: "Mushroom Salt And Pepper", price: 160, icon: "🍗" },
           { name: "Gobi Salt And Pepper", price: 140, icon: "🍗" },
           { name: "Baby Corn Salt And Pepper", price: 180, icon: "🍗" },
           { name: "Paneer Salt And Pepper", price: 180, icon: "🍗" },
-
           { name: "Honey Chilli Sesame Mushroom", price: 160, icon: "🍗" },
           { name: "Honey Chilli Sesame Gobi", price: 140, icon: "🍗" },
           { name: "Honey Chilli Sesame Baby Corn", price: 180, icon: "🍗" },
           { name: "Honey Chilli Sesame Paneer", price: 180, icon: "🍗" },
-
           { name: "Crispy Chilli Garlic Mushroom", price: 160, icon: "🍗" },
           { name: "Crispy Chilli Garlic Gobi", price: 140, icon: "🍗" },
           { name: "Crispy Chilli Garlic Baby Corn", price: 180, icon: "🍗" },
           { name: "Crispy Chilli Garlic Paneer", price: 180, icon: "🍗" },
-
           { name: "Schezwan Mushroom", price: 160, icon: "🍗" },
           { name: "Schezwan Gobi", price: 140, icon: "🍗" },
           { name: "Schezwan Baby Corn", price: 180, icon: "🍗" },
           { name: "Schezwan Paneer", price: 180, icon: "🍗" },
-
           { name: "Mushroom Madras Pepper Fry", price: 160, icon: "🍗" },
           { name: "Gobi Madras Pepper Fry", price: 140, icon: "🍗" },
           { name: "Baby Corn Madras Pepper Fry", price: 180, icon: "🍗" },
           { name: "Paneer Madras Pepper Fry", price: 180, icon: "🍗" },
-
           { name: "Mushroom Guizhou Pepper", price: 160, icon: "🍗" },
           { name: "Gobi Guizhou Pepper", price: 140, icon: "🍗" },
           { name: "Baby Corn Guizhou Pepper", price: 180, icon: "🍗" },
@@ -757,33 +1034,32 @@
         ],
 
         Seafood_Starters: [
-          { name: "Honey Chilli Prawns", price: 260, icon: "🍗" },
-          { name: "Garlic Prawns", price: 260, icon: "🍗" },
-          { name: "black Pepper Fish", price: 260, icon: "🍗" },
-          { name: "Chilly Prawns", price: 250, icon: "🍗" },
-          { name: "Fish In Oyster Sauce", price: 240, icon: "🍗" },
-          { name: "Basil Prawns", price: 260, icon: "🍗" },
-          { name: "Kentucky Fish", price: 240, icon: "🍗" },
-          { name: "Kentucky Prawn", price: 250, icon: "🍗" },
-          { name: "Garlic Squid", price: 260, icon: "🍗" },
-          { name: "Lemon Pepper Prawn", price: 240, icon: "🍗" },
-          { name: "Calamari Fritters", price: 260, icon: "🍗" },
-          { name: "Prawn Salt and Pepper", price: 240, icon: "🍗" },
-          { name: "Honey Sesame Prawns", price: 260, icon: "🍗" },
-          { name: "Apollo Fish", price: 240, icon: "🍗" },
-          { name: "Prawn And Broccoli", price: 260, icon: "🍗" },
-          { name: "Lemon Basil Prawn", price: 260, icon: "🍗" },
-          { name: "Hunan Fish", price: 260, icon: "🍗" },
+          { name: "Honey Chilli Prawns", price: 260, icon: "🍤" },
+          { name: "Garlic Prawns", price: 260, icon: "🍤" },
+          { name: "Black Pepper Fish", price: 260, icon: "🐟" },
+          { name: "Chilly Prawns", price: 250, icon: "🍤" },
+          { name: "Fish In Oyster Sauce", price: 240, icon: "🐟" },
+          { name: "Basil Prawns", price: 260, icon: "🍤" },
+          { name: "Kentucky Fish", price: 240, icon: "🐟" },
+          { name: "Kentucky Prawn", price: 250, icon: "🍤" },
+          { name: "Garlic Squid", price: 260, icon: "🦑" },
+          { name: "Lemon Pepper Prawn", price: 240, icon: "🍤" },
+          { name: "Calamari Fritters", price: 260, icon: "🦑" },
+          { name: "Prawn Salt and Pepper", price: 240, icon: "🍤" },
+          { name: "Honey Sesame Prawns", price: 260, icon: "🍤" },
+          { name: "Apollo Fish", price: 240, icon: "🐟" },
+          { name: "Prawn And Broccoli", price: 260, icon: "🍤" },
+          { name: "Lemon Basil Prawn", price: 260, icon: "🍤" },
+          { name: "Hunan Fish", price: 260, icon: "🐟" },
         ],
 
         Bamboo_Specials: [
           { name: "Chicken Parmigiana With Fries", price: 240, icon: "🍲" },
           { name: "Japan Chicken", price: 220, icon: "🍲" },
           { name: "Dynamite Chicken", price: 220, icon: "🍲" },
-          { name: "Butter Garlic Prawns", price: 260, icon: "🍚" },
-          { name: "Dynamite Prawns", price: 260, icon: "🍚" },
-          { name: "Dynamite Chicken", price: 240, icon: "🍚" },
-          { name: "Prawn Beauzule", price: 260, icon: "🍝" },
+          { name: "Butter Garlic Prawns", price: 260, icon: "🍤" },
+          { name: "Dynamite Prawns", price: 260, icon: "🍤" },
+          { name: "Prawn Beauzule", price: 260, icon: "🍤" },
         ],
 
         Thupka_Bowls: [
@@ -795,22 +1071,18 @@
         ],
 
         Continental_Fusion: [
-          { name: "Newyork Chicken Sandwich", price: 160, icon: "🍕" },
-          { name: "Crunchy Chicken Sandwich", price: 150, icon: "🍕" },
-          { name: "Bon Bon Chicken Sandwich", price: 150, icon: "🍕" },
-          { name: "Bon Bon Veg Sandwich", price: 90, icon: "🍕" },
-          { name: "Cheese And Chilli Toast", price: 130, icon: "🍕" },
-          { name: "Grilled Chicken Burger", price: 160, icon: "🍕" },
-          { name: "Mexican Double Cheese Burger", price: 180, icon: "🍕" },
-          { name: "Fiery Spicy Chicken Burger", price: 170, icon: "🍕" },
-          {
-            name: "Fried Chicken Burger With Bbq Sauce",
-            price: 160,
-            icon: "🍕",
-          },
-          { name: "Cheese And Mushrooms Hot Dog", price: 140, icon: "🍕" },
-          { name: "Cheese And Paneer", price: 140, icon: "🍕" },
-          { name: "Bon Bon Spl Foot Long", price: 170, icon: "🍕" },
+          { name: "Newyork Chicken Sandwich", price: 160, icon: "🥪" },
+          { name: "Crunchy Chicken Sandwich", price: 150, icon: "🥪" },
+          { name: "Bon Bon Chicken Sandwich", price: 150, icon: "🥪" },
+          { name: "Bon Bon Veg Sandwich", price: 90, icon: "🥪" },
+          { name: "Cheese And Chilli Toast", price: 130, icon: "🍞" },
+          { name: "Grilled Chicken Burger", price: 160, icon: "🍔" },
+          { name: "Mexican Double Cheese Burger", price: 180, icon: "🍔" },
+          { name: "Fiery Spicy Chicken Burger", price: 170, icon: "🍔" },
+          { name: "Fried Chicken Burger With Bbq Sauce", price: 160, icon: "🍔" },
+          { name: "Cheese And Mushrooms Hot Dog", price: 140, icon: "🌭" },
+          { name: "Cheese And Paneer", price: 140, icon: "🌭" },
+          { name: "Bon Bon Spl Foot Long", price: 170, icon: "🌭" },
         ],
 
         pizza: [
@@ -833,10 +1105,10 @@
           { name: "Macroni Cheese", price: 220, icon: "🧀" },
           { name: "Penne In Spicy Tomato Olive", price: 240, icon: "🍝" },
           { name: "Penne Alfredo Veg", price: 240, icon: "🍝" },
-          { name: "Bon Bon Best Pasta Chicken", price: 250, icon: "🍗" },
-          { name: "Chicken Marsala Spaghetti", price: 250, icon: "🍗" },
-          { name: "Penne Alfredo Chicken Pasta", price: 250, icon: "🍗" },
-          { name: "Penne Tikka Masala Chicken", price: 260, icon: "🍗" },
+          { name: "Bon Bon Best Pasta Chicken", price: 250, icon: "🍝" },
+          { name: "Chicken Marsala Spaghetti", price: 250, icon: "🍝" },
+          { name: "Penne Alfredo Chicken Pasta", price: 250, icon: "🍝" },
+          { name: "Penne Tikka Masala Chicken", price: 260, icon: "🍝" },
         ],
 
         wings: [
@@ -846,11 +1118,6 @@
           { name: "Chilli Garlic", price: 199, icon: "🌶️" },
           { name: "Barbeque Wings", price: 199, icon: "🍖" },
           { name: "Peri Peri Wings", price: 199, icon: "🌶️" },
-        ],
-
-        soups: [
-          { name: "Cream Of Broccoli", price: 120, icon: "🥦" },
-          { name: "Mexican Tortilla Soup Chicken", price: 140, icon: "🍲" },
         ],
 
         milkshakes: [
@@ -897,37 +1164,30 @@
           { name: "Classic Egg", price: 150, icon: "🍳" },
           { name: "Classic Chicken", price: 160, icon: "🍗" },
           { name: "Classic Seafood", price: 180, icon: "🦐" },
-
           { name: "Burnt Garlic Veg", price: 130, icon: "🧄" },
           { name: "Burnt Garlic Egg", price: 150, icon: "🧄🍳" },
           { name: "Burnt Garlic Chicken", price: 160, icon: "🧄🍗" },
           { name: "Burnt Garlic Seafood", price: 180, icon: "🧄🦐" },
-
           { name: "Thai Basil Veg", price: 130, icon: "🌿" },
           { name: "Thai Basil Egg", price: 150, icon: "🌿🍳" },
           { name: "Thai Basil Chicken", price: 160, icon: "🌿🍗" },
           { name: "Thai Basil Seafood", price: 180, icon: "🌿🦐" },
-
           { name: "Schezwan Veg", price: 130, icon: "🌶️" },
           { name: "Schezwan Egg", price: 150, icon: "🌶️🍳" },
           { name: "Schezwan Chicken", price: 160, icon: "🌶️🍗" },
           { name: "Schezwan Seafood", price: 180, icon: "🌶️🦐" },
-
           { name: "Pepper Corn Veg", price: 130, icon: "🌽" },
           { name: "Pepper Corn Egg", price: 150, icon: "🌽🍳" },
           { name: "Pepper Corn Chicken", price: 160, icon: "🌽🍗" },
           { name: "Pepper Corn Seafood", price: 180, icon: "🌽🦐" },
-
           { name: "Madras Masala Veg", price: 130, icon: "🍛" },
           { name: "Madras Masala Egg", price: 150, icon: "🍛🍳" },
           { name: "Madras Masala Chicken", price: 160, icon: "🍛🍗" },
           { name: "Madras Masala Seafood", price: 180, icon: "🍛🦐" },
-
           { name: "Lee Fu Veg", price: 130, icon: "🍜" },
           { name: "Lee Fu Egg", price: 150, icon: "🍜🍳" },
           { name: "Lee Fu Chicken", price: 160, icon: "🍜🍗" },
           { name: "Lee Fu Seafood", price: 180, icon: "🍜🦐" },
-
           { name: "555 Rice Veg", price: 130, icon: "🍚" },
           { name: "555 Rice Egg", price: 150, icon: "🍚🍳" },
           { name: "555 Rice Chicken", price: 160, icon: "🍚🍗" },
@@ -935,40 +1195,145 @@
         ],
       };
 
+      const cakesMenu = {
+        freshCreamCakes: [
+          { name: "Black Forest", pricePerKg: 650, icon: "🍰" },
+          { name: "White Forest", pricePerKg: 750, icon: "🍰" },
+          { name: "Butterscotch", pricePerKg: 800, icon: "🍯" },
+          { name: "Caramel", pricePerKg: 800, icon: "🍮" },
+          { name: "Choco Truffle", pricePerKg: 950, icon: "🍫", mustTry: true },
+          { name: "Light Chocolate", pricePerKg: 750, icon: "🍫" },
+          { name: "Mocha Walnut", pricePerKg: 950, icon: "☕🌰", mustTry: true },
+          { name: "Vanilla Fresh Cream", pricePerKg: 550, icon: "🍦" },
+          { name: "Strawberry", pricePerKg: 750, icon: "🍓" },
+          { name: "Blueberry", pricePerKg: 750, icon: "🫐" },
+          { name: "Blue Curacao", pricePerKg: 800, icon: "💙" },
+          { name: "Fig & Honey", pricePerKg: 800, icon: "🍯" },
+          { name: "Vanilla Nougatine", pricePerKg: 800, icon: "🍦" },
+          { name: "Tex Mex Choco Nuts", pricePerKg: 950, icon: "🌰" },
+          { name: "Choco Nutty Cracks", pricePerKg: 950, icon: "🍫🌰", mustTry: true },
+          { name: "Blueberry Apple Gateaux", pricePerKg: 750, icon: "🫐🍏" },
+          { name: "Choco Root", pricePerKg: 750, icon: "🍫" },
+          { name: "Choco Symphony", pricePerKg: 800, icon: "🍫" },
+          { name: "Pineapple Gateaux", pricePerKg: 750, icon: "🍍" },
+          { name: "Harlequin Berry", pricePerKg: 950, icon: "🍓🫐", mustTry: true },
+          { name: "Choco Gulkandh", pricePerKg: 950, icon: "🌹🍫" },
+          { name: "Seasonal Fruit Gateaux", pricePerKg: 850, icon: "🍇🍊" },
+          { name: "Black Currant", pricePerKg: 800, icon: "🫐" },
+        ],
+
+        bonBonExoticFlavours: [
+          { name: "Four Mousse Alaska", pricePerKg: 1000, icon: "🍨" },
+          { name: "Rich Chocolate Mousse", pricePerKg: 900, icon: "🍫" },
+          { name: "Twin Chocolate Mousse", pricePerKg: 900, icon: "🍫🍫" },
+          { name: "Red Velvet", pricePerKg: 1100, icon: "❤️🍰", mustTry: true },
+          { name: "Choco Galaxy", pricePerKg: 1200, icon: "🌌🍫" },
+          { name: "Hazelnut Gateaux", pricePerKg: 1200, icon: "🌰" },
+          { name: "Missipe Fudge", pricePerKg: 1500, icon: "🍫", mustTry: true },
+          { name: "Lychees & Peaches", pricePerKg: 1000, icon: "🍑" },
+          { name: "Fruits and Nuts", pricePerKg: 1000, icon: "🍇🌰" },
+        ],
+
+        dryCakes: [
+          { name: "Banana Walnut", pricePerKg: 1000, icon: "🍌🌰" },
+          { name: "American Osborne", pricePerKg: 950, icon: "🇺🇸🍰", mustTry: true },
+          { name: "Fudge Brownie", pricePerKg: 950, icon: "🍫" },
+          { name: "Brownie", pricePerKg: 900, icon: "🍫" },
+          { name: "Death by Chocolate", pricePerKg: 1000, icon: "💀🍫", mustTry: true },
+          { name: "French Cake", pricePerKg: 1000, icon: "🇫🇷🍰", mustTry: true },
+          { name: "Dates & Walnuts", pricePerKg: 1000, icon: "🌰" },
+          { name: "Choco Osborne", pricePerKg: 1000, icon: "🍫" },
+        ],
+
+        cheeseCakes: [
+          { name: "Strawberry", pricePerKg: 900, icon: "🍓" },
+          { name: "Blueberry", pricePerKg: 900, icon: "🫐" },
+          { name: "Raspberry", pricePerKg: 900, icon: "🍓" },
+          { name: "Chocolate", pricePerKg: 900, icon: "🍫" },
+        ],
+
+        extras: [
+          { name: "Fondant Model", pricePerKg: 1100, icon: "🎂" },
+          { name: "Photo Print", price: 250, icon: "🖼️" },
+          { name: "Shape Cake Design", pricePerKg: 200, icon: "📐" },
+          { name: "Eggless Charge", pricePerKg: 150, icon: "🥚🚫" },
+          { name: "Fruit Garnish", pricePerKg: 200, icon: "🍇🍓" },
+        ],
+      };
+
       let selectedItems = {};
       let currentCategory = "all";
+      let currentCakeCategory = "all";
+      let currentMenuType = "food";
 
       // Make updateQuantity globally available
-      window.updateQuantity = function (itemName, price, change) {
-        if (!selectedItems[itemName]) {
-          selectedItems[itemName] = { qty: 0, price: price };
+      window.updateQuantity = function (itemName, price, change, weight = null) {
+        const itemKey = weight ? `${itemName} (${weight}kg)` : itemName;
+        const finalPrice = weight ? price * weight : price;
+        
+        if (!selectedItems[itemKey]) {
+          selectedItems[itemKey] = { qty: 0, price: finalPrice };
         }
 
-        selectedItems[itemName].qty += change;
+        selectedItems[itemKey].qty += change;
 
-        if (selectedItems[itemName].qty <= 0) {
-          delete selectedItems[itemName];
+        if (selectedItems[itemKey].qty <= 0) {
+          delete selectedItems[itemKey];
         }
 
-        renderMenu();
+        renderCurrentMenu();
         renderOrderSummary();
       };
 
-      $(document).ready(function () {
-        renderMenu();
+      window.updateCakeQuantity = function (itemName, pricePerKg, weight, change) {
+        updateQuantity(itemName, pricePerKg, change, weight);
+      };
 
-        // Category tab switching
-        $(".category-tab").click(function () {
-          $(".category-tab").removeClass("active");
+      $(document).ready(function () {
+        renderCurrentMenu();
+
+        // Menu type switching
+        $(".menu-type-btn").click(function () {
+          $(".menu-type-btn").removeClass("active");
+          $(this).addClass("active");
+          currentMenuType = $(this).data("menu");
+          
+          if (currentMenuType === "food") {
+            $("#foodMenuSection").show();
+            $("#cakeMenuSection").hide();
+          } else {
+            $("#foodMenuSection").hide();
+            $("#cakeMenuSection").show();
+          }
+          
+          renderCurrentMenu();
+        });
+
+        // Food category tab switching
+        $(".food-category").click(function () {
+          $(".food-category").removeClass("active");
           $(this).addClass("active");
           currentCategory = $(this).data("category");
-          renderMenu();
+          renderFoodMenu();
+        });
+
+        // Cake category tab switching
+        $(".cake-category").click(function () {
+          $(".cake-category").removeClass("active");
+          $(this).addClass("active");
+          currentCakeCategory = $(this).data("cake-category");
+          renderCakeMenu();
         });
 
         // Search functionality
         $("#searchInput").on("input", function () {
           const searchTerm = $(this).val().toLowerCase();
-          filterMenuItems(searchTerm);
+          filterMenuItems(searchTerm, "food");
+        });
+
+        $("#cakeSearchInput").on("input", function () {
+          const searchTerm = $(this).val().toLowerCase();
+          filterMenuItems(searchTerm, "cake");
         });
 
         // Submit order
@@ -1042,8 +1407,16 @@
         });
       });
 
-      function renderMenu() {
-        const grid = $("#menuGrid");
+      function renderCurrentMenu() {
+        if (currentMenuType === "food") {
+          renderFoodMenu();
+        } else {
+          renderCakeMenu();
+        }
+      }
+
+      function renderFoodMenu() {
+        const grid = $("#foodMenuGrid");
         grid.empty();
 
         const categoriesToShow =
@@ -1052,43 +1425,191 @@
         categoriesToShow.forEach((category) => {
           if (menu[category]) {
             menu[category].forEach((item) => {
-              const itemCard = createMenuItemCard(item, category);
+              const itemCard = createFoodItemCard(item, category);
               grid.append(itemCard);
             });
           }
         });
       }
 
-      function createMenuItemCard(item, category) {
+      function renderCakeMenu() {
+        const grid = $("#cakeMenuGrid");
+        grid.empty();
+
+        const categoriesToShow =
+          currentCakeCategory === "all" ? Object.keys(cakesMenu) : [currentCakeCategory];
+
+        categoriesToShow.forEach((category) => {
+          if (cakesMenu[category]) {
+            cakesMenu[category].forEach((item) => {
+              const itemCard = createCakeItemCard(item, category);
+              grid.append(itemCard);
+            });
+          }
+        });
+      }
+
+      function createFoodItemCard(item, category) {
         const quantity = selectedItems[item.name]?.qty || 0;
 
         return `
-      <div class="food-item-card" data-name="${
-        item.name
-      }" data-category="${category}">
-        <div class="item-header">
-          <div class="item-info">
-            <div class="item-name">
-              ${item.icon} ${item.name}
+          <div class="food-item-card food-item" data-name="${item.name}" data-category="${category}">
+            <div class="item-header">
+              <div class="item-info">
+                <div class="item-name">
+                  ${item.icon} ${item.name}
+                </div>
+                <div class="item-price">₹${item.price}</div>
+              </div>
             </div>
-            <div class="item-price">₹${item.price}</div>
+            <div class="item-controls">
+              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1)" ${quantity <= 0 ? "disabled" : ""}>
+                <i class="bi bi-dash"></i>
+              </button>
+              <div class="qty-display">${quantity}</div>
+              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1)">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="item-controls">
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
-            <i class="bi bi-dash"></i>
-          </button>
-          <div class="qty-display">${quantity}</div>
-          <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, 1)">
-            <i class="bi bi-plus"></i>
-          </button>
-        </div>
-      </div>
-    `;
+        `;
+      }
+
+      function createCakeItemCard(item, category) {
+        const priceText = item.pricePerKg ? `₹${item.pricePerKg}/kg` : `₹${item.price}`;
+        const mustTryBadge = item.mustTry ? '<span class="badge bg-warning text-dark ms-2">Must Try!</span>' : '';
+
+        return `
+          <div class="food-item-card cake-item" data-name="${item.name}" data-category="${category}">
+            <div class="item-header">
+              <div class="item-info">
+                <div class="item-name">
+                  ${item.icon} ${item.name} ${mustTryBadge}
+                </div>
+                <div class="item-price">${priceText}</div>
+              </div>
+            </div>
+            ${item.pricePerKg ? createWeightSelector(item) : createSimpleControls(item)}
+            ${item.pricePerKg ? createCakeOrderedItems(item.name) : ''}
+          </div>
+        `;
+      }
+
+      function createWeightSelector(item) {
+        return `
+          <div class="weight-selector">
+            <small class="text-muted mb-2 d-block">Select weight:</small>
+            <div class="weight-option">
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, '_')}" value="0.5" id="weight_05_${item.name.replace(/\s+/g, '_')}">
+              <label for="weight_05_${item.name.replace(/\s+/g, '_')}">0.5 kg - ₹${item.pricePerKg * 0.5}</label>
+            </div>
+            <div class="weight-option">
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, '_')}" value="1" id="weight_1_${item.name.replace(/\s+/g, '_')}" checked>
+              <label for="weight_1_${item.name.replace(/\s+/g, '_')}">1 kg - ₹${item.pricePerKg}</label>
+            </div>
+            <div class="weight-option">
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, '_')}" value="1.5" id="weight_15_${item.name.replace(/\s+/g, '_')}">
+              <label for="weight_15_${item.name.replace(/\s+/g, '_')}">1.5 kg - ₹${item.pricePerKg * 1.5}</label>
+            </div>
+            <div class="weight-option">
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, '_')}" value="2" id="weight_2_${item.name.replace(/\s+/g, '_')}">
+              <label for="weight_2_${item.name.replace(/\s+/g, '_')}">2 kg - ₹${item.pricePerKg * 2}</label>
+            </div>
+          </div>
+          <div class="item-controls cake-add-controls">
+            <button class="cake-add-btn" onclick="addCakeToOrder('${item.name}', ${item.pricePerKg}, '${item.name.replace(/\s+/g, '_')}')">
+              <i class="bi bi-plus-circle me-2"></i>Add to Order
+            </button>
+          </div>
+        `;
+      }
+
+      function createCakeOrderedItems(itemName) {
+        const orderedItems = Object.keys(selectedItems).filter(key => key.startsWith(itemName + ' ('));
+        
+        if (orderedItems.length === 0) {
+          return '';
+        }
+
+        let orderedHtml = '<div class="cake-ordered-items"><small class="text-muted mb-2 d-block">In your order:</small>';
+        
+        orderedItems.forEach(itemKey => {
+          const item = selectedItems[itemKey];
+          const weightMatch = itemKey.match(/\((.+?)kg\)/);
+          const weight = weightMatch ? weightMatch[1] : '';
+          
+          orderedHtml += `
+            <div class="ordered-item-row">
+              <span class="ordered-item-text">${weight}kg × ${item.qty}</span>
+              <div class="ordered-item-controls">
+                <button class="ordered-qty-btn" onclick="removeCakeFromOrder('${itemKey}')">
+                  <i class="bi bi-dash"></i>
+                </button>
+                <span class="ordered-qty">${item.qty}</span>
+                <button class="ordered-qty-btn" onclick="addMoreCakeToOrder('${itemKey}', ${item.price / (item.qty || 1)})">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+        
+        orderedHtml += '</div>';
+        return orderedHtml;
+      }
+
+      window.addCakeToOrder = function(itemName, pricePerKg, itemId) {
+        const selectedWeight = $(`input[name="weight_${itemId}"]:checked`).val();
+        if (!selectedWeight) {
+          alert("Please select a weight first!");
+          return;
+        }
+        
+        const weight = parseFloat(selectedWeight);
+        updateCakeQuantity(itemName, pricePerKg, weight, 1);
+        
+        // Reset radio buttons
+        $(`input[name="weight_${itemId}"]`).prop('checked', false);
+        $(`#weight_1_${itemId}`).prop('checked', true);
+        
+        // Re-render the cake menu to show updated ordered items
+        renderCakeMenu();
+      };
+
+      window.removeCakeFromOrder = function(itemKey) {
+        if (selectedItems[itemKey]) {
+          selectedItems[itemKey].qty -= 1;
+          if (selectedItems[itemKey].qty <= 0) {
+            delete selectedItems[itemKey];
+          }
+        }
+        renderCakeMenu();
+        renderOrderSummary();
+      };
+
+      window.addMoreCakeToOrder = function(itemKey, price) {
+        if (!selectedItems[itemKey]) {
+          selectedItems[itemKey] = { qty: 0, price: price };
+        }
+        selectedItems[itemKey].qty += 1;
+        renderCakeMenu();
+        renderOrderSummary();
+      };
+
+      function createSimpleControls(item) {
+        const quantity = selectedItems[item.name]?.qty || 0;
+        
+        return `
+          <div class="item-controls">
+            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1)" ${quantity <= 0 ? "disabled" : ""}>
+              <i class="bi bi-dash"></i>
+            </button>
+            <div class="qty-display">${quantity}</div>
+            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1)">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        `;
       }
 
       function renderOrderSummary() {
@@ -1097,12 +1618,12 @@
 
         if (Object.keys(selectedItems).length === 0) {
           container.html(`
-        <div class="empty-cart">
-          <div class="empty-cart-icon">🛒</div>
-          <p>No items added yet</p>
-          <small>Start adding items to create an order</small>
-        </div>
-      `);
+            <div class="empty-cart">
+              <div class="empty-cart-icon">🛒</div>
+              <p>No items added yet</p>
+              <small>Start adding items to create an order</small>
+            </div>
+          `);
           submitBtn.prop("disabled", true);
           return;
         }
@@ -1110,22 +1631,22 @@
         let itemsHtml = "";
         Object.entries(selectedItems).forEach(([name, { qty, price }]) => {
           itemsHtml += `
-        <div class="order-item">
-          <span class="order-item-name">${name}</span>
-          <span class="order-item-qty">×${qty}</span>
-          <span class="order-item-price">₹${qty * price}</span>
-        </div>
-      `;
+            <div class="order-item">
+              <span class="order-item-name">${name}</span>
+              <span class="order-item-qty">×${qty}</span>
+              <span class="order-item-price">₹${qty * price}</span>
+            </div>
+          `;
         });
 
         const total = calculateTotal();
 
         container.html(`
-      ${itemsHtml}
-      <div class="order-total">
-        Total: ₹${total}
-      </div>
-    `);
+          ${itemsHtml}
+          <div class="order-total">
+            Total: ₹${total}
+          </div>
+        `);
 
         submitBtn.prop("disabled", false);
       }
@@ -1137,8 +1658,10 @@
         );
       }
 
-      function filterMenuItems(searchTerm) {
-        $(".food-item-card").each(function () {
+      function filterMenuItems(searchTerm, menuType) {
+        const selector = menuType === "food" ? "#foodMenuGrid .food-item-card" : "#cakeMenuGrid .food-item-card";
+        
+        $(selector).each(function () {
           const itemName = $(this).data("name").toLowerCase();
           if (itemName.includes(searchTerm)) {
             $(this).show().addClass("animate__fadeIn");
@@ -1160,38 +1683,34 @@
       // Clear search on Escape key
       $(document).keydown(function (e) {
         if (e.keyCode === 27) {
-          // Escape key
           $("#searchInput").val("").trigger("input");
+          $("#cakeSearchInput").val("").trigger("input");
         }
       });
 
       // Enhanced success toast with order details
       function showOrderSuccessToast(tableNo, orderId) {
-        // Remove existing toasts
         $(".custom-toast").remove();
 
         const customToast = $(`
-      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div class="toast align-items-center text-white bg-success border-0 custom-toast" role="alert">
-          <div class="d-flex">
-            <div class="toast-body">
-              <i class="bi bi-check-circle-fill me-2"></i>
-              <strong>Order #${orderId
-                .toString()
-                .slice(-4)} submitted!</strong><br>
-              <small>Table ${tableNo} • Sent to kitchen • ${new Date().toLocaleTimeString()}</small>
+          <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast align-items-center text-white bg-success border-0 custom-toast" role="alert">
+              <div class="d-flex">
+                <div class="toast-body">
+                  <i class="bi bi-check-circle-fill me-2"></i>
+                  <strong>Order #${orderId.toString().slice(-4)} submitted!</strong><br>
+                  <small>Table ${tableNo} • Sent to kitchen • ${new Date().toLocaleTimeString()}</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
           </div>
-        </div>
-      </div>
-    `);
+        `);
 
         $("body").append(customToast);
         const toast = new bootstrap.Toast(customToast.find(".toast"));
         toast.show();
 
-        // Auto remove after toast is hidden
         customToast.find(".toast").on("hidden.bs.toast", function () {
           customToast.remove();
         });
@@ -1206,7 +1725,6 @@
           localStorage.getItem("bamboo_kitchen_orders") || "{}"
         );
 
-        // Show any orders that have been marked as ready
         Object.values(kitchenOrders).forEach((order) => {
           if (order.status === "ready") {
             showOrderReadyNotification(order.table, order.id);
@@ -1217,34 +1735,30 @@
       function showOrderReadyNotification(tableNo, orderId) {
         const notificationKey = `notified_${orderId}`;
         if (localStorage.getItem(notificationKey)) {
-          return; // Already notified
+          return;
         }
 
-        // Mark as notified
         localStorage.setItem(notificationKey, "true");
 
-        // Show notification
         const notification = $(`
-      <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1000;">
-        <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert" style="min-width: 300px;">
-          <h6 class="mb-1">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <strong>Order Ready! 🎉</strong>
-          </h6>
-          <p class="mb-0">Table ${tableNo} order is ready for serving</p>
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-      </div>
-    `);
+          <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1000;">
+            <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert" style="min-width: 300px;">
+              <h6 class="mb-1">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong>Order Ready! 🎉</strong>
+              </h6>
+              <p class="mb-0">Table ${tableNo} order is ready for serving</p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          </div>
+        `);
 
         $("body").append(notification);
 
-        // Auto dismiss after 8 seconds
         setTimeout(() => {
           notification.find(".alert").alert("close");
         }, 8000);
 
-        // Remove from DOM when closed
         notification.find(".alert").on("closed.bs.alert", function () {
           notification.remove();
         });
@@ -1265,13 +1779,13 @@
         }
 
         let historyHtml = `
-      <div class="order-history-modal">
-        <div class="modal-header">
-          <h5>Today's Orders</h5>
-          <button type="button" class="btn-close" onclick="closeOrderHistory()"></button>
-        </div>
-        <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-    `;
+          <div class="order-history-modal">
+            <div class="modal-header">
+              <h5>Today's Orders</h5>
+              <button type="button" class="btn-close" onclick="closeOrderHistory()"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+        `;
 
         orderHistory.reverse().forEach((order) => {
           const itemCount = Object.keys(order.items).length;
@@ -1280,37 +1794,34 @@
             (itemCount > 2 ? ` and ${itemCount - 2} more` : "");
 
           historyHtml += `
-        <div class="border-bottom py-2 mb-2">
-          <div class="d-flex justify-content-between">
-            <strong>Table ${order.table} • Order #${order.id
-            .toString()
-            .slice(-4)}</strong>
-            <span class="badge bg-success">₹${order.total}</span>
-          </div>
-          <small class="text-muted">
-            ${itemsText} • ${new Date(order.timestamp).toLocaleString()}
-          </small>
-        </div>
-      `;
+            <div class="border-bottom py-2 mb-2">
+              <div class="d-flex justify-content-between">
+                <strong>Table ${order.table} • Order #${order.id.toString().slice(-4)}</strong>
+                <span class="badge bg-success">₹${order.total}</span>
+              </div>
+              <small class="text-muted">
+                ${itemsText} • ${new Date(order.timestamp).toLocaleString()}
+              </small>
+            </div>
+          `;
         });
 
         historyHtml += `
-        </div>
-        <div class="modal-footer">
-          <small class="text-muted">Total: ${orderHistory.length} orders today</small>
-        </div>
-      </div>
-    `;
+            </div>
+            <div class="modal-footer">
+              <small class="text-muted">Total: ${orderHistory.length} orders today</small>
+            </div>
+          </div>
+        `;
 
-        // Create modal overlay
         const modal = $(`
-      <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-           style="background: rgba(0,0,0,0.5); z-index: 1050;">
-        <div class="bg-white rounded-3 p-0 shadow-lg" style="max-width: 500px; width: 90%;">
-          ${historyHtml}
-        </div>
-      </div>
-    `);
+          <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+               style="background: rgba(0,0,0,0.5); z-index: 1050;">
+            <div class="bg-white rounded-3 p-0 shadow-lg" style="max-width: 500px; width: 90%;">
+              ${historyHtml}
+            </div>
+          </div>
+        `);
 
         $("body").append(modal);
       }
@@ -1319,27 +1830,37 @@
         $(".position-fixed").has(".order-history-modal").remove();
       }
 
-      // Make functions globally available
       window.showOrderHistory = showOrderHistory;
       window.closeOrderHistory = closeOrderHistory;
 
       // Add order history button to navbar
       setTimeout(() => {
         const historyButton = $(`
-      <li class="nav-item">
-        <a class="nav-link" href="#" onclick="showOrderHistory()">
-          <i class="bi bi-clock-history me-2"></i>History
-        </a>
-      </li>
-    `);
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showOrderHistory()">
+              <i class="bi bi-clock-history me-2"></i>History
+            </a>
+          </li>
+        `);
         $(".navbar-nav").append(historyButton);
       }, 1000);
 
-      // Add keyboard shortcut for order history (Ctrl+H)
+      // Add keyboard shortcuts
       $(document).keydown(function (e) {
         if ((e.ctrlKey || e.metaKey) && e.key === "h") {
           e.preventDefault();
           showOrderHistory();
+        }
+        
+        // Switch between food and cake menu with Tab
+        if (e.key === "Tab" && !e.shiftKey && !$(e.target).is("input, select, button")) {
+          e.preventDefault();
+          const currentActive = $(".menu-type-btn.active").data("menu");
+          if (currentActive === "food") {
+            $(".menu-type-btn[data-menu='cake']").click();
+          } else {
+            $(".menu-type-btn[data-menu='food']").click();
+          }
         }
       });
     </script>
