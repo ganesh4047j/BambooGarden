@@ -335,7 +335,8 @@
       color: #fff;
       transform: scale(1.05);
     }
-    /* Animated file upload button */
+
+    /* File upload improvements */
     .file-upload-wrapper {
       display: flex;
       align-items: center;
@@ -356,7 +357,7 @@
       display: flex;
       align-items: center;
       gap: 0.7rem;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
@@ -375,6 +376,12 @@
     .file-upload-label.uploading i {
       animation: spin 1s linear infinite;
     }
+    .file-upload-label.success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+    .file-upload-label.error {
+      background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    }
     .file-upload-input {
       display: none;
     }
@@ -388,6 +395,48 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    /* Progress bar for OCR */
+    .ocr-progress {
+      width: 100%;
+      height: 8px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .ocr-progress-bar {
+      height: 100%;
+      background: var(--gradient-green);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .status-message {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-weight: 500;
+      display: none;
+    }
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .status-message.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
     @media (max-width: 768px) {
       .dashboard-title {
         font-size: 2rem;
@@ -459,10 +508,18 @@
       <label class="file-upload-label" id="fileUploadLabel">
         <i class="bi bi-upload"></i>
         <span class="file-upload-text">Upload Bill/Stock File</span>
-        <input type="file" class="file-upload-input" id="fileInput" accept=".txt,.csv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.rtf,.odt,.ods,.heic,.tiff,.svg,.ppt,.pptx,.eml,.msg,.html,.htm,.zip,.rar,.7z,.tar,.gz,.bz2,.xz,.md,.log,.ini,.conf,.yaml,.yml,.tex,.ps,.eps,.ai,.indd,.pages,.numbers,.key,.csv,.tsv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.rtf,.odt,.ods,.heic,.tiff,.svg,.ppt,.pptx,.eml,.msg,.html,.htm,.zip,.rar,.7z,.tar,.gz,.bz2,.xz,.md,.log,.ini,.conf,.yaml,.yml,.tex,.ps,.eps,.ai,.indd,.pages,.numbers,.key" />
+        <input type="file" class="file-upload-input" id="fileInput" accept=".txt,.csv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.heic,.tiff" />
       </label>
       <span class="file-upload-filename" id="fileUploadFilename"></span>
     </div>
+    
+    <!-- Progress bar for OCR -->
+    <div class="ocr-progress" id="ocrProgress">
+      <div class="ocr-progress-bar" id="ocrProgressBar"></div>
+    </div>
+    
+    <!-- Status message -->
+    <div class="status-message" id="statusMessage"></div>
 
     <!-- Inventory Form -->
     <div class="inventory-form mb-4">
@@ -515,8 +572,8 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Add Tesseract.js for OCR -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
+  <!-- Add Tesseract.js for OCR with proper error handling -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
   <script>
     // Inventory data stored in localStorage
     function getInventory() {
@@ -577,6 +634,15 @@
       return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
     }
 
+    function showStatusMessage(message, type) {
+      const $statusMessage = $('#statusMessage');
+      $statusMessage.removeClass('success error info').addClass(type);
+      $statusMessage.text(message).show();
+      setTimeout(() => {
+        $statusMessage.hide();
+      }, 5000);
+    }
+
     $(document).ready(function() {
       renderInventoryTable();
 
@@ -629,73 +695,336 @@
       });
     });
 
-    // File upload and extraction logic
+    // Enhanced file upload and extraction logic
     $(function() {
       const $fileInput = $('#fileInput');
       const $fileLabel = $('#fileUploadLabel');
       const $fileText = $fileLabel.find('.file-upload-text');
       const $fileIcon = $fileLabel.find('i');
       const $fileName = $('#fileUploadFilename');
+      const $ocrProgress = $('#ocrProgress');
+      const $ocrProgressBar = $('#ocrProgressBar');
+
+      function resetUploadButton() {
+        $fileLabel.removeClass('uploading success error');
+        $fileIcon.removeClass().addClass('bi bi-upload');
+        $fileText.text('Upload Bill/Stock File');
+        $fileName.text('');
+        $ocrProgress.hide();
+        $ocrProgressBar.css('width', '0%');
+        $('.image-preview').remove(); // Remove image preview
+      }
+
+      function setUploadState(state, text, iconClass) {
+        $fileLabel.removeClass('uploading success error').addClass(state);
+        $fileIcon.removeClass().addClass(iconClass);
+        $fileText.text(text);
+      }
+
+      // Add image preview functionality
+      function showImagePreview(file) {
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Remove existing preview
+            $('.image-preview').remove();
+            
+            const preview = $(`
+              <div class="image-preview mt-3 p-3 bg-light rounded">
+                <h6 class="mb-2">Image Preview:</h6>
+                <img src="${e.target.result}" alt="Uploaded image" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div class="mt-2">
+                  <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    For best results, ensure text is clear and well-lit
+                  </small>
+                </div>
+              </div>
+            `);
+            
+            $('.file-upload-wrapper').after(preview);
+          };
+          reader.readAsDataURL(file);
+        }
+      }
 
       $fileInput.on('change', function(e) {
         const file = this.files[0];
         if (!file) return;
+        
         $fileName.text(file.name);
-        $fileLabel.addClass('uploading');
-        $fileText.text('Processing...');
-        $fileIcon.removeClass().addClass('bi bi-arrow-repeat');
+        showImagePreview(file); // Show preview for images
+        setUploadState('uploading', 'Processing...', 'bi bi-arrow-repeat');
 
-        // Only process text/csv/image/pdf for demo
+        // Handle different file types
         if (file.type.startsWith('text/') || file.name.match(/\.(csv|txt|log|ini|conf|md|yaml|yml)$/i)) {
           // Read as text
           const reader = new FileReader();
           reader.onload = function(evt) {
-            $fileText.text('Extracting...');
-            extractInventoryFromText(evt.target.result);
+            setUploadState('uploading', 'Extracting items...', 'bi bi-arrow-repeat');
+            setTimeout(() => {
+              try {
+                const result = extractInventoryFromText(evt.target.result);
+                if (result.success) {
+                  setUploadState('success', `Added ${result.count} items!`, 'bi bi-check-circle');
+                  showStatusMessage(`Successfully extracted ${result.count} items from ${file.name}`, 'success');
+                } else {
+                  setUploadState('error', 'No valid items found', 'bi bi-exclamation-circle');
+                  showStatusMessage('No valid inventory items found in the file. Please check the format.', 'error');
+                }
+              } catch (err) {
+                setUploadState('error', 'Failed to process file', 'bi bi-x-circle');
+                showStatusMessage('Error processing file: ' + err.message, 'error');
+              }
+              setTimeout(resetUploadButton, 3000);
+            }, 500);
+          };
+          reader.onerror = function() {
+            setUploadState('error', 'Failed to read file', 'bi bi-x-circle');
+            showStatusMessage('Error reading file. Please try again.', 'error');
+            setTimeout(resetUploadButton, 3000);
           };
           reader.readAsText(file);
         } else if (file.type.startsWith('image/')) {
-          // OCR for images
-          $fileText.text('Extracting (OCR)...');
-          Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
-            extractInventoryFromText(text);
-          }).catch(() => {
-            $fileText.text('Failed to extract text');
-            $fileLabel.removeClass('uploading');
-            $fileIcon.removeClass().addClass('bi bi-x-circle');
-          });
+          // Enhanced OCR processing for images
+          $ocrProgress.show();
+          setUploadState('uploading', 'Initializing OCR...', 'bi bi-eye');
+          
+          processImageWithOCR(file)
+            .then(result => {
+              if (result.success) {
+                setUploadState('success', `Added ${result.count} items!`, 'bi bi-check-circle');
+                showStatusMessage(`Successfully extracted ${result.count} items from image using OCR`, 'success');
+              } else {
+                setUploadState('error', 'No items found in image', 'bi bi-exclamation-circle');
+                showStatusMessage('No inventory items detected in the image. Make sure the text is clear and readable.', 'error');
+              }
+            })
+            .catch(err => {
+              console.error('OCR Error:', err);
+              setUploadState('error', 'OCR processing failed', 'bi bi-x-circle');
+              showStatusMessage('Failed to process image: ' + (err.message || 'Unknown error'), 'error');
+            })
+            .finally(() => {
+              $ocrProgress.hide();
+              setTimeout(resetUploadButton, 3000);
+            });
         } else {
-          $fileText.text('Unsupported file');
-          $fileLabel.removeClass('uploading');
-          $fileIcon.removeClass().addClass('bi bi-x-circle');
+          // Unsupported file type
+          setUploadState('error', 'Unsupported file type', 'bi bi-file-x');
+          showStatusMessage('Please upload a text file (.txt, .csv) or image file (.jpg, .png) for inventory extraction.', 'error');
+          setTimeout(resetUploadButton, 3000);
         }
       });
 
+      // Enhanced OCR processing function
+      async function processImageWithOCR(file) {
+        return new Promise((resolve, reject) => {
+          try {
+            // Initialize Tesseract worker
+            const worker = Tesseract.createWorker({
+              logger: (progress) => {
+                if (progress.status === 'recognizing text') {
+                  const percentage = Math.round(progress.progress * 100);
+                  $ocrProgressBar.css('width', `${percentage}%`);
+                  setUploadState('uploading', `Processing image... ${percentage}%`, 'bi bi-eye');
+                } else if (progress.status === 'loading tesseract core') {
+                  setUploadState('uploading', 'Loading OCR engine...', 'bi bi-download');
+                } else if (progress.status === 'initializing tesseract') {
+                  setUploadState('uploading', 'Initializing OCR...', 'bi bi-gear');
+                } else if (progress.status === 'initializing api') {
+                  setUploadState('uploading', 'Starting text recognition...', 'bi bi-play-circle');
+                }
+              }
+            });
+
+            (async () => {
+              try {
+                await worker.load();
+                await worker.loadLanguage('eng');
+                await worker.initialize('eng');
+                
+                // Configure OCR settings for better accuracy
+                await worker.setParameters({
+                  tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:-()[]{}/',
+                  tessedit_pageseg_mode: Tesseract.PSM.AUTO,
+                });
+
+                const { data: { text, confidence } } = await worker.recognize(file);
+                await worker.terminate();
+
+                console.log('OCR Confidence:', confidence);
+                console.log('Extracted Text:', text);
+
+                if (confidence < 30) {
+                  throw new Error('Low confidence in text recognition. Please use a clearer image.');
+                }
+
+                const result = extractInventoryFromText(text);
+                resolve(result);
+              } catch (error) {
+                await worker.terminate();
+                reject(error);
+              }
+            })();
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+
+      // Enhanced extraction function (fix: move inside $(function) and call properly)
       function extractInventoryFromText(text) {
-        // Try to extract lines like: ItemName Qty or ItemName,Qty
-        // Example: Rice 10, Oil 5, Chicken 2
-        let lines = text.split(/\r?\n/).filter(l => l.trim());
+        // Enhanced extraction patterns
+        const patterns = [
+          // Pattern 1: Item Name: Quantity (e.g., "Rice: 10", "Oil: 5kg")
+          /^([A-Za-z\s\-_\.]+)[\s]*:[\s]*(\d{1,5})(?:kg|g|lbs|pieces|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
+          // Pattern 2: Item Name, Quantity (e.g., "Rice, 10", "Oil, 5")
+          /^([A-Za-z\s\-_\.]+),[\s]*(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
+          // Pattern 3: Item Name - Quantity (e.g., "Rice - 10", "Oil - 5kg")
+          /^([A-Za-z\s\-_\.]+)[\s]*-[\s]*(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
+          // Pattern 4: Quantity Item Name (e.g., "10 Rice", "5 Oil")
+          /^(\d{1,5})[\s]+([A-Za-z\s\-_\.]+?)(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
+          // Pattern 5: Item Name Quantity (space separated, e.g., "Rice 10", "Oil 5")
+          /^([A-Za-z\s\-_\.]+?)[\s]+(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i
+        ];
+
         let added = 0;
+        const addedItems = new Set();
+        const lines = text.split(/\r?\n/).filter(l => l.trim());
+
         lines.forEach(line => {
-          // Try CSV or space split
-          let match = line.match(/^([A-Za-z0-9\s\-_.]+)[,:\s]+(\d{1,5})/);
-          if (match) {
-            let name = match[1].trim();
-            let qty = parseInt(match[2]);
-            if (name && !isNaN(qty)) {
-              addInventoryItem(name, qty, qty > 0 ? 'in-stock' : 'out-stock');
-              added++;
+          line = line.trim();
+          if (!line || line.length < 3) return;
+          for (let pattern of patterns) {
+            pattern.lastIndex = 0;
+            const match = pattern.exec(line);
+            if (match) {
+              let name, qty;
+              if (pattern.source.startsWith('^(\\d')) {
+                qty = parseInt(match[1]);
+                name = match[2].trim();
+              } else {
+                name = match[1].trim();
+                qty = parseInt(match[2]);
+              }
+              name = name.replace(/[^\w\s\-]/g, '').trim();
+              if (name && name.length > 1 && !isNaN(qty) && qty >= 0 && qty <= 10000) {
+                const itemKey = name.toLowerCase();
+                if (!addedItems.has(itemKey)) {
+                  addedItems.add(itemKey);
+                  addInventoryItem(name, qty, qty > 0 ? 'in-stock' : 'out-stock');
+                  added++;
+                }
+                break;
+              }
             }
           }
         });
-        $fileLabel.removeClass('uploading');
-        $fileIcon.removeClass().addClass('bi bi-upload');
-        $fileText.text(added > 0 ? `Added ${added} items!` : 'No valid items found');
-        setTimeout(() => {
-          $fileText.text('Upload Bill/Stock File');
-          $fileName.text('');
-        }, 2000);
+
+        return {
+          success: added > 0,
+          count: added
+        };
       }
+
+      // Handle drag and drop
+      const $uploadArea = $('.file-upload-wrapper');
+      
+      $uploadArea.on('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $fileLabel.addClass('uploading');
+      });
+      
+      $uploadArea.on('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $fileLabel.removeClass('uploading');
+      });
+      
+      $uploadArea.on('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $fileLabel.removeClass('uploading');
+        
+        const files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+          $fileInput[0].files = files;
+          $fileInput.trigger('change');
+        }
+      });
+
+      // Sample data button for testing
+      const $sampleBtn = $(`
+        <button class="btn btn-outline-secondary btn-sm" id="addSampleData">
+          <i class="bi bi-database-add me-1"></i>Add Sample Data
+        </button>
+      `);
+      
+      $('.file-upload-wrapper').append($sampleBtn);
+      
+      $sampleBtn.on('click', function() {
+        const sampleData = [
+          { name: 'Rice', qty: 25, status: 'in-stock' },
+          { name: 'Cooking Oil', qty: 10, status: 'in-stock' },
+          { name: 'Chicken Breast', qty: 15, status: 'in-stock' },
+          { name: 'Tomatoes', qty: 8, status: 'in-stock' },
+          { name: 'Onions', qty: 12, status: 'in-stock' },
+          { name: 'Salt', qty: 0, status: 'out-stock' },
+          { name: 'Black Pepper', qty: 3, status: 'in-stock' },
+          { name: 'Garlic', qty: 6, status: 'in-stock' },
+          { name: 'Soy Sauce', qty: 0, status: 'out-stock' },
+          { name: 'Noodles', qty: 20, status: 'in-stock' }
+        ];
+        
+        sampleData.forEach(item => addInventoryItem(item.name, item.qty, item.status));
+        showStatusMessage(`Added ${sampleData.length} sample inventory items`, 'success');
+      });
+    });
+
+    // Add keyboard shortcuts
+    $(document).on('keydown', function(e) {
+      // Ctrl/Cmd + U for upload
+      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+        e.preventDefault();
+        $('#fileInput').click();
+      }
+      
+      // Ctrl/Cmd + N for new item (focus on name input)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        $('#itemName').focus();
+      }
+    });
+
+    // Auto-save draft while typing
+    let saveTimeout;
+    $('#itemName, #itemQty').on('input', function() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const draft = {
+          name: $('#itemName').val(),
+          qty: $('#itemQty').val(),
+          status: $('#itemStatus').val()
+        };
+        localStorage.setItem('bamboo_inventory_draft', JSON.stringify(draft));
+      }, 1000);
+    });
+
+    // Restore draft on page load
+    $(document).ready(function() {
+      const draft = JSON.parse(localStorage.getItem('bamboo_inventory_draft') || '{}');
+      if (draft.name) {
+        $('#itemName').val(draft.name);
+        $('#itemQty').val(draft.qty);
+        $('#itemStatus').val(draft.status);
+      }
+    });
+
+    // Clear draft when form is submitted
+    $('#inventoryForm').on('submit', function() {
+      localStorage.removeItem('bamboo_inventory_draft');
     });
   </script>
 </body>
