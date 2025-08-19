@@ -643,100 +643,39 @@
         transform: translateY(0);
       }
 
-      .cake-ordered-items {
-        background: rgba(233, 30, 99, 0.05);
-        border-radius: 10px;
-        padding: 0.75rem;
-        margin-top: 1rem;
-        border: 1px solid rgba(233, 30, 99, 0.2);
-      }
-
-      .ordered-item-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid rgba(233, 30, 99, 0.1);
-      }
-
-      .ordered-item-row:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-      }
-
-      .ordered-item-text {
-        font-weight: 500;
-        color: var(--cake-pink);
-        font-size: 0.9rem;
-      }
-
-      .ordered-item-controls {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .ordered-qty-btn {
-        width: 28px;
-        height: 28px;
-        border: 2px solid var(--cake-pink);
-        background: white;
-        color: var(--cake-pink);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .ordered-qty-btn:hover:not(:disabled) {
-        background: var(--cake-pink);
-        color: white;
-        transform: scale(1.1);
-      }
-
-      .ordered-qty-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .ordered-qty {
-        background: var(--cake-light);
-        color: var(--cake-pink);
-        padding: 0.25rem 0.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        min-width: 30px;
-        text-align: center;
-        font-size: 0.85rem;
+      @media (max-width: 992px) {
+        .cake-add-btn {
+          min-width: 100px;
+          max-width: 100%;
+          font-size: 0.98rem;
+          padding: 0.7rem 1rem;
+        }
       }
 
       @media (max-width: 768px) {
-        .dashboard-title {
-          font-size: 2rem;
+        .cake-add-btn {
+          min-width: 80px;
+          max-width: 100%;
+          font-size: 0.95rem;
+          padding: 0.65rem 0.5rem;
+          border-radius: 18px;
+          white-space: normal;
+          text-align: center;
         }
-
-        .menu-grid {
-          grid-template-columns: repeat(2, 1fr);
+        .item-controls.cake-add-controls {
+          padding-left: 0;
+          padding-right: 0;
         }
+      }
 
-        .category-tab {
-          flex: 1;
-          min-width: 100px;
-        }
-
-        .item-header {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.5rem;
-        }
-
-        .menu-type-btn {
-          padding: 0.75rem 1rem;
+      @media (max-width: 576px) {
+        .cake-add-btn {
+          font-size: 0.92rem;
+          padding: 0.6rem 0.3rem;
+          min-width: 60px;
+          max-width: 100%;
+          border-radius: 14px;
+          word-break: break-word;
         }
       }
     </style>
@@ -1032,6 +971,9 @@
       </div>
     </div>
 
+    <!-- Add Firebase SDKs before your script -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -1405,6 +1347,23 @@
       let currentCakeCategory = "all";
       let currentMenuType = "food";
 
+      // 1. Firebase config (replace with your own config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
+        authDomain: "bamboo-15c88.firebaseapp.com",
+        projectId: "bamboo-15c88",
+        storageBucket: "bamboo-15c88.firebasestorage.app",
+        messagingSenderId: "491968003258",
+        appId: "1:491968003258:web:903605a044306b45745683",
+        measurementId: "G-B99VR1M772",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // 2. Firestore collections
+      const foodOrdersCollection = db.collection("food_orders");
+      const cakeOrdersCollection = db.collection("cake_orders");
+
       // Make updateQuantity globally available
       window.updateQuantity = function (
         itemName,
@@ -1486,74 +1445,58 @@
         });
 
         // Submit order
-        $("#submitOrder").click(function () {
-          const tableNo = $("#tableSelect").val();
-          if (!tableNo) {
-            alert("⚠️ Please select a table first!");
-            return;
-          }
-          if (Object.keys(selectedItems).length === 0) {
-            alert("⚠️ Please add at least one item to the order!");
-            return;
-          }
+        $("#submitOrder")
+          .off("click")
+          .on("click", async function () {
+            const tableNo = $("#tableSelect").val();
+            if (!tableNo) {
+              alert("⚠️ Please select a table first!");
+              return;
+            }
+            if (Object.keys(selectedItems).length === 0) {
+              alert("⚠️ Please add at least one item to the order!");
+              return;
+            }
 
-          // Show loading state
-          const btn = $(this);
-          const originalText = btn.html();
-          btn.html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
-          btn.prop("disabled", true);
-
-          // Create order object
-          const orderId = Date.now();
-          const orderData = {
-            id: orderId,
-            table: tableNo,
-            items: selectedItems,
-            total: calculateTotal(),
-            timestamp: new Date().toISOString(),
-            waiterSubmitted: new Date().toLocaleTimeString(),
-          };
-
-          // Save to localStorage for kitchen to pick up
-          const submittedOrders = JSON.parse(
-            localStorage.getItem("bamboo_submitted_orders") || "[]"
-          );
-          submittedOrders.push(orderData);
-          localStorage.setItem(
-            "bamboo_submitted_orders",
-            JSON.stringify(submittedOrders)
-          );
-
-          // Also save individual order for billing
-          const orderHistory = JSON.parse(
-            localStorage.getItem("bamboo_order_history") || "[]"
-          );
-          orderHistory.push(orderData);
-          localStorage.setItem(
-            "bamboo_order_history",
-            JSON.stringify(orderHistory)
-          );
-
-          // Simulate order submission
-          setTimeout(() => {
-            console.log("Order submitted to kitchen:", orderData);
-
-            // Reset order
-            selectedItems = {};
-            renderOrderSummary();
-            $("#tableSelect").val("");
-
-            // Show success toast with order details
-            showOrderSuccessToast(tableNo, orderId);
-
-            // Reset button
-            btn.html(originalText);
+            const btn = $(this);
+            const originalText = btn.html();
+            btn.html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
             btn.prop("disabled", true);
 
-            // Clear any saved drafts for this table
-            localStorage.removeItem(`bamboo_order_draft_table_${tableNo}`);
-          }, 1500);
-        });
+            const orderId = Date.now();
+            const orderData = {
+              id: orderId,
+              table: tableNo,
+              items: selectedItems,
+              total: calculateTotal(),
+              timestamp: new Date().toISOString(),
+              waiterSubmitted: new Date().toLocaleTimeString(),
+              status: "pending",
+            };
+
+            // Save to Firestore
+            try {
+              // Decide which collection to use based on menu type
+              if (currentMenuType === "food") {
+                await foodOrdersCollection.add(orderData);
+              } else {
+                await cakeOrdersCollection.add(orderData);
+              }
+              // Simulate order submission
+              setTimeout(() => {
+                selectedItems = {};
+                renderOrderSummary();
+                $("#tableSelect").val("");
+                showOrderSuccessToast(tableNo, orderId);
+                btn.html(originalText);
+                btn.prop("disabled", true);
+              }, 1000);
+            } catch (err) {
+              alert("Failed to submit order: " + err.message);
+              btn.html(originalText);
+              btn.prop("disabled", false);
+            }
+          });
       });
 
       function renderCurrentMenu() {
