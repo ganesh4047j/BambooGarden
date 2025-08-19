@@ -267,6 +267,15 @@
       box-shadow: var(--shadow-light);
     }
 
+    /* Button Container for proper alignment */
+    .order-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .status-btn {
       background: var(--gradient-green);
       border: none;
@@ -279,6 +288,8 @@
       box-shadow: var(--shadow-light);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      flex: 1;
+      min-width: 180px;
     }
 
     .status-btn:hover {
@@ -293,6 +304,29 @@
 
     .status-btn.ready {
       background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .cancel-btn {
+      background: linear-gradient(135deg, #ff5252 0%, #ffbaba 100%);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+
+    .cancel-btn:hover {
+      background: linear-gradient(135deg, #c82333 0%, #ffbaba 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
     }
 
     .stats-row {
@@ -420,45 +454,79 @@
       background: #dc3545;
     }
 
+    /* Mobile Responsive Styles */
     @media (max-width: 768px) {
       .dashboard-title {
         font-size: 2rem;
       }
+      
       .order-card {
         padding: 1rem;
         margin-bottom: 1rem;
       }
+      
       .order-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
       }
+      
       .item-name {
         min-width: auto;
         font-size: 1rem;
       }
+      
       .order-items {
         padding: 1rem;
       }
+      
       .stat-card {
         padding: 0.5rem;
       }
+      
       .stat-number {
         font-size: 1.5rem;
       }
+      
       .filter-tabs {
         flex-direction: column;
         gap: 0.25rem;
         padding: 0.5rem 0.25rem;
       }
+      
       .filter-tab {
         min-width: unset;
         padding: 0.5rem 0.75rem;
         font-size: 0.95rem;
       }
+      
       .no-orders {
         padding: 2rem 1rem;
       }
+
+      /* Mobile Button Alignment */
+      .order-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+      }
+
+      .status-btn {
+        flex: none;
+        min-width: unset;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      .cancel-btn {
+        flex: none;
+        min-width: unset;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+      }
+
       #soundToggle {
         top: auto !important;
         bottom: 1rem !important;
@@ -466,6 +534,64 @@
         left: auto !important;
         position: fixed !important;
         z-index: 1002 !important;
+      }
+    }
+
+    /* Extra Small Mobile Screens */
+    @media (max-width: 480px) {
+      .order-card {
+        padding: 0.75rem;
+        border-radius: 15px;
+      }
+
+      .order-actions {
+        gap: 0.4rem;
+      }
+
+      .status-btn, .cancel-btn {
+        padding: 0.65rem 0.8rem;
+        font-size: 0.9rem;
+        border-radius: 20px;
+      }
+
+      .dashboard-title {
+        font-size: 1.6rem;
+      }
+
+      .table-number {
+        font-size: 1.2rem;
+      }
+
+      .order-total {
+        padding: 0.8rem 1rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Very Small Screens */
+    @media (max-width: 360px) {
+      .order-card {
+        padding: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .order-actions {
+        gap: 0.3rem;
+      }
+
+      .status-btn, .cancel-btn {
+        padding: 0.6rem 0.7rem;
+        font-size: 0.85rem;
+        border-radius: 18px;
+      }
+
+      .order-items {
+        padding: 0.75rem;
+      }
+
+      .order-total {
+        padding: 0.7rem;
+        font-size: 1rem;
       }
     }
   </style>
@@ -809,15 +935,22 @@
       let buttonHtml = '';
       if (order.status === 'pending') {
         buttonHtml = `
-          <button class="status-btn" onclick="updateStatus('${orderId}')">
-            <i class="bi bi-play-circle me-2"></i>Start Preparing
-          </button>
+          <div class="order-actions">
+            <button class="status-btn" onclick="updateStatus('${orderId}')">
+              <i class="bi bi-play-circle me-2"></i>Start Preparing
+            </button>
+            <button class="cancel-btn" onclick="cancelOrder('${orderId}')">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+          </div>
         `;
       } else if (order.status === 'preparing') {
         buttonHtml = `
-          <button class="status-btn preparing" onclick="updateStatus('${orderId}')">
-            <i class="bi bi-check-circle me-2"></i>Mark as Ready
-          </button>
+          <div class="order-actions">
+            <button class="status-btn preparing" onclick="updateStatus('${orderId}')">
+              <i class="bi bi-check-circle me-2"></i>Mark as Ready
+            </button>
+          </div>
         `;
       }
 
@@ -926,7 +1059,8 @@
           badge.className = 'status-badge status-ready';
           badge.innerText = 'Ready';
 
-          if (button) button.remove();
+          const actionsContainer = card.querySelector('.order-actions');
+          if (actionsContainer) actionsContainer.remove();
 
           // Add completion effect
           card.style.background = 'white';
@@ -949,6 +1083,28 @@
             '<i class="bi bi-play-circle me-2"></i>Start Preparing' :
             '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
         }
+      }
+    }
+
+    // Add cancel order function
+    async function cancelOrder(orderId) {
+      const order = orders[orderId];
+      if (!order) return;
+      if (!confirm('Are you sure you want to cancel this order?')) return;
+
+      const collection = order.type === 'food' ? foodOrdersCollection : cakeOrdersCollection;
+      try {
+        await collection.doc(order.docId).update({
+          status: 'cancelled',
+          cancelledAt: new Date().toISOString()
+        });
+        order.status = 'cancelled';
+        order.isNew = false;
+        updateStats();
+        renderOrders();
+        showConnectionStatus('Order cancelled');
+      } catch (error) {
+        alert('Failed to cancel order. Please try again.');
       }
     }
 
@@ -1094,6 +1250,7 @@
     window.updateStatus = updateStatus;
     window.filterOrders = filterOrders;
     window.toggleSound = toggleSound;
+    window.cancelOrder = cancelOrder;
 
     // Add keyboard shortcuts
     document.addEventListener('keydown', function(e) {
