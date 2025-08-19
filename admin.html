@@ -35,6 +35,8 @@
         --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
         --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
         --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        --cake-pink: #e91e63;
+        --cake-light: #f8bbd9;
       }
       body {
         background: var(--bg-primary);
@@ -108,35 +110,39 @@
         margin-bottom: 2rem;
       }
       .summary-card {
-        background: var(--gradient-green);
-        color: white;
+        /* More vibrant gradient for base card */
+        background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+        color: #fff !important;
         border-radius: 20px;
         box-shadow: var(--shadow-light);
         padding: 2rem 1rem;
         text-align: center;
         margin-bottom: 1rem;
       }
-      .summary-card h6 {
-        font-weight: 600;
-        opacity: 0.9;
-        margin-bottom: 0.5rem;
-      }
+      .summary-card h6,
       .summary-card h3 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 0;
+        color: #fff !important;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.12);
       }
       .summary-card.text-danger {
-        background: linear-gradient(135deg, #ffbaba 0%, #ff5252 100%);
-        color: white;
+        background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        color: #fff !important;
       }
       .summary-card.text-success {
-        background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
-        color: white;
+        background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        color: #fff !important;
       }
       .summary-card.text-primary {
-        background: linear-gradient(135deg, #74c0fc 0%, #4a7c59 100%);
-        color: white;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff !important;
+      }
+      .summary-card.text-warning {
+        background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+        color: #fff !important;
+      }
+      .summary-card.cake-theme {
+        background: linear-gradient(135deg, #ff6a88 0%, #ff99ac 100%);
+        color: #fff !important;
       }
       .table {
         border-radius: 15px;
@@ -152,6 +158,8 @@
         font-size: 1rem;
         padding: 0.75rem 1rem;
         transition: background 0.2s, color 0.2s;
+        white-space: nowrap; /* Keep content in a single line */
+        /* Remove word-break and white-space: normal */
       }
       .table thead {
         background: var(--gradient-green);
@@ -199,6 +207,44 @@
         box-shadow: 0 2px 8px rgba(255, 82, 82, 0.08);
         letter-spacing: 0.5px;
       }
+      .badge.bg-warning {
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+        color: #856404;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.08);
+        letter-spacing: 0.5px;
+      }
+      .badge.bg-info {
+        background: linear-gradient(135deg, #74c0fc 0%, #4dabf7 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(116, 192, 252, 0.08);
+        letter-spacing: 0.5px;
+      }
+      .badge.cake-badge {
+        background: linear-gradient(135deg, var(--cake-pink) 0%, var(--cake-light) 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.3em 0.6em;
+        border-radius: 8px;
+        margin-left: 0.5rem;
+      }
+      .badge.food-badge {
+        background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.3em 0.6em;
+        border-radius: 8px;
+        margin-left: 0.5rem;
+      }
       .form-select {
         border-radius: 16px;
         border: 2px solid var(--bamboo-green);
@@ -243,15 +289,14 @@
         .table td {
           font-size: 0.95rem;
           padding: 0.5rem 0.5rem;
-          white-space: normal;
-          word-break: break-word;
+          white-space: nowrap; /* Ensure single line */
+          /* Remove word-break and white-space: normal */
         }
         .table-responsive {
           overflow-x: auto;
         }
-        .table tbody tr:hover {
-          transform: none;
-          box-shadow: none;
+        .table {
+          min-width: 800px;
         }
         .navbar-collapse {
           background: var(--gradient-green);
@@ -288,6 +333,10 @@
         .table td {
           font-size: 0.9rem;
           padding: 0.4rem 0.3rem;
+          white-space: nowrap;
+        }
+        .table {
+          min-width: 800px;
         }
         .summary-card h3 {
           font-size: 1.3rem;
@@ -318,7 +367,7 @@
           -webkit-overflow-scrolling: touch;
         }
         .table {
-          min-width: 600px;
+          min-width: 100%;
         }
       }
       @media (max-width: 576px) {
@@ -337,6 +386,10 @@
         .table td {
           font-size: 0.85rem;
           padding: 0.25rem 0.15rem;
+          white-space: nowrap;
+        }
+        .table {
+          min-width: 800px;
         }
         .summary-card h3 {
           font-size: 1.1rem;
@@ -364,21 +417,15 @@
           font-size: 0.9rem;
         }
         .table-responsive {
-          -webkit-overflow-scrolling: touch;
+          overflow-x: auto;
         }
         .table {
-          min-width: 500px;
+          min-width: 100%;
         }
-        /* Stack summary cards vertically */
-        .row.g-4.mb-4 > .col-md-4 {
-          flex: 0 0 100%;
-          max-width: 100%;
-        }
-
-        /* Universal delete column styling for all tables */
+        /* Delete column styling for all tables */
         .table td:last-child,
         .table th:last-child {
-          min-width: 48px !important;
+          min-width: 40px !important;
           max-width: 60px !important;
           width: 1% !important;
           padding-left: 0.1rem !important;
@@ -387,7 +434,6 @@
           white-space: nowrap !important;
           vertical-align: middle !important;
         }
-
         .table .btn-danger {
           padding: 0.25rem 0.4rem !important;
           font-size: 0.9rem !important;
@@ -401,38 +447,23 @@
           line-height: 1 !important;
           margin: 0 auto !important;
         }
-
         .table .btn-danger i {
           font-size: 1rem !important;
           margin: 0 !important;
           vertical-align: middle !important;
           line-height: 1 !important;
         }
-
-        /* Hide text in delete buttons on small screens, show only icon */
         .table .btn-danger .btn-text {
           display: none !important;
         }
       }
-
-      /* Prevent horizontal overflow on mobile */
-      html, body {
-        max-width: 100vw;
-        overflow-x: hidden;
-      }
-      .dashboard-card, .summary-card {
-        word-break: break-word;
-      }
-      /* Extra: allow dashboard-card to scroll horizontally on very small screens */
       @media (max-width: 400px) {
         .dashboard-card, .table-responsive {
           overflow-x: auto;
         }
         .table {
-          min-width: 400px;
+          min-width: 800px;
         }
-
-        /* Even smaller delete buttons for very small screens */
         .table .btn-danger {
           padding: 0.2rem 0.3rem !important;
           font-size: 0.8rem !important;
@@ -440,7 +471,6 @@
           min-height: 28px !important;
           border-radius: 4px !important;
         }
-
         .table .btn-danger i {
           font-size: 0.9rem !important;
         }
@@ -468,6 +498,15 @@
             <li class="nav-item">
               <a class="nav-link" href="billing.html">Billing</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="waiter.html">Waiter</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="kitchen.html">Kitchen</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="inventory.html">Inventory</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -478,7 +517,7 @@
       <div class="container">
         <h1 class="dashboard-title">📈 Admin Dashboard</h1>
         <p class="dashboard-subtitle">
-          Overview of orders, revenue, and billing status
+          Overview of unified orders, revenue, and billing status
         </p>
       </div>
     </div>
@@ -489,13 +528,13 @@
       <div class="row g-4 mb-4">
         <div class="col-md-4">
           <div class="summary-card text-white">
-            <h6>Total Orders (Waiter)</h6>
+            <h6>Total Unified Orders</h6>
             <h3 id="totalOrders">0</h3>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="summary-card text-white">
-            <h6>Kitchen Orders (In Progress)</h6>
+          <div class="summary-card text-warning">
+            <h6>Orders In Kitchen</h6>
             <h3 id="kitchenInProgress">0</h3>
           </div>
         </div>
@@ -510,7 +549,7 @@
       <div class="row g-4 mb-4">
         <div class="col-md-4">
           <div class="summary-card text-primary">
-            <h6>Total Revenue (Food Orders)</h6>
+            <h6>Total Revenue (Today)</h6>
             <h3 id="totalRevenue">₹0</h3>
           </div>
         </div>
@@ -528,10 +567,10 @@
         </div>
       </div>
 
-      <!-- Orders Table (Waiter) -->
+      <!-- Unified Orders Table -->
       <div class="dashboard-card mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-          <h5>🧾 Orders Submitted by Waiter</h5>
+          <h5>🧾 Unified Orders (Waiter)</h5>
           <div>
             <button id="exportOrdersBtn" class="btn btn-sm" title="Export Orders">
               <i class="bi bi-download me-1"></i> Export XLSX
@@ -542,6 +581,7 @@
           <table class="table table-bordered align-middle mb-0">
             <thead>
               <tr>
+                <th>Customer</th>
                 <th>Table</th>
                 <th>Items</th>
                 <th>Time</th>
@@ -570,6 +610,7 @@
           <table class="table table-bordered align-middle mb-0">
             <thead>
               <tr>
+                <th>Customer</th>
                 <th>Table</th>
                 <th>Items</th>
                 <th>Order Time</th>
@@ -611,7 +652,7 @@
         </div>
       </div>
 
-      <!-- Billing Summary and Table (Split into Food Orders and Cake Orders) -->
+      <!-- Billing Summary and Table (Split into Food Orders and Cake Orders as per existing structure) -->
       <div class="dashboard-card mb-4" id="billingTableCard">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
           <h5>💳 Today's Food Orders Billing</h5>
@@ -626,6 +667,7 @@
             <thead>
               <tr>
                 <th>Bill #</th>
+                <th>Customer</th>
                 <th>Table</th>
                 <th>Total (&#8377;)</th>
                 <th>Status</th>
@@ -653,6 +695,7 @@
             <thead>
               <tr>
                 <th>Bill #</th>
+                <th>Customer</th>
                 <th>Table</th>
                 <th>Total (&#8377;)</th>
                 <th>Status</th>
@@ -675,7 +718,7 @@
     <!-- Firebase Firestore -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-      // Firebase config (reuse from billing.html)
+      // Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
         authDomain: "bamboo-15c88.firebaseapp.com", 
@@ -711,191 +754,282 @@
       }
 
       // --- Real-time Data State ---
-      let waiterOrders = [];
-      let kitchenOrders = [];
+      let unifiedOrders = [];
       let groceries = [];
       let foodBills = [];
       let cakeBills = [];
-      let cakeWaiterOrders = [];
-      let cakeKitchenOrders = [];
 
       // --- Real-time Listeners ---
-      db.collection('food_orders').onSnapshot(snapshot => {
-        waiterOrders = [];
-        kitchenOrders = [];
-        foodBills = [];
-        const todayStr = new Date().toDateString();
+      
+      // Listen to unified orders
+      db.collection('unified_orders').onSnapshot(snapshot => {
+        console.log('🔄 Unified Orders Snapshot received, docs count:', snapshot.size);
+        
+        unifiedOrders = [];
+        // Removed date filtering - show all orders
+        console.log('📅 Showing all orders (no date filtering)');
+        
         snapshot.forEach(doc => {
           const data = doc.data();
-          let orderDate = null;
-          if (data.createdAt) {
-            orderDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-          } else if (data.timestamp) {
-            if (typeof data.timestamp === "string") {
-              orderDate = new Date(data.timestamp);
-            } else if (data.timestamp.toDate) {
-              orderDate = data.timestamp.toDate();
-            } else {
-              orderDate = new Date(data.timestamp);
-            }
-          }
-          if (!orderDate || orderDate.toDateString() !== todayStr) return;
-          waiterOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
-          kitchenOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
-          foodBills.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+          console.log('📋 Raw order data:', doc.id, data);
+          
+          const processedOrder = { 
+            id: doc.id, 
+            ...data, 
+            customerName: data.customerName || 'Unknown Customer',
+            tableNumber: data.tableNumber || '-',
+            customerPhone: data.customerPhone || ''
+          };
+          
+          console.log('✅ Processed order added:', processedOrder);
+          unifiedOrders.push(processedOrder);
         });
-        renderWaiterOrders();
+        
+        console.log('📊 Total unified orders:', unifiedOrders.length);
+        console.log('📋 All unified orders:', unifiedOrders);
+        
+        renderUnifiedOrders();
         renderKitchenOrders();
-        renderFoodBilling();
+        updateOrderStats();
+      }, error => {
+        console.error('❌ Error listening to unified orders:', error);
       });
 
-      db.collection('cake_orders').onSnapshot(snapshot => {
-        cakeBills = [];
-        cakeWaiterOrders = [];
-        cakeKitchenOrders = [];
-        const todayStr = new Date().toDateString();
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          let orderDate = null;
-          if (data.createdAt) {
-            orderDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-          } else if (data.timestamp) {
-            if (typeof data.timestamp === "string") {
-              orderDate = new Date(data.timestamp);
-            } else if (data.timestamp.toDate) {
-              orderDate = data.timestamp.toDate();
-            } else {
-              orderDate = new Date(data.timestamp);
-            }
-          }
-          if (!orderDate || orderDate.toDateString() !== todayStr) return;
-          cakeBills.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
-          // For Waiter and Kitchen tables
-          cakeWaiterOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
-          cakeKitchenOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
-        });
-        renderCakeBilling();
-        renderWaiterOrders();
-        renderKitchenOrders();
-      });
-
+      // Listen to inventory (groceries) - removed date filtering
       db.collection('inventory').onSnapshot(snapshot => {
+        console.log('🛒 Inventory Snapshot received, docs count:', snapshot.size);
+        
         groceries = [];
-        const todayStr = new Date().toDateString();
+        // Removed date filtering - show all inventory items
+        console.log('🛒 Showing all inventory items (no date filtering)');
+        
         snapshot.forEach(doc => {
           const data = doc.data();
-          let itemDate = null;
-          if (data.createdAt) {
-            itemDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-          } else if (data.timestamp) {
-            if (typeof data.timestamp === "string") {
-              itemDate = new Date(data.timestamp);
-            } else if (data.timestamp.toDate) {
-              itemDate = data.timestamp.toDate();
-            } else {
-              itemDate = new Date(data.timestamp);
-            }
-          }
-          if (!itemDate || itemDate.toDateString() !== todayStr) return;
+          console.log('🛒 Raw inventory data:', doc.id, data);
+          
           groceries.push({ id: doc.id, ...data });
+          console.log('✅ Grocery item added:', { id: doc.id, ...data });
         });
+        
+        console.log('🛒 Total groceries:', groceries.length);
         renderGroceries();
+      }, error => {
+        console.error('❌ Error listening to inventory:', error);
       });
+
+      // Extract food and cake billing from unified orders for billing tables
+      function extractBillingData() {
+        console.log('💰 Extracting billing data from', unifiedOrders.length, 'unified orders');
+        
+        foodBills = [];
+        cakeBills = [];
+        
+        unifiedOrders.forEach(order => {
+          console.log('🔍 Processing order for billing:', order.id, order);
+          
+          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
+          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
+          
+          console.log('🍽️ Has food items:', hasFoodItems, 'Food items:', order.foodItems);
+          console.log('🍰 Has cake items:', hasCakeItems, 'Cake items:', order.cakeItems);
+          
+          // Create food billing entry if order has food items
+          if (hasFoodItems) {
+            const foodBill = {
+              id: order.id,
+              customerName: order.customerName,
+              tableNumber: order.tableNumber,
+              total: order.foodTotal || 0,
+              paid: !!order.paid,
+              paidAt: order.paidAt,
+              createdAt: order.createdAt,
+              paymentMethod: order.paymentMethod
+            };
+            foodBills.push(foodBill);
+            console.log('✅ Food bill created:', foodBill);
+          }
+          
+          // Create cake billing entry if order has cake items
+          if (hasCakeItems) {
+            const cakeBill = {
+              id: order.id,
+              customerName: order.customerName,
+              tableNumber: order.tableNumber,
+              total: order.cakeTotal || 0,
+              paid: !!order.paid,
+              paidAt: order.paidAt,
+              createdAt: order.createdAt,
+              paymentMethod: order.paymentMethod
+            };
+            cakeBills.push(cakeBill);
+            console.log('✅ Cake bill created:', cakeBill);
+          }
+        });
+        
+        console.log('💰 Total food bills:', foodBills.length, foodBills);
+        console.log('🍰 Total cake bills:', cakeBills.length, cakeBills);
+        
+        renderFoodBilling();
+        renderCakeBilling();
+        updateRevenueStats();
+      }
 
       // --- Render Functions ---
-      function renderWaiterOrders() {
-        const el = document.getElementById("totalOrders");
-        if (el) el.textContent = waiterOrders.length + cakeWaiterOrders.length;
+      function renderUnifiedOrders() {
+        console.log('🎨 Rendering unified orders, count:', unifiedOrders.length);
+        
         const tbody = document.getElementById("ordersTableBody");
-        if (!tbody) return;
-        tbody.innerHTML =
-          waiterOrders.map(order => `
+        if (!tbody) {
+          console.error('❌ ordersTableBody element not found!');
+          return;
+        }
+        
+        if (unifiedOrders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No unified orders for today</td></tr>';
+          console.log('📝 Empty state rendered for unified orders');
+          return;
+        }
+        
+        const html = unifiedOrders.map(order => {
+          console.log('🎨 Rendering order:', order.id, order);
+          
+          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
+          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
+          
+          let itemsDisplay = '';
+          if (hasFoodItems) {
+            itemsDisplay += Object.entries(order.foodItems)
+              .map(([name, item]) => `${name} ×${item.qty}`)
+              .join("<br>");
+          }
+          if (hasCakeItems) {
+            if (itemsDisplay) itemsDisplay += "<br>";
+            itemsDisplay += Object.entries(order.cakeItems)
+              .map(([name, item]) => `${name} ×${item.qty}`)
+              .join("<br>");
+          }
+          
+          console.log('🍽️ Items display for order', order.id, ':', itemsDisplay);
+          
+          return `
             <tr>
-              <td>Table ${order.tableNumber || order.table || '-'}</td>
               <td>
-                ${order.items ? Object.entries(order.items)
-                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+                ${order.customerName}
+                ${hasFoodItems ? '<span class="badge food-badge">Food</span>' : ''}
+                ${hasCakeItems ? '<span class="badge cake-badge">Cake</span>' : ''}
               </td>
-              <td>${formatTime(order.createdAt || order.timestamp)}</td>
-              <td>&#8377;${order.total || 0}</td>
+              <td>Table ${order.tableNumber}</td>
+              <td>${itemsDisplay}</td>
+              <td>${formatTime(order.createdAt)}</td>
+              <td>&#8377;${order.totalAmount || 0}</td>
               <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">
+                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${order.id}')">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
-          `).join("") +
-          cakeWaiterOrders.map(order => `
-            <tr>
-              <td>Table ${order.tableNumber || order.table || '-'}</td>
-              <td>
-                ${order.items ? Object.entries(order.items)
-                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
-              </td>
-              <td>${formatTime(order.createdAt || order.timestamp)}</td>
-              <td>&#8377;${order.total || 0}</td>
-              <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${order.id}')">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          `).join("");
+          `;
+        }).join("");
+        
+        tbody.innerHTML = html;
+        console.log('✅ Unified orders table rendered with', unifiedOrders.length, 'rows');
       }
 
       function renderKitchenOrders() {
-        const el = document.getElementById("kitchenInProgress");
-        if (el) el.textContent = kitchenOrders.length + cakeKitchenOrders.length;
+        console.log('🍳 Rendering kitchen orders, count:', unifiedOrders.length);
+        
         const tbody = document.getElementById("kitchenTableBody");
-        if (!tbody) return;
-        tbody.innerHTML =
-          kitchenOrders.map(order => `
+        if (!tbody) {
+          console.error('❌ kitchenTableBody element not found!');
+          return;
+        }
+        
+        if (unifiedOrders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No kitchen orders for today</td></tr>';
+          console.log('📝 Empty state rendered for kitchen orders');
+          return;
+        }
+        
+        const html = unifiedOrders.map(order => {
+          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
+          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
+          
+          let itemsDisplay = '';
+          if (hasFoodItems) {
+            itemsDisplay += Object.entries(order.foodItems)
+              .map(([name, item]) => `${name} ×${item.qty}`)
+              .join("<br>");
+          }
+          if (hasCakeItems) {
+            if (itemsDisplay) itemsDisplay += "<br>";
+            itemsDisplay += Object.entries(order.cakeItems)
+              .map(([name, item]) => `${name} ×${item.qty}`)
+              .join("<br>");
+          }
+          
+          // Determine overall status
+          let statusBadge = '';
+          let statusText = '';
+          
+          if (order.status === 'ready') {
+            statusBadge = 'bg-success';
+            statusText = 'Ready';
+          } else if (order.foodStatus === 'preparing' || order.cakeStatus === 'preparing') {
+            statusBadge = 'bg-info';
+            statusText = 'Preparing';
+          } else {
+            statusBadge = 'bg-warning';
+            statusText = 'Pending';
+          }
+          
+          console.log('🍳 Kitchen order status for', order.id, ':', statusText, 'Food:', order.foodStatus, 'Cake:', order.cakeStatus);
+          
+          return `
             <tr>
-              <td>Table ${order.tableNumber || order.table || '-'}</td>
               <td>
-                ${order.items ? Object.entries(order.items)
-                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+                ${order.customerName}
+                ${hasFoodItems ? '<span class="badge food-badge">Food</span>' : ''}
+                ${hasCakeItems ? '<span class="badge cake-badge">Cake</span>' : ''}
               </td>
-              <td>${formatTime(order.createdAt || order.timestamp)}</td>
+              <td>Table ${order.tableNumber}</td>
+              <td>${itemsDisplay}</td>
+              <td>${formatTime(order.createdAt)}</td>
               <td>
-                <span class="badge ${order.status === "ready" ? "bg-success" : "bg-danger"}">
-                  ${order.status === "ready" ? "Ready" : "In Progress"}
+                <span class="badge ${statusBadge}">
+                  ${statusText}
                 </span>
               </td>
               <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">
+                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${order.id}')">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
-          `).join("") +
-          cakeKitchenOrders.map(order => `
-            <tr>
-              <td>Table ${order.tableNumber || order.table || '-'}</td>
-              <td>
-                ${order.items ? Object.entries(order.items)
-                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
-              </td>
-              <td>${formatTime(order.createdAt || order.timestamp)}</td>
-              <td>
-                <span class="badge ${order.status === "ready" ? "bg-success" : "bg-danger"}">
-                  ${order.status === "ready" ? "Ready" : "In Progress"}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${order.id}')">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          `).join("");
+          `;
+        }).join("");
+        
+        tbody.innerHTML = html;
+        console.log('✅ Kitchen orders table rendered with', unifiedOrders.length, 'rows');
       }
 
       function renderGroceries() {
+        console.log('🛒 Rendering groceries, count:', groceries.length);
+        
         const el = document.getElementById("groceriesCount");
         if (el) el.textContent = groceries.length;
+        
         const tbody = document.getElementById("groceriesTableBody");
-        if (!tbody) return;
+        if (!tbody) {
+          console.error('❌ groceriesTableBody element not found!');
+          return;
+        }
+        
+        if (groceries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No groceries registered today</td></tr>';
+          console.log('📝 Empty state rendered for groceries');
+          return;
+        }
+        
         tbody.innerHTML = groceries.map(item => `
           <tr>
             <td>${item.name}</td>
@@ -915,90 +1049,174 @@
             </td>
           </tr>
         `).join("");
+        
+        console.log('✅ Groceries table rendered with', groceries.length, 'rows');
       }
 
-      // --- Billing Tables ---
-      function renderFoodBilling() {
-        // Summary
-        let totalRevenue = 0, totalPaid = 0, totalUnpaid = 0;
-        foodBills.forEach(bill => {
-          totalRevenue += parseFloat(bill.total) || 0;
-          totalPaid += bill.paid ? (parseFloat(bill.total) || 0) : 0;
-          totalUnpaid += !bill.paid ? (parseFloat(bill.total) || 0) : 0;
-        });
-        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
-        document.getElementById('totalPaid').textContent = '₹' + totalPaid.toLocaleString('en-IN');
-        document.getElementById('totalUnpaid').textContent = '₹' + totalUnpaid.toLocaleString('en-IN');
+      function updateOrderStats() {
+        console.log('📊 Updating order stats');
+        
+        const el1 = document.getElementById("totalOrders");
+        if (el1) {
+          el1.textContent = unifiedOrders.length;
+          console.log('📊 Total orders updated:', unifiedOrders.length);
+        }
+        
+        const inProgressCount = unifiedOrders.filter(order => 
+          order.status !== 'ready' && order.status !== 'cancelled'
+        ).length;
+        const el2 = document.getElementById("kitchenInProgress");
+        if (el2) {
+          el2.textContent = inProgressCount;
+          console.log('📊 Kitchen in progress updated:', inProgressCount);
+        }
+        
+        // Extract billing data whenever orders change
+        extractBillingData();
+      }
 
-        // Table
+      // --- Billing Tables (maintaining existing separate structure) ---
+      function renderFoodBilling() {
+        console.log('💰 Rendering food billing, count:', foodBills.length);
+        
         const tbody = document.getElementById('foodBillingTableBody');
+        if (!tbody) {
+          console.error('❌ foodBillingTableBody element not found!');
+          return;
+        }
+        
+        if (foodBills.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No food billing for today</td></tr>';
+          console.log('📝 Empty state rendered for food billing');
+          return;
+        }
+        
         tbody.innerHTML = foodBills.map((bill, idx) => `
           <tr>
             <td>${bill.billNumber || idx + 1}</td>
-            <td>${bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-'}</td>
+            <td>${bill.customerName}</td>
+            <td>Table ${bill.tableNumber}</td>
             <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
             <td>
               <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
                 ${bill.paid ? 'Paid' : 'Unpaid'}
               </span>
             </td>
-            <td>${formatTime(bill.paidAt || bill.createdAt || bill.timestamp)}</td>
+            <td>${formatTime(bill.paidAt || bill.createdAt)}</td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="deleteOrder('${bill.id}')">
+              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${bill.id}')">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
         `).join("");
+        
+        console.log('✅ Food billing table rendered with', foodBills.length, 'rows');
       }
 
       function renderCakeBilling() {
+        console.log('🍰 Rendering cake billing, count:', cakeBills.length);
+        
         const tbody = document.getElementById('cakeBillingTableBody');
+        if (!tbody) {
+          console.error('❌ cakeBillingTableBody element not found!');
+          return;
+        }
+        
+        if (cakeBills.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No cake billing for today</td></tr>';
+          console.log('📝 Empty state rendered for cake billing');
+          return;
+        }
+        
         tbody.innerHTML = cakeBills.map((bill, idx) => `
           <tr>
             <td>${bill.billNumber || idx + 1}</td>
-            <td>${bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-'}</td>
+            <td>${bill.customerName}</td>
+            <td>Table ${bill.tableNumber}</td>
             <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
             <td>
               <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
                 ${bill.paid ? 'Paid' : 'Unpaid'}
               </span>
             </td>
-            <td>${formatTime(bill.paidAt || bill.createdAt || bill.timestamp)}</td>
+            <td>${formatTime(bill.paidAt || bill.createdAt)}</td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${bill.id}')">
+              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${bill.id}')">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
         `).join("");
+        
+        console.log('✅ Cake billing table rendered with', cakeBills.length, 'rows');
+      }
+
+      function updateRevenueStats() {
+        console.log('💰 Updating revenue stats');
+        
+        // Calculate total revenue from both food and cake
+        let totalRevenue = 0, totalPaid = 0, totalUnpaid = 0;
+        
+        unifiedOrders.forEach(order => {
+          const orderTotal = parseFloat(order.totalAmount) || 0;
+          totalRevenue += orderTotal;
+          if (order.paid) {
+            totalPaid += orderTotal;
+          } else {
+            totalUnpaid += orderTotal;
+          }
+        });
+        
+        console.log('💰 Revenue stats:', { totalRevenue, totalPaid, totalUnpaid });
+        
+        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+        document.getElementById('totalPaid').textContent = '₹' + totalPaid.toLocaleString('en-IN');
+        document.getElementById('totalUnpaid').textContent = '₹' + totalUnpaid.toLocaleString('en-IN');
+        
+        console.log('✅ Revenue stats updated in UI');
       }
 
       // --- Delete Functions ---
-      window.deleteOrder = function(orderId) {
-        if (confirm('Delete this order/bill?')) {
-          db.collection('food_orders').doc(orderId).delete();
-        }
-      };
-      window.deleteCakeOrder = function(orderId) {
-        if (confirm('Delete this cake order?')) {
-          db.collection('cake_orders').doc(orderId).delete();
-        }
-      };
-      window.deleteGrocery = function(groceryId) {
-        if (confirm('Delete this grocery item?')) {
-          db.collection('inventory').doc(groceryId).delete();
+      window.deleteUnifiedOrder = function(orderId) {
+        console.log('🗑️ Attempting to delete unified order:', orderId);
+        if (confirm('Delete this unified order?')) {
+          db.collection('unified_orders').doc(orderId).delete()
+            .then(() => {
+              console.log('✅ Successfully deleted unified order:', orderId);
+            })
+            .catch(error => {
+              console.error('❌ Error deleting unified order:', orderId, error);
+            });
         }
       };
 
-      // For viewing grocery file by Firestore id
+      window.deleteGrocery = function(groceryId) {
+        console.log('🗑️ Attempting to delete grocery:', groceryId);
+        if (confirm('Delete this grocery item?')) {
+          db.collection('inventory').doc(groceryId).delete()
+            .then(() => {
+              console.log('✅ Successfully deleted grocery:', groceryId);
+            })
+            .catch(error => {
+              console.error('❌ Error deleting grocery:', groceryId, error);
+            });
+        }
+      };
+
+      // For viewing grocery file by Firestore id (unchanged from original)
       window.viewInventoryFileAdminById = function(id) {
+        console.log('👁️ Viewing file for grocery ID:', id);
         const item = groceries.find(g => g.id === id);
-        if (!item) return alert('File not found');
+        if (!item) {
+          console.error('❌ Grocery item not found:', id);
+          return alert('File not found');
+        }
         var fileType = item.fileType || '';
         var fileName = item.fileName || 'Unknown File';
         var mimeMatch = item.fileData.match(/^data:([^;]+);/);
         var mimeType = mimeMatch ? mimeMatch[1] : '';
+        console.log('📄 File details:', { fileName, fileType, mimeType });
         if (mimeType.startsWith('image/')) {
           window.showImageModalAdmin(item.fileData, fileName, mimeType);
         } else if (mimeType === 'application/pdf') {
@@ -1012,45 +1230,107 @@
 
       // Export helpers
       function exportTableToXLSX(data, filename, sheetName) {
+        console.log('📤 Exporting to XLSX:', filename, 'Rows:', data.length);
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, sheetName);
         XLSX.writeFile(wb, filename);
+        console.log('✅ Export completed:', filename);
       }
 
       document.addEventListener("DOMContentLoaded", function () {
-        renderWaiterOrders();
+        console.log('🚀 DOM Content Loaded - Initializing Admin Dashboard');
+        console.log('🔥 Firebase initialized');
+        console.log('📅 Today\'s date:', new Date().toDateString());
+        
+        // Initial renders
+        renderUnifiedOrders();
         renderKitchenOrders();
         renderGroceries();
         renderFoodBilling();
         renderCakeBilling();
+        updateOrderStats();
+        updateRevenueStats();
 
-        // Export Waiter Orders (include both food_orders and cake_orders)
+        // Export Unified Orders
         document.getElementById("exportOrdersBtn").addEventListener("click", function () {
-          const orders = waiterOrders.concat(cakeWaiterOrders);
-          const data = orders.map(order => ({
-            Table: order.tableNumber || order.table || '-',
-            Items: order.items ? Object.entries(order.items).map(([name, item]) => `${name} ×${item.qty}`).join(", ") : "",
-            Time: formatTime(order.createdAt || order.timestamp),
-            Total: order.total
-          }));
-          exportTableToXLSX(data, "WaiterOrders_Today.xlsx", "WaiterOrders");
+          console.log('📤 Exporting unified orders');
+          const data = unifiedOrders.map(order => {
+            const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
+            const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
+            
+            let itemsText = '';
+            if (hasFoodItems) {
+              itemsText += Object.entries(order.foodItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join(", ");
+            }
+            if (hasCakeItems) {
+              if (itemsText) itemsText += ", ";
+              itemsText += Object.entries(order.cakeItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join(", ");
+            }
+            
+            return {
+              Customer: order.customerName,
+              Table: order.tableNumber,
+              Phone: order.customerPhone,
+              Items: itemsText,
+              Time: formatTime(order.createdAt),
+              Total: order.totalAmount,
+              'Food Total': order.foodTotal || 0,
+              'Cake Total': order.cakeTotal || 0
+            };
+          });
+          exportTableToXLSX(data, "UnifiedOrders_Today.xlsx", "UnifiedOrders");
         });
 
-        // Export Kitchen Orders (include both food_orders and cake_orders)
+        // Export Kitchen Orders
         document.getElementById("exportKitchenBtn").addEventListener("click", function () {
-          const orders = kitchenOrders.concat(cakeKitchenOrders);
-          const data = orders.map(order => ({
-            Table: order.tableNumber || order.table || '-',
-            Items: order.items ? Object.entries(order.items).map(([name, item]) => `${name} ×${item.qty}`).join(", ") : "",
-            "Order Time": formatTime(order.createdAt || order.timestamp),
-            Status: order.status === "ready" ? "Ready" : "In Progress"
-          }));
+          console.log('📤 Exporting kitchen orders');
+          const data = unifiedOrders.map(order => {
+            const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
+            const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
+            
+            let itemsText = '';
+            if (hasFoodItems) {
+              itemsText += Object.entries(order.foodItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join(", ");
+            }
+            if (hasCakeItems) {
+              if (itemsText) itemsText += ", ";
+              itemsText += Object.entries(order.cakeItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join(", ");
+            }
+            
+            let statusText = '';
+            if (order.status === 'ready') {
+              statusText = 'Ready';
+            } else if (order.foodStatus === 'preparing' || order.cakeStatus === 'preparing') {
+              statusText = 'Preparing';
+            } else {
+              statusText = 'Pending';
+            }
+            
+            return {
+              Customer: order.customerName,
+              Table: order.tableNumber,
+              Items: itemsText,
+              "Order Time": formatTime(order.createdAt),
+              Status: statusText,
+              'Food Status': order.foodStatus || 'N/A',
+              'Cake Status': order.cakeStatus || 'N/A'
+            };
+          });
           exportTableToXLSX(data, "KitchenOrders_Today.xlsx", "KitchenOrders");
         });
 
         // Export Groceries (unchanged)
         document.getElementById("exportGroceriesBtn").addEventListener("click", function () {
+          console.log('📤 Exporting groceries');
           const data = groceries.map(item => ({
             Item: item.name,
             Amount: item.amount
@@ -1058,43 +1338,51 @@
           exportTableToXLSX(data, "Groceries_Today.xlsx", "Groceries");
         });
 
-        // Export Billing (Food Orders only, as per UI)
+        // Export Food Billing
         document.addEventListener('click', function(e) {
           if (e.target.closest('#exportBillingBtn')) {
-            const bills = foodBills;
-            const data = bills.map((bill, idx) => ({
+            console.log('📤 Exporting food billing');
+            const data = foodBills.map((bill, idx) => ({
               'Bill #': bill.billNumber || (idx + 1),
-              Table: bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-',
+              Customer: bill.customerName,
+              Table: bill.tableNumber,
               Total: bill.total,
               Status: bill.paid ? 'Paid' : 'Unpaid',
-              Time: formatTime(bill.paidAt || bill.createdAt || bill.timestamp)
+              'Payment Method': bill.paymentMethod || 'N/A',
+              Time: formatTime(bill.paidAt || bill.createdAt)
             }));
-            exportTableToXLSX(data, "Billing_Today.xlsx", "Billing");
+            exportTableToXLSX(data, "FoodBilling_Today.xlsx", "FoodBilling");
           }
         });
 
-        // Export Cake Billing (already correct)
+        // Export Cake Billing
         document.getElementById("exportCakeBillingBtn").addEventListener("click", function () {
+          console.log('📤 Exporting cake billing');
           const data = cakeBills.map((bill, idx) => ({
             'Bill #': bill.billNumber || (idx + 1),
-            Table: bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-',
+            Customer: bill.customerName,
+            Table: bill.tableNumber,
             Total: bill.total,
             Status: bill.paid ? 'Paid' : 'Unpaid',
-            Time: formatTime(bill.paidAt || bill.createdAt || bill.timestamp)
+            'Payment Method': bill.paymentMethod || 'N/A',
+            Time: formatTime(bill.paidAt || bill.createdAt)
           }));
           exportTableToXLSX(data, "CakeBilling_Today.xlsx", "CakeBilling");
         });
 
         // Refresh every 10 seconds for live monitoring
         setInterval(() => {
-          renderWaiterOrders();
+          console.log('🔄 Auto-refresh triggered');
+          renderUnifiedOrders();
           renderKitchenOrders();
           renderGroceries();
           renderFoodBilling();
           renderCakeBilling();
+          updateOrderStats();
+          updateRevenueStats();
         }, 10000);
 
-        // Fix for Bootstrap mobile menu toggling (force collapse on nav-link click)
+        // Fix for Bootstrap mobile menu toggling
         document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
           link.addEventListener('click', function() {
             var navbarCollapse = document.getElementById('navbarNav');
@@ -1104,9 +1392,11 @@
             }
           });
         });
+
+        console.log('✅ Admin Dashboard initialization complete');
       });
 
-      // Ensure all modal/file view functions are available before any event binding
+      // File modal functions (unchanged from original)
       function escapeHtml(text) {
         const map = {
           '&': '&amp;',
@@ -1119,7 +1409,7 @@
       }
 
       window.showFileModalAdmin = function(contentHtml, title, extraClass = '') {
-        // Remove existing modal
+        console.log('📂 Showing file modal:', title);
         var oldModal = document.getElementById('fileViewModalAdmin');
         if (oldModal) oldModal.remove();
         var modalHtml = `
@@ -1137,7 +1427,6 @@
             </div>
           </div>
         `;
-        // Use DOM API to insert modal
         var tempDiv = document.createElement('div');
         tempDiv.innerHTML = modalHtml;
         document.body.appendChild(tempDiv.firstElementChild);
@@ -1210,6 +1499,7 @@
       };
 
       window.downloadFileAdmin = function(fileData, fileName) {
+        console.log('⬇️ Downloading file:', fileName);
         try {
           var link = document.createElement('a');
           link.href = fileData;
@@ -1218,29 +1508,8 @@
           link.click();
           document.body.removeChild(link);
         } catch (error) {
+          console.error('❌ Error downloading file:', error);
           alert('Error downloading file: ' + error.message);
-        }
-      };
-
-      window.viewInventoryFileAdmin = function(idx) {
-        var groceries = getTodayGroceries();
-        var item = groceries[idx];
-        if (!item || !item.fileData) {
-          alert('No file data available for this item.');
-          return;
-        }
-        var fileType = item.fileType || '';
-        var fileName = item.fileName || 'Unknown File';
-        var mimeMatch = item.fileData.match(/^data:([^;]+);/);
-        var mimeType = mimeMatch ? mimeMatch[1] : '';
-        if (mimeType.startsWith('image/')) {
-          window.showImageModalAdmin(item.fileData, fileName, mimeType);
-        } else if (mimeType === 'application/pdf') {
-          window.showPdfModalAdmin(item.fileData, fileName);
-        } else if (mimeType.startsWith('text/') || mimeType === 'application/json') {
-          window.showTextModalAdmin(item.fileData, fileName);
-        } else {
-          window.downloadFileAdmin(item.fileData, fileName);
         }
       };
     </script>
