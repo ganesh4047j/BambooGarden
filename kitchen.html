@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bamboo Garden Kitchen</title>
+  <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon" />
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Animate.css -->
@@ -12,7 +13,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
   <style>
     :root {
       --bamboo-green: #4a7c59;
@@ -400,6 +400,26 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
+    .connection-status {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 1001;
+      box-shadow: var(--shadow-light);
+      transition: opacity 0.5s;
+    }
+
+    .connection-status.error {
+      background: #dc3545;
+    }
+
     @media (max-width: 768px) {
       .dashboard-title {
         font-size: 2rem;
@@ -511,53 +531,166 @@
 
   <div class="bamboo-decoration">🎋</div>
 
+  <!-- Add Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Firebase Configuration (same as waiter.html)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
+      authDomain: "bamboo-15c88.firebaseapp.com",
+      projectId: "bamboo-15c88",
+      storageBucket: "bamboo-15c88.firebasestorage.app",
+      messagingSenderId: "491968003258",
+      appId: "1:491968003258:web:903605a044306b45745683",
+      measurementId: "G-B99VR1M772",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Firestore collections
+    const foodOrdersCollection = db.collection("food_orders");
+    const cakeOrdersCollection = db.collection("cake_orders");
+
+    // State
     let orders = {};
-    let orderIdCounter = 1;
     let currentFilter = 'all';
+    let soundEnabled = true;
+    let lastOrderCount = 0;
+    let knownOrderIds = new Set();
 
-    // Check for new orders from waiter dashboard
-    function checkForNewOrders() {
-      // Get submitted orders from localStorage
-      const submittedOrders = JSON.parse(localStorage.getItem('bamboo_submitted_orders') || '[]');
+    // Connection status
+    function showConnectionStatus(message, isError = false) {
+      const existingStatus = document.querySelector('.connection-status');
+      if (existingStatus) {
+        existingStatus.remove();
+      }
 
-      submittedOrders.forEach(orderData => {
-        const orderId = `order_${orderData.id}`;
-        if (!orders[orderId]) {
-          // New order detected
-          addNewOrder(orderData);
-          showNewOrderAlert(orderData.table);
-          playNotificationSound();
+      const statusDiv = document.createElement('div');
+      statusDiv.className = `connection-status ${isError ? 'error' : ''}`;
+      statusDiv.innerHTML = `<i class="bi bi-${isError ? 'exclamation-triangle' : 'wifi'} me-2"></i>${message}`;
+      
+      document.body.appendChild(statusDiv);
+      
+      setTimeout(() => {
+        if (statusDiv.parentNode) {
+          statusDiv.style.opacity = '0';
+          setTimeout(() => statusDiv.remove(), 500);
         }
-      });
-
-      // Remove new order flag for orders that are no longer pending
-      Object.values(orders).forEach(order => {
-        if (order.status !== 'pending' && order.isNew) {
-          order.isNew = false;
-        }
-      });
-
-      updateStats();
-      renderOrders();
+      }, 3000);
     }
 
-    function addNewOrder(orderData) {
-      const orderId = `order_${orderData.id}`;
-      orders[orderId] = {
-        id: orderId,
-        table: orderData.table,
-        items: orderData.items,
-        total: orderData.total,
-        status: 'pending',
-        timestamp: new Date(orderData.timestamp),
-        isNew: true
-      };
+    // Fetch orders from Firestore
+    async function fetchOrdersFromFirestore() {
+      try {
+        const [foodSnapshot, cakeSnapshot] = await Promise.all([
+          foodOrdersCollection.orderBy('timestamp', 'desc').get(),
+          cakeOrdersCollection.orderBy('timestamp', 'desc').get()
+        ]);
+
+        const newOrders = {};
+        
+        // Process food orders
+        foodSnapshot.forEach(doc => {
+          const data = doc.data();
+          const orderId = doc.id;
+          
+          newOrders[orderId] = {
+            id: orderId,
+            docId: doc.id,
+            table: data.table,
+            items: data.items,
+            total: data.total,
+            status: data.status || 'pending',
+            timestamp: data.timestamp,
+            waiterSubmitted: data.waiterSubmitted,
+            type: 'food',
+            isNew: !knownOrderIds.has(orderId) && data.status === 'pending'
+          };
+          
+          knownOrderIds.add(orderId);
+        });
+
+        // Process cake orders
+        cakeSnapshot.forEach(doc => {
+          const data = doc.data();
+          const orderId = doc.id;
+          
+          newOrders[orderId] = {
+            id: orderId,
+            docId: doc.id,
+            table: data.table,
+            items: data.items,
+            total: data.total,
+            status: data.status || 'pending',
+            timestamp: data.timestamp,
+            waiterSubmitted: data.waiterSubmitted,
+            type: 'cake',
+            isNew: !knownOrderIds.has(orderId) && data.status === 'pending'
+          };
+          
+          knownOrderIds.add(orderId);
+        });
+
+        // Check for new orders
+        const currentOrderCount = Object.keys(newOrders).length;
+        const newOrdersDetected = Object.values(newOrders).some(order => order.isNew);
+        
+        if (newOrdersDetected && lastOrderCount > 0) {
+          const newOrdersList = Object.values(newOrders).filter(order => order.isNew);
+          newOrdersList.forEach(order => {
+            showNewOrderAlert(order.table, order.type);
+            playNotificationSound();
+          });
+        }
+        
+        lastOrderCount = currentOrderCount;
+        orders = newOrders;
+        
+        updateStats();
+        renderOrders();
+        
+        showConnectionStatus('Connected - Orders synced');
+        
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        showConnectionStatus('Connection error - Retrying...', true);
+      }
     }
 
-    function showNewOrderAlert(tableNumber) {
+    // Update order status in Firestore
+    async function updateOrderStatus(orderId, newStatus) {
+      try {
+        const order = orders[orderId];
+        if (!order) return;
+
+        const collection = order.type === 'food' ? foodOrdersCollection : cakeOrdersCollection;
+        
+        await collection.doc(order.docId).update({
+          status: newStatus,
+          [`${newStatus}At`]: new Date().toISOString()
+        });
+
+        // Update local state
+        order.status = newStatus;
+        order.isNew = false;
+
+        updateStats();
+        renderOrders();
+        
+        console.log(`Order ${orderId} status updated to ${newStatus}`);
+        
+      } catch (error) {
+        console.error('Error updating order status:', error);
+        alert('Failed to update order status. Please try again.');
+      }
+    }
+
+    function showNewOrderAlert(tableNumber, orderType) {
       // Remove existing alert if any
       const existingAlert = document.querySelector('.new-order-alert');
       if (existingAlert) {
@@ -569,7 +702,7 @@
       alert.className = 'new-order-alert';
       alert.innerHTML = `
         <i class="bi bi-bell-fill me-2"></i>
-        <strong>New Order!</strong> Table ${tableNumber}
+        <strong>New ${orderType.toUpperCase()} Order!</strong> Table ${tableNumber}
       `;
       
       document.body.appendChild(alert);
@@ -583,7 +716,8 @@
     }
 
     function playNotificationSound() {
-      // Create audio context for notification sound
+      if (!soundEnabled) return;
+      
       try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
@@ -652,7 +786,8 @@
     }
 
     function createOrderCard(orderId, order) {
-      const timeDiff = Math.floor((Date.now() - new Date(order.timestamp)) / (1000 * 60));
+      const timestamp = new Date(order.timestamp);
+      const timeDiff = Math.floor((Date.now() - timestamp.getTime()) / (1000 * 60));
       const timeAgo = timeDiff === 0 ? 'Just now' : `${timeDiff} mins ago`;
       
       let itemsHtml = '';
@@ -669,6 +804,7 @@
 
       const statusClass = `status-${order.status}`;
       const newOrderClass = order.isNew ? 'new-order' : '';
+      const orderTypeIcon = order.type === 'cake' ? '🍰' : '🍽️';
       
       let buttonHtml = '';
       if (order.status === 'pending') {
@@ -691,11 +827,12 @@
             <div class="table-info">
               <div class="table-number">
                 <i class="bi bi-table"></i>
-                Table ${order.table}
+                Table ${order.table} ${orderTypeIcon}
+                <small class="badge bg-secondary ms-2">${order.type.toUpperCase()}</small>
               </div>
               <div class="order-time">
                 <i class="bi bi-clock"></i>
-                ${new Date(order.timestamp).toLocaleTimeString()} - ${timeAgo}
+                ${timestamp.toLocaleTimeString()} - ${timeAgo}
               </div>
             </div>
             <span class="status-badge ${statusClass}" id="status-${orderId}">
@@ -730,7 +867,15 @@
         'mojito': '🍹',
         'shake': '🥤',
         'coffee': '☕',
-        'thupka': '🍲'
+        'thupka': '🍲',
+        'cake': '🍰',
+        'forest': '🍰',
+        'chocolate': '🍫',
+        'vanilla': '🍦',
+        'strawberry': '🍓',
+        'cream': '🥛',
+        'brownie': '🍫',
+        'cheese': '🧀'
       };
 
       const lowerName = itemName.toLowerCase();
@@ -742,7 +887,7 @@
       return '🍽️'; // Default emoji
     }
 
-    function updateStatus(orderId) {
+    async function updateStatus(orderId) {
       const order = orders[orderId];
       if (!order) return;
 
@@ -750,65 +895,60 @@
       const badge = document.getElementById(`status-${orderId}`);
       const button = card.querySelector('.status-btn');
 
-      if (order.status === 'pending') {
-        order.status = 'preparing';
-        order.isNew = false; // Remove new status
-
-        badge.className = 'status-badge status-preparing';
-        badge.innerText = 'Preparing';
-
-        button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
-        button.className = 'status-btn preparing';
-
-        // Add cooking animation
-        card.style.background = 'linear-gradient(45deg, #fff 25%, #f8f9fa 25%, #f8f9fa 50%, #fff 50%, #fff 75%, #f8f9fa 75%)';
-        card.style.backgroundSize = '20px 20px';
-        card.style.animation = 'slide 2s linear infinite';
-        card.classList.remove('new-order');
-
-      } else if (order.status === 'preparing') {
-        order.status = 'ready';
-        order.isNew = false; // Ensure new order notification is stopped
-
-        badge.className = 'status-badge status-ready';
-        badge.innerText = 'Ready';
-
-        if (button) button.remove();
-
-        // Add completion effect
-        card.style.background = 'white';
-        card.style.animation = 'none';
-        card.style.border = '2px solid #28a745';
-
-        // Add ready notification
-        const readyNotification = document.createElement('div');
-        readyNotification.className = 'alert alert-success animate__animated animate__bounceIn';
-        readyNotification.innerHTML = '<strong>🎉 Order Ready!</strong> This order is ready to be served.';
-        readyNotification.style.marginTop = '1rem';
-        card.appendChild(readyNotification);
-        
-        // Update order in billing system
-        updateBillingSystem(orderId, order);
+      // Show loading state
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Updating...';
       }
-      
-      updateStats();
-      saveOrdersToStorage();
-    }
 
-    function updateBillingSystem(orderId, order) {
-      // Send ready orders to billing system
-      const readyOrders = JSON.parse(localStorage.getItem('bamboo_ready_orders') || '[]');
-      const existingIndex = readyOrders.findIndex(o => o.id === orderId);
-      
-      if (existingIndex === -1) {
-        readyOrders.push({
-          id: orderId,
-          table: order.table,
-          items: order.items,
-          total: order.total,
-          readyTime: new Date().toISOString()
-        });
-        localStorage.setItem('bamboo_ready_orders', JSON.stringify(readyOrders));
+      try {
+        if (order.status === 'pending') {
+          await updateOrderStatus(orderId, 'preparing');
+
+          badge.className = 'status-badge status-preparing';
+          badge.innerText = 'Preparing';
+
+          if (button) {
+            button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
+            button.className = 'status-btn preparing';
+            button.disabled = false;
+          }
+
+          // Add cooking animation
+          card.style.background = 'linear-gradient(45deg, #fff 25%, #f8f9fa 25%, #f8f9fa 50%, #fff 50%, #fff 75%, #f8f9fa 75%)';
+          card.style.backgroundSize = '20px 20px';
+          card.style.animation = 'slide 2s linear infinite';
+          card.classList.remove('new-order');
+
+        } else if (order.status === 'preparing') {
+          await updateOrderStatus(orderId, 'ready');
+
+          badge.className = 'status-badge status-ready';
+          badge.innerText = 'Ready';
+
+          if (button) button.remove();
+
+          // Add completion effect
+          card.style.background = 'white';
+          card.style.animation = 'none';
+          card.style.border = '2px solid #28a745';
+
+          // Add ready notification
+          const readyNotification = document.createElement('div');
+          readyNotification.className = 'alert alert-success animate__animated animate__bounceIn';
+          readyNotification.innerHTML = '<strong>🎉 Order Ready!</strong> This order is ready to be served.';
+          readyNotification.style.marginTop = '1rem';
+          card.appendChild(readyNotification);
+        }
+        
+      } catch (error) {
+        console.error('Error updating status:', error);
+        if (button) {
+          button.disabled = false;
+          button.innerHTML = order.status === 'pending' ? 
+            '<i class="bi bi-play-circle me-2"></i>Start Preparing' :
+            '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
+        }
       }
     }
 
@@ -835,132 +975,9 @@
       renderOrders();
     }
 
-    function saveOrdersToStorage() {
-      localStorage.setItem('bamboo_kitchen_orders', JSON.stringify(orders));
-    }
-
-    function loadOrdersFromStorage() {
-      const savedOrders = localStorage.getItem('bamboo_kitchen_orders');
-      if (savedOrders) {
-        orders = JSON.parse(savedOrders);
-        updateStats();
-        renderOrders();
-      }
-    }
-
-    // Add cooking animation keyframes
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slide {
-        0% { background-position: 0 0; }
-        100% { background-position: 40px 40px; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      loadOrdersFromStorage();
-      checkForNewOrders();
-      
-      // Check for new orders every 2 seconds
-      setInterval(checkForNewOrders, 2000);
-      
-      // Update time stamps every minute
-      setInterval(() => {
-        renderOrders();
-      }, 60000);
-    });
-
-    // Clear completed orders older than 2 hours
-    function cleanupOldOrders() {
-      const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
-      
-      Object.keys(orders).forEach(orderId => {
-        const order = orders[orderId];
-        if (order.status === 'ready' && new Date(order.timestamp).getTime() < twoHoursAgo) {
-          delete orders[orderId];
-        }
-      });
-      
-      saveOrdersToStorage();
-      updateStats();
-      renderOrders();
-    }
-
-    // Run cleanup every hour
-    setInterval(cleanupOldOrders, 60 * 60 * 1000);
-
-    // Make functions globally available
-    window.updateStatus = updateStatus;
-    window.filterOrders = filterOrders;
-
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      // Press 'R' to refresh orders
-      if (e.key === 'r' || e.key === 'R') {
-        if (!e.ctrlKey && !e.metaKey) {
-          checkForNewOrders();
-          e.preventDefault();
-        }
-      }
-      
-      // Press numbers 1-4 to filter orders
-      if (e.key >= '1' && e.key <= '4') {
-        const filters = ['all', 'pending', 'preparing', 'ready'];
-        const filterIndex = parseInt(e.key) - 1;
-        if (filterIndex < filters.length) {
-          currentFilter = filters[filterIndex];
-          document.querySelectorAll('.filter-tab').forEach((tab, index) => {
-            tab.classList.toggle('active', index === filterIndex);
-          });
-          renderOrders();
-          e.preventDefault();
-        }
-      }
-    });
-
-    // Add visual feedback for real-time connection
-    function showConnectionStatus() {
-      const statusIndicator = document.createElement('div');
-      statusIndicator.id = 'connectionStatus';
-      statusIndicator.style.cssText = `
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #28a745;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        z-index: 1001;
-        box-shadow: var(--shadow-light);
-      `;
-      statusIndicator.innerHTML = '<i class="bi bi-wifi me-2"></i>Connected - Listening for new orders';
-      
-      document.body.appendChild(statusIndicator);
-      
-      // Hide after 3 seconds
-      setTimeout(() => {
-        if (statusIndicator.parentNode) {
-          statusIndicator.style.opacity = '0';
-          statusIndicator.style.transition = 'opacity 0.5s';
-          setTimeout(() => statusIndicator.remove(), 500);
-        }
-      }, 3000);
-    }
-
-    // Show connection status on load
-    setTimeout(showConnectionStatus, 1000);
-
-    // Add order sound toggle
-    let soundEnabled = localStorage.getItem('kitchen_sound_enabled') !== 'false';
-    
+    // Sound toggle functionality
     function toggleSound() {
       soundEnabled = !soundEnabled;
-      localStorage.setItem('kitchen_sound_enabled', soundEnabled);
       
       const soundButton = document.getElementById('soundToggle');
       if (soundButton) {
@@ -1016,31 +1033,94 @@
       window.addEventListener('resize', updateSoundBtnPosition);
     }
 
-    // Initialize sound toggle
-    setTimeout(addSoundToggle, 500);
+    // Real-time listener for orders
+    function setupRealtimeListeners() {
+      // Listen to food orders
+      foodOrdersCollection.orderBy('timestamp', 'desc').onSnapshot(
+        (snapshot) => {
+          console.log('Food orders updated');
+          fetchOrdersFromFirestore();
+        },
+        (error) => {
+          console.error('Error listening to food orders:', error);
+          showConnectionStatus('Food orders sync error', true);
+        }
+      );
 
-    // Modify playNotificationSound to check if sound is enabled
-    const originalPlayNotificationSound = playNotificationSound;
-    playNotificationSound = function() {
-      if (soundEnabled) {
-        originalPlayNotificationSound();
+      // Listen to cake orders
+      cakeOrdersCollection.orderBy('timestamp', 'desc').onSnapshot(
+        (snapshot) => {
+          console.log('Cake orders updated');
+          fetchOrdersFromFirestore();
+        },
+        (error) => {
+          console.error('Error listening to cake orders:', error);
+          showConnectionStatus('Cake orders sync error', true);
+        }
+      );
+    }
+
+    // Add cooking animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slide {
+        0% { background-position: 0 0; }
+        100% { background-position: 40px 40px; }
       }
-    };
+    `;
+    document.head.appendChild(style);
 
-    // Add emergency clear all orders function (for testing)
-    window.clearAllOrders = function() {
-      if (confirm('Are you sure you want to clear all orders? This cannot be undone.')) {
-        orders = {};
-        localStorage.removeItem('bamboo_kitchen_orders');
-        localStorage.removeItem('bamboo_submitted_orders');
-        localStorage.removeItem('bamboo_ready_orders');
-        updateStats();
-        renderOrders();
-        alert('All orders cleared successfully!');
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async function() {
+      showConnectionStatus('Connecting to database...');
+      
+      try {
+        await fetchOrdersFromFirestore();
+        setupRealtimeListeners();
+        addSoundToggle();
+        
+        // Update time stamps every minute
+        setInterval(() => {
+          renderOrders();
+        }, 60000);
+        
+      } catch (error) {
+        console.error('Initialization error:', error);
+        showConnectionStatus('Failed to connect to database', true);
       }
-    };
+    });
 
-    // Add order summary for shift end
+    // Make functions globally available
+    window.updateStatus = updateStatus;
+    window.filterOrders = filterOrders;
+    window.toggleSound = toggleSound;
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Press 'R' to refresh orders
+      if (e.key === 'r' || e.key === 'R') {
+        if (!e.ctrlKey && !e.metaKey) {
+          fetchOrdersFromFirestore();
+          e.preventDefault();
+        }
+      }
+      
+      // Press numbers 1-4 to filter orders
+      if (e.key >= '1' && e.key <= '4') {
+        const filters = ['all', 'pending', 'preparing', 'ready'];
+        const filterIndex = parseInt(e.key) - 1;
+        if (filterIndex < filters.length) {
+          currentFilter = filters[filterIndex];
+          document.querySelectorAll('.filter-tab').forEach((tab, index) => {
+            tab.classList.toggle('active', index === filterIndex);
+          });
+          renderOrders();
+          e.preventDefault();
+        }
+      }
+    });
+
+    // Get order summary for shift end
     window.getOrderSummary = function() {
       const totalOrders = Object.keys(orders).length;
       const completedOrders = Object.values(orders).filter(o => o.status === 'ready').length;
@@ -1058,13 +1138,118 @@
       return summary;
     };
 
-    // Auto-save orders every 30 seconds
-    setInterval(() => {
-      if (Object.keys(orders).length > 0) {
-        saveOrdersToStorage();
+    // Emergency clear all orders function (for testing)
+    window.clearAllOrders = async function() {
+      if (!confirm('Are you sure you want to clear all orders? This cannot be undone.')) {
+        return;
       }
-    }, 30000);
+
+      try {
+        // Get all documents from both collections
+        const [foodSnapshot, cakeSnapshot] = await Promise.all([
+          foodOrdersCollection.get(),
+          cakeOrdersCollection.get()
+        ]);
+
+        // Create batch delete operations
+        const batch = db.batch();
+        
+        foodSnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        
+        cakeSnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+
+        // Execute batch delete
+        await batch.commit();
+        
+        // Clear local state
+        orders = {};
+        knownOrderIds.clear();
+        lastOrderCount = 0;
+        
+        updateStats();
+        renderOrders();
+        
+        showConnectionStatus('All orders cleared successfully!');
+        
+      } catch (error) {
+        console.error('Error clearing orders:', error);
+        showConnectionStatus('Failed to clear orders', true);
+      }
+    };
+
+    // Connection health check
+    function checkConnectionHealth() {
+      db.enableNetwork().then(() => {
+        console.log('Database connection is healthy');
+      }).catch((error) => {
+        console.error('Database connection issue:', error);
+        showConnectionStatus('Connection issue detected', true);
+      });
+    }
+
+    // Check connection every 30 seconds
+    setInterval(checkConnectionHealth, 30000);
+
+    // Handle offline/online events
+    window.addEventListener('online', () => {
+      showConnectionStatus('Back online - Reconnecting...');
+      fetchOrdersFromFirestore();
+    });
+
+    window.addEventListener('offline', () => {
+      showConnectionStatus('You are offline', true);
+    });
+
+    // Cleanup old completed orders (older than 24 hours)
+    async function cleanupOldOrders() {
+      try {
+        const oneDayAgo = new Date();
+        oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+        
+        const [foodSnapshot, cakeSnapshot] = await Promise.all([
+          foodOrdersCollection
+            .where('status', '==', 'ready')
+            .where('timestamp', '<', oneDayAgo.toISOString())
+            .get(),
+          cakeOrdersCollection
+            .where('status', '==', 'ready')
+            .where('timestamp', '<', oneDayAgo.toISOString())
+            .get()
+        ]);
+
+        const batch = db.batch();
+        let deleteCount = 0;
+
+        foodSnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+          deleteCount++;
+        });
+
+        cakeSnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+          deleteCount++;
+        });
+
+        if (deleteCount > 0) {
+          await batch.commit();
+          console.log(`Cleaned up ${deleteCount} old orders`);
+        }
+
+      } catch (error) {
+        console.error('Error during cleanup:', error);
+      }
+    }
+
+    // Run cleanup every 4 hours
+    setInterval(cleanupOldOrders, 4 * 60 * 60 * 1000);
+
+    // Export functions for testing
+    window.fetchOrdersFromFirestore = fetchOrdersFromFirestore;
+    window.setupRealtimeListeners = setupRealtimeListeners;
   </script>
 </body>
 </html>
-
