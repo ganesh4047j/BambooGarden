@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
+    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
     <!-- Bootstrap 5 -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -24,7 +25,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
     <style>
       :root {
         --bamboo-green: #4a7c59;
@@ -302,7 +302,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <a class="navbar-brand" href="#">Bamboo Garden</a>
+        <h1 class="navbar-brand" href="#">Bamboo Garden</h1>
         <button
           class="navbar-toggler"
           type="button"
@@ -340,38 +340,51 @@
       <div class="row g-4 mb-4">
         <div class="col-md-4">
           <div class="summary-card text-white">
-            <h6>Total Orders</h6>
+            <h6>Total Orders (Waiter)</h6>
             <h3 id="totalOrders">0</h3>
           </div>
         </div>
         <div class="col-md-4">
           <div class="summary-card text-white">
-            <h6>Total Revenue</h6>
-            <h3 id="totalRevenue">₹0</h3>
+            <h6>Kitchen Orders (In Progress)</h6>
+            <h3 id="kitchenInProgress">0</h3>
           </div>
         </div>
         <div class="col-md-4">
           <div class="summary-card text-white">
-            <h6>Unpaid Bills</h6>
-            <h3 id="unpaidBills">₹0</h3>
+            <h6>Today's Groceries Registered</h6>
+            <h3 id="groceriesCount">0</h3>
+          </div>
+        </div>
+      </div>
+      <!-- Add revenue summary cards for billing -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="summary-card text-primary">
+            <h6>Total Revenue (Food Orders)</h6>
+            <h3 id="totalRevenue">₹0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card text-success">
+            <h6>Total Paid</h6>
+            <h3 id="totalPaid">₹0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card text-danger">
+            <h6>Total Unpaid</h6>
+            <h3 id="totalUnpaid">₹0</h3>
           </div>
         </div>
       </div>
 
-      <!-- Orders Table -->
-      <div class="dashboard-card">
+      <!-- Orders Table (Waiter) -->
+      <div class="dashboard-card mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-          <h5>🧾 Orders List</h5>
+          <h5>🧾 Orders Submitted by Waiter</h5>
           <div>
-            <select
-              id="periodSelect"
-              class="form-select form-select-sm d-inline w-auto me-2"
-            >
-              <option selected>Today</option>
-              <option>This Week</option>
-              <option>All Time</option>
-            </select>
-            <button id="exportBtn" class="btn btn-sm">
+            <button id="exportOrdersBtn" class="btn btn-sm" title="Export Orders">
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -384,7 +397,7 @@
                 <th>Items</th>
                 <th>Time</th>
                 <th>Total</th>
-                <th>Status</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody id="ordersTableBody">
@@ -393,134 +406,545 @@
           </table>
         </div>
       </div>
+
+      <!-- Kitchen Orders Table -->
+      <div class="dashboard-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+          <h5>👨‍🍳 Kitchen Orders Status</h5>
+          <div>
+            <button id="exportKitchenBtn" class="btn btn-sm" title="Export Kitchen Orders">
+              <i class="bi bi-download me-1"></i> Export XLSX
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive rounded-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Table</th>
+                <th>Items</th>
+                <th>Order Time</th>
+                <th>Status</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="kitchenTableBody">
+              <!-- Table rows will be rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Groceries Table -->
+      <div class="dashboard-card">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+          <h5>🛒 Today's Groceries & Products Registered</h5>
+          <div>
+            <button id="exportGroceriesBtn" class="btn btn-sm" title="Export Groceries">
+              <i class="bi bi-download me-1"></i> Export XLSX
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive rounded-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Amount (&#8377;)</th>
+                <th>File</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="groceriesTableBody">
+              <!-- Table rows will be rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Billing Summary and Table (Split into Food Orders and Cake Orders) -->
+      <div class="dashboard-card mb-4" id="billingTableCard">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+          <h5>💳 Today's Food Orders Billing</h5>
+          <div>
+            <button id="exportBillingBtn" class="btn btn-sm" title="Export Billing">
+              <i class="bi bi-download me-1"></i> Export XLSX
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive rounded-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Bill #</th>
+                <th>Table</th>
+                <th>Total (&#8377;)</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="foodBillingTableBody">
+              <!-- Food billing rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="dashboard-card mb-4" id="cakeBillingTableCard">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+          <h5>🍰 Today's Cake Orders Billing</h5>
+          <div>
+            <button id="exportCakeBillingBtn" class="btn btn-sm" title="Export Cake Billing">
+              <i class="bi bi-download me-1"></i> Export XLSX
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive rounded-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Bill #</th>
+                <th>Table</th>
+                <th>Total (&#8377;)</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="cakeBillingTableBody">
+              <!-- Cake billing rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <!-- Add SheetJS for XLSX export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-      // --- Admin Dashboard Logic ---
-      // Helper: Get paid bills from billing page
-      function getPaidBills() {
-        const paidBills = JSON.parse(
-          localStorage.getItem("bamboo_paid_bills") || "[]"
-        );
-        const readyOrders = JSON.parse(
-          localStorage.getItem("bamboo_ready_orders") || "[]"
-        );
-        // Join paidBills with readyOrders for full bill info
-        return paidBills
-          .map((bill) => {
-            const order = readyOrders.find((o) => o.id === bill.id);
-            return order
-              ? {
-                  ...order,
-                  paidTime: bill.paidTime,
-                  paymentMethod: bill.paymentMethod,
-                }
-              : null;
-          })
-          .filter((b) => b);
+      // Firebase config (reuse from billing.html)
+      const firebaseConfig = {
+        apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
+        authDomain: "bamboo-15c88.firebaseapp.com", 
+        projectId: "bamboo-15c88",
+        storageBucket: "bamboo-15c88.firebasestorage.app",
+        messagingSenderId: "491968003258",
+        appId: "1:491968003258:web:903605a044306b45745683"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // Utility: convert Firestore Timestamp to JS Date
+      function toDate(ts) {
+        if (!ts) return null;
+        if (typeof ts.toDate === 'function') return ts.toDate();
+        if (typeof ts === 'string') return new Date(ts);
+        if (ts.seconds !== undefined && ts.nanoseconds !== undefined) {
+          return new Date(ts.seconds * 1000 + Math.floor(ts.nanoseconds / 1e6));
+        }
+        return new Date(ts);
       }
 
-      // Filter bills by dropdown value
-      function filterBillsByPeriod(period) {
-        const bills = getPaidBills();
-        const now = new Date();
-        if (period === "Today") {
-          return bills.filter((b) => {
-            const paidDate = new Date(b.paidTime);
-            return paidDate.toDateString() === now.toDateString();
-          });
-        }
-        if (period === "This Week") {
-          const weekStart = new Date(now);
-          weekStart.setDate(now.getDate() - now.getDay());
-          weekStart.setHours(0, 0, 0, 0);
-          return bills.filter((b) => {
-            const paidDate = new Date(b.paidTime);
-            return paidDate >= weekStart && paidDate <= now;
-          });
-        }
-        // All Time
-        return bills;
+      // Utility: format time
+      function formatTime(ts) {
+        const d = toDate(ts);
+        if (!d || isNaN(d.getTime())) return '';
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      function formatDate(ts) {
+        const d = toDate(ts);
+        if (!d || isNaN(d.getTime())) return '';
+        return d.toLocaleDateString();
       }
 
-      // Update summary cards and table based on dropdown
-      function updateDashboard() {
-        const period = document.getElementById("periodSelect").value;
-        const bills = filterBillsByPeriod(period);
-        // Update summary cards
-        document.getElementById("totalOrders").textContent = bills.length;
-        const totalRevenue = bills.reduce((sum, b) => sum + b.total, 0);
-        document.getElementById("totalRevenue").textContent =
-          "₹" + totalRevenue;
-        const unpaid = bills
-          .filter((b) => !b.paidTime)
-          .reduce((sum, b) => sum + b.total, 0);
-        document.getElementById("unpaidBills").textContent = "₹" + unpaid;
-        // Update table
+      // --- Real-time Data State ---
+      let waiterOrders = [];
+      let kitchenOrders = [];
+      let groceries = [];
+      let foodBills = [];
+      let cakeBills = [];
+      let cakeWaiterOrders = [];
+      let cakeKitchenOrders = [];
+
+      // --- Real-time Listeners ---
+      db.collection('food_orders').onSnapshot(snapshot => {
+        waiterOrders = [];
+        kitchenOrders = [];
+        foodBills = [];
+        const todayStr = new Date().toDateString();
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          let orderDate = null;
+          if (data.createdAt) {
+            orderDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+          } else if (data.timestamp) {
+            if (typeof data.timestamp === "string") {
+              orderDate = new Date(data.timestamp);
+            } else if (data.timestamp.toDate) {
+              orderDate = data.timestamp.toDate();
+            } else {
+              orderDate = new Date(data.timestamp);
+            }
+          }
+          if (!orderDate || orderDate.toDateString() !== todayStr) return;
+          waiterOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+          kitchenOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+          foodBills.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+        });
+        renderWaiterOrders();
+        renderKitchenOrders();
+        renderFoodBilling();
+      });
+
+      db.collection('cake_orders').onSnapshot(snapshot => {
+        cakeBills = [];
+        cakeWaiterOrders = [];
+        cakeKitchenOrders = [];
+        const todayStr = new Date().toDateString();
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          let orderDate = null;
+          if (data.createdAt) {
+            orderDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+          } else if (data.timestamp) {
+            if (typeof data.timestamp === "string") {
+              orderDate = new Date(data.timestamp);
+            } else if (data.timestamp.toDate) {
+              orderDate = data.timestamp.toDate();
+            } else {
+              orderDate = new Date(data.timestamp);
+            }
+          }
+          if (!orderDate || orderDate.toDateString() !== todayStr) return;
+          cakeBills.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+          // For Waiter and Kitchen tables
+          cakeWaiterOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+          cakeKitchenOrders.push({ id: doc.id, ...data, tableNumber: data.tableNumber || data.table || '-' });
+        });
+        renderCakeBilling();
+        renderWaiterOrders();
+        renderKitchenOrders();
+      });
+
+      db.collection('inventory').onSnapshot(snapshot => {
+        groceries = [];
+        const todayStr = new Date().toDateString();
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          let itemDate = null;
+          if (data.createdAt) {
+            itemDate = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+          } else if (data.timestamp) {
+            if (typeof data.timestamp === "string") {
+              itemDate = new Date(data.timestamp);
+            } else if (data.timestamp.toDate) {
+              itemDate = data.timestamp.toDate();
+            } else {
+              itemDate = new Date(data.timestamp);
+            }
+          }
+          if (!itemDate || itemDate.toDateString() !== todayStr) return;
+          groceries.push({ id: doc.id, ...data });
+        });
+        renderGroceries();
+      });
+
+      // --- Render Functions ---
+      function renderWaiterOrders() {
+        const el = document.getElementById("totalOrders");
+        if (el) el.textContent = waiterOrders.length + cakeWaiterOrders.length;
         const tbody = document.getElementById("ordersTableBody");
-        tbody.innerHTML = bills
-          .map(
-            (bill) => `
-      <tr>
-        <td>Table ${bill.table}</td>
-        <td>
-          ${Object.entries(bill.items)
-            .map(([name, item]) => `${name} ×${item.qty}`)
-            .join("<br>")}
-        </td>
-        <td>${
-          bill.paidTime ? new Date(bill.paidTime).toLocaleTimeString() : ""
-        }</td>
-        <td>₹${bill.total}</td>
-        <td>
-          <span class="badge ${bill.paidTime ? "bg-success" : "bg-danger"}">
-            ${bill.paidTime ? "Paid" : "Unpaid"}
-          </span>
-        </td>
-      </tr>
-    `
-          )
-          .join("");
+        if (!tbody) return;
+        tbody.innerHTML =
+          waiterOrders.map(order => `
+            <tr>
+              <td>Table ${order.tableNumber || order.table || '-'}</td>
+              <td>
+                ${order.items ? Object.entries(order.items)
+                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+              </td>
+              <td>${formatTime(order.createdAt || order.timestamp)}</td>
+              <td>&#8377;${order.total || 0}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join("") +
+          cakeWaiterOrders.map(order => `
+            <tr>
+              <td>Table ${order.tableNumber || order.table || '-'}</td>
+              <td>
+                ${order.items ? Object.entries(order.items)
+                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+              </td>
+              <td>${formatTime(order.createdAt || order.timestamp)}</td>
+              <td>&#8377;${order.total || 0}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${order.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join("");
       }
 
-      // Export filtered bills to XLSX
-      function exportToXLSX() {
-        const period = document.getElementById("periodSelect").value;
-        const bills = filterBillsByPeriod(period);
-        const data = bills.map((bill) => ({
-          Table: bill.table,
-          Items: Object.entries(bill.items)
-            .map(([name, item]) => `${name} ×${item.qty}`)
-            .join(", "),
-          Time: bill.paidTime ? new Date(bill.paidTime).toLocaleString() : "",
-          Total: bill.total,
-          Status: bill.paidTime ? "Paid" : "Unpaid",
-        }));
+      function renderKitchenOrders() {
+        const el = document.getElementById("kitchenInProgress");
+        if (el) el.textContent = kitchenOrders.length + cakeKitchenOrders.length;
+        const tbody = document.getElementById("kitchenTableBody");
+        if (!tbody) return;
+        tbody.innerHTML =
+          kitchenOrders.map(order => `
+            <tr>
+              <td>Table ${order.tableNumber || order.table || '-'}</td>
+              <td>
+                ${order.items ? Object.entries(order.items)
+                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+              </td>
+              <td>${formatTime(order.createdAt || order.timestamp)}</td>
+              <td>
+                <span class="badge ${order.status === "ready" ? "bg-success" : "bg-danger"}">
+                  ${order.status === "ready" ? "Ready" : "In Progress"}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join("") +
+          cakeKitchenOrders.map(order => `
+            <tr>
+              <td>Table ${order.tableNumber || order.table || '-'}</td>
+              <td>
+                ${order.items ? Object.entries(order.items)
+                  .map(([name, item]) => `${name} ×${item.qty}`).join("<br>") : ''}
+              </td>
+              <td>${formatTime(order.createdAt || order.timestamp)}</td>
+              <td>
+                <span class="badge ${order.status === "ready" ? "bg-success" : "bg-danger"}">
+                  ${order.status === "ready" ? "Ready" : "In Progress"}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${order.id}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `).join("");
+      }
+
+      function renderGroceries() {
+        const el = document.getElementById("groceriesCount");
+        if (el) el.textContent = groceries.length;
+        const tbody = document.getElementById("groceriesTableBody");
+        if (!tbody) return;
+        tbody.innerHTML = groceries.map(item => `
+          <tr>
+            <td>${item.name}</td>
+            <td>&#8377;${parseFloat(item.amount || 0).toLocaleString('en-IN')}</td>
+            <td>
+              ${item.fileData && item.fileName
+                ? `<button type="button" class="btn btn-sm btn-outline-primary" title="View File" onclick="window.viewInventoryFileAdminById('${item.id}')">
+                    <i class="bi bi-eye"></i> View
+                  </button>`
+                : '<span class="text-muted">No file</span>'
+              }
+            </td>
+            <td>
+              <button class="btn btn-sm btn-danger" onclick="deleteGrocery('${item.id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // --- Billing Tables ---
+      function renderFoodBilling() {
+        // Summary
+        let totalRevenue = 0, totalPaid = 0, totalUnpaid = 0;
+        foodBills.forEach(bill => {
+          totalRevenue += parseFloat(bill.total) || 0;
+          totalPaid += bill.paid ? (parseFloat(bill.total) || 0) : 0;
+          totalUnpaid += !bill.paid ? (parseFloat(bill.total) || 0) : 0;
+        });
+        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+        document.getElementById('totalPaid').textContent = '₹' + totalPaid.toLocaleString('en-IN');
+        document.getElementById('totalUnpaid').textContent = '₹' + totalUnpaid.toLocaleString('en-IN');
+
+        // Table
+        const tbody = document.getElementById('foodBillingTableBody');
+        tbody.innerHTML = foodBills.map((bill, idx) => `
+          <tr>
+            <td>${bill.billNumber || idx + 1}</td>
+            <td>${bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-'}</td>
+            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
+            <td>
+              <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
+                ${bill.paid ? 'Paid' : 'Unpaid'}
+              </span>
+            </td>
+            <td>${formatTime(bill.paidAt || bill.createdAt || bill.timestamp)}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" onclick="deleteOrder('${bill.id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      function renderCakeBilling() {
+        const tbody = document.getElementById('cakeBillingTableBody');
+        tbody.innerHTML = cakeBills.map((bill, idx) => `
+          <tr>
+            <td>${bill.billNumber || idx + 1}</td>
+            <td>${bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-'}</td>
+            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
+            <td>
+              <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
+                ${bill.paid ? 'Paid' : 'Unpaid'}
+              </span>
+            </td>
+            <td>${formatTime(bill.paidAt || bill.createdAt || bill.timestamp)}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" onclick="deleteCakeOrder('${bill.id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      // --- Delete Functions ---
+      window.deleteOrder = function(orderId) {
+        if (confirm('Delete this order/bill?')) {
+          db.collection('food_orders').doc(orderId).delete();
+        }
+      };
+      window.deleteCakeOrder = function(orderId) {
+        if (confirm('Delete this cake order?')) {
+          db.collection('cake_orders').doc(orderId).delete();
+        }
+      };
+      window.deleteGrocery = function(groceryId) {
+        if (confirm('Delete this grocery item?')) {
+          db.collection('inventory').doc(groceryId).delete();
+        }
+      };
+
+      // For viewing grocery file by Firestore id
+      window.viewInventoryFileAdminById = function(id) {
+        const item = groceries.find(g => g.id === id);
+        if (!item) return alert('File not found');
+        var fileType = item.fileType || '';
+        var fileName = item.fileName || 'Unknown File';
+        var mimeMatch = item.fileData.match(/^data:([^;]+);/);
+        var mimeType = mimeMatch ? mimeMatch[1] : '';
+        if (mimeType.startsWith('image/')) {
+          window.showImageModalAdmin(item.fileData, fileName, mimeType);
+        } else if (mimeType === 'application/pdf') {
+          window.showPdfModalAdmin(item.fileData, fileName);
+        } else if (mimeType.startsWith('text/') || mimeType === 'application/json') {
+          window.showTextModalAdmin(item.fileData, fileName);
+        } else {
+          window.downloadFileAdmin(item.fileData, fileName);
+        }
+      };
+
+      // Export helpers
+      function exportTableToXLSX(data, filename, sheetName) {
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Orders");
-        XLSX.writeFile(
-          wb,
-          `BambooGarden_Orders_${period.replace(" ", "_")}.xlsx`
-        );
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+        XLSX.writeFile(wb, filename);
       }
 
-      // On dropdown change
       document.addEventListener("DOMContentLoaded", function () {
-        document
-          .getElementById("periodSelect")
-          .addEventListener("change", updateDashboard);
-        document
-          .getElementById("exportBtn")
-          .addEventListener("click", function () {
-            exportToXLSX();
-            this.classList.add("animate__animated", "animate__tada");
-            setTimeout(() => {
-              this.classList.remove("animate__animated", "animate__tada");
-            }, 700);
-          });
+        renderWaiterOrders();
+        renderKitchenOrders();
+        renderGroceries();
+        renderFoodBilling();
+        renderCakeBilling();
+
+        // Export Waiter Orders (include both food_orders and cake_orders)
+        document.getElementById("exportOrdersBtn").addEventListener("click", function () {
+          const orders = waiterOrders.concat(cakeWaiterOrders);
+          const data = orders.map(order => ({
+            Table: order.tableNumber || order.table || '-',
+            Items: order.items ? Object.entries(order.items).map(([name, item]) => `${name} ×${item.qty}`).join(", ") : "",
+            Time: formatTime(order.createdAt || order.timestamp),
+            Total: order.total
+          }));
+          exportTableToXLSX(data, "WaiterOrders_Today.xlsx", "WaiterOrders");
+        });
+
+        // Export Kitchen Orders (include both food_orders and cake_orders)
+        document.getElementById("exportKitchenBtn").addEventListener("click", function () {
+          const orders = kitchenOrders.concat(cakeKitchenOrders);
+          const data = orders.map(order => ({
+            Table: order.tableNumber || order.table || '-',
+            Items: order.items ? Object.entries(order.items).map(([name, item]) => `${name} ×${item.qty}`).join(", ") : "",
+            "Order Time": formatTime(order.createdAt || order.timestamp),
+            Status: order.status === "ready" ? "Ready" : "In Progress"
+          }));
+          exportTableToXLSX(data, "KitchenOrders_Today.xlsx", "KitchenOrders");
+        });
+
+        // Export Groceries (unchanged)
+        document.getElementById("exportGroceriesBtn").addEventListener("click", function () {
+          const data = groceries.map(item => ({
+            Item: item.name,
+            Amount: item.amount
+          }));
+          exportTableToXLSX(data, "Groceries_Today.xlsx", "Groceries");
+        });
+
+        // Export Billing (Food Orders only, as per UI)
+        document.addEventListener('click', function(e) {
+          if (e.target.closest('#exportBillingBtn')) {
+            const bills = foodBills;
+            const data = bills.map((bill, idx) => ({
+              'Bill #': bill.billNumber || (idx + 1),
+              Table: bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-',
+              Total: bill.total,
+              Status: bill.paid ? 'Paid' : 'Unpaid',
+              Time: formatTime(bill.paidAt || bill.createdAt || bill.timestamp)
+            }));
+            exportTableToXLSX(data, "Billing_Today.xlsx", "Billing");
+          }
+        });
+
+        // Export Cake Billing (already correct)
+        document.getElementById("exportCakeBillingBtn").addEventListener("click", function () {
+          const data = cakeBills.map((bill, idx) => ({
+            'Bill #': bill.billNumber || (idx + 1),
+            Table: bill.tableNumber || bill.table ? 'Table ' + (bill.tableNumber || bill.table) : '-',
+            Total: bill.total,
+            Status: bill.paid ? 'Paid' : 'Unpaid',
+            Time: formatTime(bill.paidAt || bill.createdAt || bill.timestamp)
+          }));
+          exportTableToXLSX(data, "CakeBilling_Today.xlsx", "CakeBilling");
+        });
+
+        // Refresh every 10 seconds for live monitoring
+        setInterval(() => {
+          renderWaiterOrders();
+          renderKitchenOrders();
+          renderGroceries();
+          renderFoodBilling();
+          renderCakeBilling();
+        }, 10000);
+
         // Fix for Bootstrap mobile menu toggling (force collapse on nav-link click)
         document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
           link.addEventListener('click', function() {
@@ -531,12 +955,147 @@
             }
           });
         });
-        updateDashboard();
       });
+
+      // Ensure all modal/file view functions are available before any event binding
+      function escapeHtml(text) {
+        const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+        return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+      }
+
+      window.showFileModalAdmin = function(contentHtml, title, extraClass = '') {
+        // Remove existing modal
+        var oldModal = document.getElementById('fileViewModalAdmin');
+        if (oldModal) oldModal.remove();
+        var modalHtml = `
+          <div class="modal fade" id="fileViewModalAdmin" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">${escapeHtml(title)}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ${extraClass || ''}" style="overflow:auto;">
+                  ${contentHtml}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        // Use DOM API to insert modal
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = modalHtml;
+        document.body.appendChild(tempDiv.firstElementChild);
+        var modal = new bootstrap.Modal(document.getElementById('fileViewModalAdmin'));
+        modal.show();
+        document.getElementById('fileViewModalAdmin').addEventListener('hidden.bs.modal', function() {
+          var m = document.getElementById('fileViewModalAdmin');
+          if (m) m.remove();
+        });
+      };
+
+      window.showImageModalAdmin = function(fileData, fileName, fileType) {
+        if (!/^data:image\//.test(fileData)) {
+          alert('Invalid image data format.');
+          return;
+        }
+        var imageHtml = `
+          <div class="file-info">
+            <strong>File:</strong> ${escapeHtml(fileName)}<br>
+            <strong>Type:</strong> ${escapeHtml(fileType)}<br>
+            <strong>Click image to zoom</strong>
+          </div>
+          <div style="text-align: center;">
+            <img src="${fileData}" 
+                 alt="${escapeHtml(fileName)}" 
+                 class="file-modal-image"
+                 style="max-width:100%;max-height:70vh;display:block;margin:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2);cursor:zoom-in;"
+                 onclick="this.classList.toggle('zoomed')">
+          </div>
+        `;
+        window.showFileModalAdmin(imageHtml, fileName, 'image-container');
+      };
+
+      window.showPdfModalAdmin = function(fileData, fileName) {
+        var pdfHtml = `
+          <div class="file-info">
+            <strong>File:</strong> ${escapeHtml(fileName)}<br>
+            <strong>Type:</strong> PDF Document
+          </div>
+          <iframe src="${fileData}" 
+                  style="width:100%;height:70vh;border:none;border-radius:8px;"
+                  title="${escapeHtml(fileName)}">
+            <p>Your browser doesn't support PDFs. 
+               <a href="${fileData}" download="${fileName}">Download the PDF</a> instead.</p>
+          </iframe>
+        `;
+        window.showFileModalAdmin(pdfHtml, fileName);
+      };
+
+      window.showTextModalAdmin = function(fileData, fileName) {
+        var textContent = '';
+        try {
+          if (fileData.startsWith('data:text/')) {
+            var base64Data = fileData.split(',')[1];
+            textContent = atob(base64Data);
+          } else {
+            textContent = 'Unable to display text content.';
+          }
+        } catch (error) {
+          textContent = 'Error reading text file.';
+        }
+        var textHtml = `
+          <div class="file-info">
+            <strong>File:</strong> ${escapeHtml(fileName)}<br>
+            <strong>Type:</strong> Text Document
+          </div>
+          <pre style="max-height:60vh;overflow:auto;background:#f8f9fa;padding:1rem;border-radius:8px;font-size:0.9rem;">${escapeHtml(textContent)}</pre>
+        `;
+        window.showFileModalAdmin(textHtml, fileName);
+      };
+
+      window.downloadFileAdmin = function(fileData, fileName) {
+        try {
+          var link = document.createElement('a');
+          link.href = fileData;
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (error) {
+          alert('Error downloading file: ' + error.message);
+        }
+      };
+
+      window.viewInventoryFileAdmin = function(idx) {
+        var groceries = getTodayGroceries();
+        var item = groceries[idx];
+        if (!item || !item.fileData) {
+          alert('No file data available for this item.');
+          return;
+        }
+        var fileType = item.fileType || '';
+        var fileName = item.fileName || 'Unknown File';
+        var mimeMatch = item.fileData.match(/^data:([^;]+);/);
+        var mimeType = mimeMatch ? mimeMatch[1] : '';
+        if (mimeType.startsWith('image/')) {
+          window.showImageModalAdmin(item.fileData, fileName, mimeType);
+        } else if (mimeType === 'application/pdf') {
+          window.showPdfModalAdmin(item.fileData, fileName);
+        } else if (mimeType.startsWith('text/') || mimeType === 'application/json') {
+          window.showTextModalAdmin(item.fileData, fileName);
+        } else {
+          window.downloadFileAdmin(item.fileData, fileName);
+        }
+      };
     </script>
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
-
-
