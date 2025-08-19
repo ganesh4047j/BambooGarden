@@ -27,37 +27,6 @@
       font-family: 'Inter', sans-serif;
       color: #2c3e50;
     }
-    .navbar {
-      background: var(--gradient-green) !important;
-      box-shadow: var(--shadow-medium);
-      padding: 1rem 0;
-      backdrop-filter: blur(10px);
-    }
-    .navbar-brand {
-      color: white !important;
-      font-weight: 700;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .navbar-brand::before {
-      content: "🐼";
-      font-size: 2rem;
-    }
-    .nav-link {
-      color: rgba(255,255,255,0.9) !important;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      padding: 0.75rem 1.25rem !important;
-      border-radius: 25px;
-      margin: 0 0.25rem;
-    }
-    .nav-link:hover, .nav-link.active {
-      color: white !important;
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-2px);
-    }
     .dashboard-header {
       background: var(--gradient-green);
       color: white;
@@ -86,6 +55,18 @@
       opacity: 0.9;
       position: relative;
       z-index: 2;
+    }
+    .navbar-brand {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .navbar-brand::before {
+      content: "🐼";
+      font-size: 2rem;
     }
     .inventory-form {
       background: white;
@@ -156,26 +137,6 @@
       from { opacity: 0; transform: translateY(10px);}
       to { opacity: 1; transform: translateY(0);}
     }
-    .badge.in-stock {
-      background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
-      color: #fff;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5em 1em;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(74,124,89,0.08);
-      letter-spacing: 0.5px;
-    }
-    .badge.out-stock {
-      background: linear-gradient(135deg, #ff5252 0%, #ffbaba 100%);
-      color: #fff;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5em 1em;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(255,82,82,0.08);
-      letter-spacing: 0.5px;
-    }
 
     /* Enhanced Add Button */
     .btn-add {
@@ -202,7 +163,6 @@
       gap: 0.5rem;
       width: 100%;
       cursor: pointer;
-      border: 2px solid transparent;
     }
 
     .btn-add::before {
@@ -216,28 +176,6 @@
       transition: left 0.6s;
     }
 
-    .btn-add::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      padding: 2px;
-      background: linear-gradient(45deg, #ffd700, #4a7c59, #8fbc8f, #ffd700);
-      background-size: 400% 100%;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: exclude;
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      animation: borderGlow 3s linear infinite;
-    }
-
-    @keyframes borderGlow {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
     .btn-add:hover {
       background-position: 100% 0;
       transform: translateY(-3px) scale(1.05);
@@ -245,15 +183,10 @@
         0 12px 35px rgba(74, 124, 89, 0.4),
         0 6px 20px rgba(74, 124, 89, 0.3),
         inset 0 1px 0 rgba(255,255,255,0.3);
-      border-color: rgba(255, 215, 0, 0.3);
     }
 
     .btn-add:hover::before {
       left: 100%;
-    }
-
-    .btn-add:hover::after {
-      opacity: 1;
     }
 
     .btn-add:active {
@@ -286,32 +219,27 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
-    /* Pulse effect on form focus */
-    .inventory-form:focus-within .btn-add {
-      animation: pulseGlow 2s ease-in-out infinite;
+    /* Update Button */
+    .btn-update {
+      background: linear-gradient(45deg, #ff8c00 0%, #ffa500 50%, #ff8c00 100%) !important;
+      background-size: 300% 100% !important;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { 
-        box-shadow: 
-          0 8px 25px rgba(74, 124, 89, 0.3),
-          0 4px 12px rgba(74, 124, 89, 0.2);
-      }
-      50% { 
-        box-shadow: 
-          0 12px 35px rgba(74, 124, 89, 0.5),
-          0 6px 20px rgba(74, 124, 89, 0.4),
-          0 0 30px rgba(255, 215, 0, 0.2);
-      }
+    .btn-update:hover {
+      background-position: 100% 0 !important;
+      box-shadow: 
+        0 12px 35px rgba(255, 140, 0, 0.4),
+        0 6px 20px rgba(255, 140, 0, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3) !important;
     }
 
     /* Loading state */
-    .btn-add.loading {
+    .btn-add.loading, .btn-update.loading {
       pointer-events: none;
       opacity: 0.8;
     }
 
-    .btn-add.loading i {
+    .btn-add.loading i, .btn-update.loading i {
       animation: spin 1s linear infinite;
     }
 
@@ -336,82 +264,26 @@
       transform: scale(1.05);
     }
 
-    /* File upload improvements */
-    .file-upload-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .file-upload-label {
-      background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
-      color: #fff;
-      padding: 1rem 2rem;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(74,124,89,0.13);
+    .btn-edit {
+      background: linear-gradient(135deg, #4a90e2 0%, #7bb3f0 100%);
+      color: white;
       border: none;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .file-upload-label:hover {
-      background: linear-gradient(135deg, #8fbc8f 0%, #4a7c59 100%);
-      transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 8px 32px rgba(74,124,89,0.18);
-    }
-    .file-upload-label:active {
-      transform: scale(0.98);
-    }
-    .file-upload-label i {
-      font-size: 1.5rem;
-      transition: transform 0.2s;
-    }
-    .file-upload-label.uploading i {
-      animation: spin 1s linear infinite;
-    }
-    .file-upload-label.success {
-      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    }
-    .file-upload-label.error {
-      background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
-    }
-    .file-upload-input {
-      display: none;
-    }
-    .file-upload-filename {
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
       font-size: 1rem;
-      color: var(--bamboo-dark);
-      font-weight: 500;
-      margin-left: 0.5rem;
-      word-break: break-all;
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      transition: all 0.2s;
     }
-
-    /* Progress bar for OCR */
-    .ocr-progress {
-      width: 100%;
-      height: 8px;
-      background: rgba(0,0,0,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 0.5rem;
-      display: none;
+    .btn-edit:hover {
+      background: linear-gradient(135deg, #7bb3f0 0%, #4a90e2 100%);
+      color: #fff;
+      transform: scale(1.05);
     }
-    .ocr-progress-bar {
-      height: 100%;
-      background: var(--gradient-green);
-      width: 0%;
-      transition: width 0.3s ease;
-      border-radius: 4px;
+    .btn-edit:disabled {
+      background: #6c757d;
+      opacity: 0.6;
+      transform: none;
+      cursor: not-allowed;
     }
 
     .status-message {
@@ -437,64 +309,184 @@
       border: 1px solid #bee5eb;
     }
 
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loading-spinner {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .connection-status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 1000;
+    }
+
+    .connection-status.connected {
+      background: #28a745;
+    }
+
+    .connection-status.disconnected {
+      background: #dc3545;
+    }
+
+    /* Enhanced modal styles for image viewing */
+    .file-modal-image {
+      max-width: 100%;
+      max-height: 70vh;
+      display: block;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+      cursor: zoom-in;
+    }
+    
+    .file-modal-image:hover {
+      transform: scale(1.02);
+    }
+    
+    .file-modal-image.zoomed {
+      cursor: zoom-out;
+      max-width: none;
+      max-height: none;
+      width: auto;
+      height: auto;
+    }
+    
+    .modal-body.image-container {
+      overflow: auto;
+      max-height: 80vh;
+    }
+    
+    .file-info {
+      background: #f8f9fa;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    /* Drag and drop visual feedback */
+    .inventory-form.drag-over {
+      background: linear-gradient(135deg, rgba(74, 124, 89, 0.1) 0%, rgba(143, 188, 143, 0.1) 100%);
+      border: 2px dashed var(--bamboo-green);
+      transform: scale(1.02);
+    }
+
+    .file-modal-image.loaded {
+      animation: fadeInImage 0.3s ease-in;
+    }
+
+    @keyframes fadeInImage {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Edit mode styling */
+    .inventory-form.edit-mode {
+      border: 2px solid #ff8c00;
+      background: linear-gradient(135deg, rgba(255, 140, 0, 0.05) 0%, rgba(255, 165, 0, 0.05) 100%);
+    }
+
+    .edit-indicator {
+      background: #ff8c00;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .edit-indicator.active {
+      display: block;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .dashboard-title { font-size: 1.7rem; }
+      .inventory-form, .inventory-table-card { padding: 1.2rem; }
+      .form-label { font-size: 1rem; }
+    }
+    @media (max-width: 992px) {
+      .dashboard-title { font-size: 1.4rem; }
+      .inventory-form, .inventory-table-card { padding: 1rem; }
+      .form-label { font-size: 0.98rem; }
+      .btn-add, .btn-update, .btn-delete { font-size: 1rem; padding: 0.7rem 1.2rem; }
+    }
     @media (max-width: 768px) {
-      .dashboard-title {
-        font-size: 2rem;
-      }
-      .dashboard-header, .inventory-form, .inventory-table-card {
-        padding: 1rem;
-      }
-      .inventory-table th, .inventory-table td {
-        font-size: 0.95rem;
-        padding: 0.5rem 0.5rem;
-        white-space: normal;
-        word-break: break-word;
-      }
-      .table-responsive {
-        overflow-x: auto;
-      }
-      .btn-add {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-      }
-      .file-upload-label {
-        padding: 0.7rem 1.2rem;
-        font-size: 1rem;
-      }
-      .file-upload-filename {
-        max-width: 100px;
-        font-size: 0.95rem;
-      }
-      .file-upload-wrapper {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
-      }
+      .dashboard-title { font-size: 1.1rem; }
+      .dashboard-header, .inventory-form, .inventory-table-card { padding: 0.7rem; }
+      .inventory-table th, .inventory-table td { font-size: 0.92rem; padding: 0.4rem 0.4rem; }
+      .btn-add, .btn-update, .btn-delete { font-size: 0.95rem; padding: 0.6rem 1rem; }
+      .file-modal-image { max-height: 40vh; }
+      .modal-dialog { max-width: 98vw; margin: 0.5rem auto; }
+      .modal-content { border-radius: 10px; }
+      .dashboard-header { padding: 1rem 0 0.5rem 0; }
+      .dashboard-title, .dashboard-subtitle { text-align: center; }
+      .inventory-form, .inventory-table-card { border-radius: 12px; }
+      .table-responsive { overflow-x: auto; }
+      .form-label { font-size: 0.95rem; }
+    }
+    @media (max-width: 576px) {
+      .dashboard-header, .inventory-form, .inventory-table-card { padding: 0.4rem; }
+      .dashboard-title { font-size: 1rem; }
+      .dashboard-subtitle { font-size: 0.9rem; }
+      .form-label { font-size: 0.9rem; }
+      .btn-add, .btn-update, .btn-delete { font-size: 0.9rem; padding: 0.5rem 0.7rem; }
+      .file-modal-image { max-height: 30vh; }
+      .modal-dialog { max-width: 100vw; margin: 0.2rem auto; }
+      .modal-content { border-radius: 6px; }
+      .inventory-form, .inventory-table-card { border-radius: 8px; }
+      .table-responsive { overflow-x: auto; }
+      .inventory-table th, .inventory-table td { font-size: 0.88rem; padding: 0.3rem 0.2rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <h1 class="navbar-brand">Bamboo Garden</h1>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+      <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Connecting to database...</p>
     </div>
-  </nav>
+  </div>
+
+  <!-- Connection Status -->
+  <div class="connection-status disconnected" id="connectionStatus">
+    <i class="bi bi-wifi-off me-2"></i>Disconnected
+  </div>
 
   <!-- Dashboard Header -->
   <div class="dashboard-header">
     <div class="container">
+      <h1 class="navbar-brand">Bamboo Garden</h1>
       <h1 class="dashboard-title">🍳 Inventory & Stock</h1>
       <p class="dashboard-subtitle">
         Register, monitor and manage all groceries and kitchen stock
@@ -502,51 +494,45 @@
     </div>
   </div>
 
-  <div class="container animate__animated animate__fadeInUp">
-    <!-- File Upload for Bill/Inventory -->
-    <div class="file-upload-wrapper">
-      <label class="file-upload-label" id="fileUploadLabel">
-        <i class="bi bi-upload"></i>
-        <span class="file-upload-text">Upload Bill/Stock File</span>
-        <input type="file" class="file-upload-input" id="fileInput" accept=".txt,.csv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.heic,.tiff" />
-      </label>
-      <span class="file-upload-filename" id="fileUploadFilename"></span>
-    </div>
-    
-    <!-- Progress bar for OCR -->
-    <div class="ocr-progress" id="ocrProgress">
-      <div class="ocr-progress-bar" id="ocrProgressBar"></div>
-    </div>
-    
-    <!-- Status message -->
-    <div class="status-message" id="statusMessage"></div>
-
+  <div class="container">
     <!-- Inventory Form -->
-    <div class="inventory-form mb-4">
+    <div class="inventory-form mb-4" id="inventoryFormContainer">
+      <!-- Edit Indicator -->
+      <div class="edit-indicator" id="editIndicator">
+        <i class="bi bi-pencil me-2"></i>Editing Item - Make changes and click Update
+      </div>
+      
       <form id="inventoryForm" class="row g-3">
-        <div class="col-md-5">
+        <div class="col-md-4">
           <label class="form-label" for="itemName"><i class="bi bi-box-seam me-2"></i>Item Name</label>
           <input type="text" class="form-control" id="itemName" placeholder="e.g. Rice, Oil, Chicken" required>
         </div>
         <div class="col-md-3">
-          <label class="form-label" for="itemQty"><i class="bi bi-123 me-2"></i>Quantity</label>
-          <input type="number" class="form-control" id="itemQty" min="0" placeholder="e.g. 10" required>
+          <label class="form-label" for="itemAmount"><i class="bi bi-cash-coin me-2"></i>Amount (<span class="text-muted">&#8377;</span>)</label>
+          <div class="input-group">
+            <span class="input-group-text">&#8377;</span>
+            <input type="number" class="form-control" id="itemAmount" min="0" placeholder="e.g. 10" required>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label class="form-label" for="itemStatus"><i class="bi bi-flag me-2"></i>Status</label>
-          <select class="form-select" id="itemStatus" required>
-            <option value="in-stock">In Stock</option>
-            <option value="out-stock">Out of Stock</option>
-          </select>
+        <div class="col-md-4">
+          <label class="form-label" for="itemFile"><i class="bi bi-paperclip me-2"></i>Upload Bill/Stock File</label>
+          <input type="file" class="form-control" id="itemFile" accept=".txt,.csv,.pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.doc,.docx,.xls,.xlsx,.json,.xml,.heic,.tiff" title="Maximum file size: 5MB">
+          <div id="itemFileName" class="small mt-1"></div>
+          <div class="small text-muted mt-1">
+            <i class="bi bi-info-circle me-1"></i>Max: 5MB | Images auto-compress if needed
+          </div>
         </div>
         <div class="col-md-1 d-flex align-items-end">
-          <button type="submit" class="btn btn-add">
+          <button type="submit" class="btn btn-add w-100" id="submitBtn">
             <i class="bi bi-plus-circle"></i>
             <span class="btn-text d-none d-lg-inline">Add Item</span>
             <span class="btn-text d-lg-none">ADD</span>
           </button>
         </div>
       </form>
+      
+      <!-- Status message -->
+      <div class="status-message" id="statusMessage"></div>
     </div>
 
     <!-- Inventory Table -->
@@ -556,8 +542,8 @@
           <thead>
             <tr>
               <th>Item</th>
-              <th>Quantity</th>
-              <th>Status</th>
+              <th>Amount (<span class="text-warning">&#8377;</span>)</th>
+              <th>File</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -572,35 +558,296 @@
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Add Tesseract.js for OCR with proper error handling -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
-  <script>
-    // Inventory data stored in localStorage
-    function getInventory() {
-      return JSON.parse(localStorage.getItem('bamboo_inventory') || '[]');
+  
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      getDocs, 
+      doc, 
+      updateDoc, 
+      deleteDoc, 
+      onSnapshot,
+      query,
+      orderBy,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
+      authDomain: "bamboo-15c88.firebaseapp.com", 
+      projectId: "bamboo-15c88",
+      storageBucket: "bamboo-15c88.firebasestorage.app",
+      messagingSenderId: "491968003258",
+      appId: "1:491968003258:web:903605a044306b45745683"
+    };
+
+    // Check if Firebase config is properly set
+    function isFirebaseConfigValid(config) {
+      return config.apiKey && 
+             config.authDomain && 
+             config.projectId && 
+             !config.apiKey.includes('your-') &&
+             !config.authDomain.includes('your-') &&
+             !config.projectId.includes('your-');
     }
-    function saveInventory(data) {
-      localStorage.setItem('bamboo_inventory', JSON.stringify(data));
+
+    // Initialize Firebase
+    let app, db;
+    let currentEditIndex = null;
+    let currentItems = [];
+    let isFirebaseEnabled = false;
+
+    // Show configuration instructions if needed
+    function showConfigInstructions() {
+      const instructionsHtml = `
+        <div class="alert alert-warning mt-3">
+          <h5><i class="bi bi-exclamation-triangle me-2"></i>Firebase Configuration Required</h5>
+          <p>To use the database features, please set up Firebase:</p>
+          <ol>
+            <li>Go to <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+            <li>Create a new project or select existing one</li>
+            <li>Enable Firestore Database</li>
+            <li>Go to Project Settings → General → Your apps</li>
+            <li>Copy the config and replace the placeholder values in the code</li>
+          </ol>
+          <p class="mb-0"><strong>Currently running in demo mode without persistence.</strong></p>
+        </div>
+      `;
+      $('#inventoryFormContainer').after(instructionsHtml);
+    }
+
+    async function initializeFirebase() {
+      try {
+        if (!isFirebaseConfigValid(firebaseConfig)) {
+          console.warn('Firebase config not properly set. Running in demo mode.');
+          updateConnectionStatus(false);
+          hideLoadingOverlay();
+          showConfigInstructions();
+          showStatusMessage('Running in demo mode. Data will not persist.', 'info');
+          // Initialize with empty data for demo
+          renderInventoryTable();
+          return;
+        }
+
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        isFirebaseEnabled = true;
+        
+        // Test connection by trying to read from Firestore
+        await setupRealtimeListener();
+        
+        // Show connected status
+        updateConnectionStatus(true);
+        hideLoadingOverlay();
+        showStatusMessage('Connected to Firebase database successfully!', 'success');
+        
+      } catch (error) {
+        console.error('Firebase initialization error:', error);
+        isFirebaseEnabled = false;
+        updateConnectionStatus(false);
+        hideLoadingOverlay();
+        
+        if (error.code === 'permission-denied') {
+          showStatusMessage('Database access denied. Please check Firestore security rules.', 'error');
+        } else if (error.code === 'unavailable') {
+          showStatusMessage('Database temporarily unavailable. Please try again later.', 'error');
+        } else {
+          showStatusMessage('Failed to connect to database: ' + error.message, 'error');
+        }
+        
+        showConfigInstructions();
+        // Fallback to demo mode
+        renderInventoryTable();
+      }
+    }
+
+    // Database operations
+    async function addInventoryItem(name, amount, fileData, fileName, fileType) {
+      if (!isFirebaseEnabled) {
+        // Demo mode - just add to local array
+        const newItem = {
+          id: 'demo_' + Date.now(),
+          name: name,
+          amount: amount,
+          fileData: fileData || null,
+          fileName: fileName || null,
+          fileType: fileType || null,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        currentItems.unshift(newItem);
+        renderInventoryTable();
+        showStatusMessage('Item added (demo mode - not saved to database)', 'info');
+        return newItem.id;
+      }
+
+      try {
+        showLoadingOverlay('Adding item...');
+        
+        const docRef = await addDoc(collection(db, 'inventory'), {
+          name: name,
+          amount: amount,
+          fileData: fileData || null,
+          fileName: fileName || null,
+          fileType: fileType || null,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        
+        hideLoadingOverlay();
+        showStatusMessage('Item added successfully!', 'success');
+        return docRef.id;
+        
+      } catch (error) {
+        hideLoadingOverlay();
+        console.error('Error adding item:', error);
+        showStatusMessage('Error adding item: ' + error.message, 'error');
+        throw error;
+      }
+    }
+
+    async function updateInventoryItem(docId, name, amount, fileData, fileName, fileType) {
+      if (!isFirebaseEnabled) {
+        // Demo mode - update local array
+        const itemIndex = currentItems.findIndex(item => item.id === docId);
+        if (itemIndex !== -1) {
+          const updateData = {
+            name: name,
+            amount: amount,
+            updatedAt: new Date()
+          };
+
+          if (fileData !== undefined) {
+            updateData.fileData = fileData;
+            updateData.fileName = fileName;
+            updateData.fileType = fileType;
+          }
+
+          currentItems[itemIndex] = { ...currentItems[itemIndex], ...updateData };
+          renderInventoryTable();
+          showStatusMessage('Item updated (demo mode - not saved to database)', 'info');
+        }
+        return;
+      }
+
+      try {
+        showLoadingOverlay('Updating item...');
+        
+        const updateData = {
+          name: name,
+          amount: amount,
+          updatedAt: serverTimestamp()
+        };
+
+        // Only update file data if new file is provided
+        if (fileData !== undefined) {
+          updateData.fileData = fileData;
+          updateData.fileName = fileName;
+          updateData.fileType = fileType;
+        }
+
+        await updateDoc(doc(db, 'inventory', docId), updateData);
+        
+        hideLoadingOverlay();
+        showStatusMessage('Item updated successfully!', 'success');
+        
+      } catch (error) {
+        hideLoadingOverlay();
+        console.error('Error updating item:', error);
+        showStatusMessage('Error updating item: ' + error.message, 'error');
+        throw error;
+      }
+    }
+
+    async function deleteInventoryItem(docId) {
+      if (!isFirebaseEnabled) {
+        // Demo mode - remove from local array
+        const itemIndex = currentItems.findIndex(item => item.id === docId);
+        if (itemIndex !== -1) {
+          currentItems.splice(itemIndex, 1);
+          renderInventoryTable();
+          showStatusMessage('Item deleted (demo mode - not saved to database)', 'info');
+        }
+        return;
+      }
+
+      try {
+        showLoadingOverlay('Deleting item...');
+        
+        await deleteDoc(doc(db, 'inventory', docId));
+        
+        hideLoadingOverlay();
+        showStatusMessage('Item deleted successfully!', 'success');
+        
+      } catch (error) {
+        hideLoadingOverlay();
+        console.error('Error deleting item:', error);
+        showStatusMessage('Error deleting item: ' + error.message, 'error');
+        throw error;
+      }
+    }
+
+    async function setupRealtimeListener() {
+      if (!isFirebaseEnabled) {
+        return;
+      }
+
+      try {
+        const q = query(collection(db, 'inventory'), orderBy('createdAt', 'desc'));
+        
+        onSnapshot(q, (querySnapshot) => {
+          currentItems = [];
+          querySnapshot.forEach((doc) => {
+            currentItems.push({
+              id: doc.id,
+              ...doc.data()
+            });
+          });
+          renderInventoryTable();
+        }, (error) => {
+          console.error('Error listening to inventory changes:', error);
+          updateConnectionStatus(false);
+          showStatusMessage('Connection to database lost. Please refresh the page.', 'error');
+        });
+        
+      } catch (error) {
+        console.error('Error setting up listener:', error);
+        updateConnectionStatus(false);
+        throw error;
+      }
     }
 
     function renderInventoryTable() {
-      const items = getInventory();
       const tbody = $('#inventoryTableBody');
-      if (items.length === 0) {
+      
+      if (currentItems.length === 0) {
         tbody.html(`<tr><td colspan="4" class="text-center text-muted">No items registered yet.</td></tr>`);
         return;
       }
-      tbody.html(items.map((item, idx) => `
-        <tr class="animate__animated animate__fadeInUp">
+      
+      tbody.html(currentItems.map((item, idx) => `
+        <tr class="animate__animated animate__fadeInUp ${item.id === currentEditIndex ? 'table-warning' : ''}">
           <td>${escapeHtml(item.name)}</td>
-          <td>${item.qty}</td>
+          <td><span class="fw-bold">&#8377; ${parseFloat(item.amount).toLocaleString('en-IN')}</span></td>
           <td>
-            <span class="badge ${item.status === 'in-stock' ? 'in-stock' : 'out-stock'}">
-              ${item.status === 'in-stock' ? 'In Stock' : 'Out of Stock'}
-            </span>
+            ${item.fileData && item.fileName
+              ? `<button type="button" class="btn btn-sm btn-outline-primary" title="View File" onclick="viewInventoryFile('${item.id}')">
+                  <i class="bi bi-eye"></i> View
+                </button>`
+              : '<span class="text-muted">No file</span>'
+            }
           </td>
           <td>
-            <button class="btn btn-delete btn-sm" onclick="deleteInventoryItem(${idx})">
+            <button class="btn btn-edit btn-sm me-1" onclick="editInventoryItem('${item.id}')" title="Edit" ${item.id === currentEditIndex ? 'disabled' : ''}>
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-delete btn-sm" onclick="confirmDeleteItem('${item.id}')" title="Delete">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -608,30 +855,25 @@
       `).join(''));
     }
 
-    function addInventoryItem(name, qty, status) {
-      const items = getInventory();
-      items.push({ name, qty, status });
-      saveInventory(items);
-      renderInventoryTable();
+    // UI helper functions
+    function showLoadingOverlay(message = 'Loading...') {
+      $('#loadingOverlay p').text(message);
+      $('#loadingOverlay').show();
     }
 
-    window.deleteInventoryItem = function(idx) {
-      const items = getInventory();
-      items.splice(idx, 1);
-      saveInventory(items);
-      renderInventoryTable();
-    };
+    function hideLoadingOverlay() {
+      $('#loadingOverlay').hide();
+    }
 
-    // Utility function to escape HTML
-    function escapeHtml(text) {
-      const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      };
-      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    function updateConnectionStatus(connected) {
+      const $status = $('#connectionStatus');
+      if (connected) {
+        $status.removeClass('disconnected').addClass('connected');
+        $status.html('<i class="bi bi-wifi me-2"></i>Connected');
+      } else {
+        $status.removeClass('connected').addClass('disconnected');
+        $status.html('<i class="bi bi-wifi-off me-2"></i>Disconnected');
+      }
     }
 
     function showStatusMessage(message, type) {
@@ -643,389 +885,662 @@
       }, 5000);
     }
 
-    $(document).ready(function() {
-      renderInventoryTable();
+    // File handling utilities
+    const MAX_FILE_SIZE = 800 * 1024; // 800KB to leave room for other data in Firestore
+    const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB maximum upload size
+    const MAX_IMAGE_DIMENSION = 800; // Reduced max dimension for better compression
 
-      $('#inventoryForm').on('submit', function(e) {
+    function compressImage(file, targetSizeKB = 700, maxAttempts = 5) {
+      return new Promise((resolve, reject) => {
+        if (!file.type.startsWith('image/')) {
+          resolve(file);
+          return;
+        }
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = function() {
+          try {
+            let { width, height } = img;
+            let quality = 0.8;
+            let scaleFactor = 1;
+            
+            // Calculate aggressive scaling for large images
+            const maxDimension = Math.max(width, height);
+            if (maxDimension > MAX_IMAGE_DIMENSION) {
+              scaleFactor = MAX_IMAGE_DIMENSION / maxDimension;
+            }
+            
+            // Further reduce for very large files
+            if (file.size > 2 * 1024 * 1024) { // If > 2MB
+              scaleFactor = Math.min(scaleFactor, 0.5); // Scale down to 50%
+            } else if (file.size > 1024 * 1024) { // If > 1MB
+              scaleFactor = Math.min(scaleFactor, 0.7); // Scale down to 70%
+            }
+
+            width = Math.max(1, Math.floor(width * scaleFactor));
+            height = Math.max(1, Math.floor(height * scaleFactor));
+
+            canvas.width = width;
+            canvas.height = height;
+            
+            function attemptCompression(currentQuality, attempt = 1) {
+              ctx.clearRect(0, 0, width, height);
+              ctx.drawImage(img, 0, 0, width, height);
+              
+              // Force JPEG for better compression
+              const outputFormat = 'image/jpeg';
+              
+              canvas.toBlob((blob) => {
+                if (!blob) {
+                  if (attempt < maxAttempts) {
+                    // Try with even more aggressive settings
+                    width = Math.max(1, Math.floor(width * 0.8));
+                    height = Math.max(1, Math.floor(height * 0.8));
+                    canvas.width = width;
+                    canvas.height = height;
+                    attemptCompression(currentQuality * 0.7, attempt + 1);
+                  } else {
+                    reject(new Error('Failed to create compressed image blob after multiple attempts'));
+                  }
+                  return;
+                }
+
+                console.log(`Compression attempt ${attempt}: ${formatFileSize(blob.size)} (quality: ${currentQuality.toFixed(2)})`);
+
+                if (blob.size <= targetSizeKB * 1024) {
+                  resolve(blob);
+                } else if (attempt < maxAttempts && currentQuality > 0.1) {
+                  // Try with lower quality and smaller dimensions
+                  const newQuality = Math.max(0.1, currentQuality * 0.6);
+                  width = Math.max(1, Math.floor(width * 0.9));
+                  height = Math.max(1, Math.floor(height * 0.9));
+                  canvas.width = width;
+                  canvas.height = height;
+                  attemptCompression(newQuality, attempt + 1);
+                } else {
+                  reject(new Error(`Unable to compress image below ${targetSizeKB}KB after ${maxAttempts} attempts. Final size: ${formatFileSize(blob.size)}`));
+                }
+              }, outputFormat, currentQuality);
+            }
+
+            attemptCompression(quality);
+
+          } catch (error) {
+            reject(new Error('Image processing failed: ' + error.message));
+          }
+        };
+
+        img.onerror = () => reject(new Error('Failed to load image for compression'));
+        
+        try {
+          img.src = URL.createObjectURL(file);
+        } catch (error) {
+          reject(new Error('Failed to create image URL: ' + error.message));
+        }
+      });
+    }
+
+    function validateFileSize(fileData) {
+      // Calculate actual base64 size
+      const actualSize = new Blob([fileData]).size;
+      console.log(`Base64 data size: ${formatFileSize(actualSize)}`);
+      return actualSize <= MAX_FILE_SIZE;
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    async function processFile(file) {
+      if (!file) return null;
+
+      console.log(`Processing file: ${file.name}, Size: ${formatFileSize(file.size)}, Type: ${file.type}`);
+
+      // Check maximum upload size (5MB)
+      if (file.size > MAX_UPLOAD_SIZE) {
+        throw new Error(`File size (${formatFileSize(file.size)}) exceeds maximum limit of 5MB. Please choose a smaller file.`);
+      }
+
+      let processedFile = file;
+
+      // Handle images that are larger than Firestore limit
+      if (file.type.startsWith('image/') && file.size > MAX_FILE_SIZE) {
+        showStatusMessage(`Compressing large image (${formatFileSize(file.size)})...`, 'info');
+        
+        try {
+          processedFile = await compressImage(file, 600); // Target 600KB to be safe
+          showStatusMessage(`Image compressed to ${formatFileSize(processedFile.size)}`, 'success');
+          console.log(`Compression successful: ${formatFileSize(file.size)} → ${formatFileSize(processedFile.size)}`);
+        } catch (error) {
+          console.error('Compression failed:', error);
+          
+          // Offer simple resize option
+          const tryResize = confirm(
+            `Advanced compression failed: ${error.message}\n\n` +
+            `Would you like to try a simple resize (may lose quality)?`
+          );
+          
+          if (tryResize) {
+            try {
+              processedFile = await compressImage(file, 500, 1); // Single attempt with very aggressive settings
+              showStatusMessage(`Image resized to ${formatFileSize(processedFile.size)}`, 'success');
+            } catch (resizeError) {
+              throw new Error(`Both compression and resize failed. Please choose a smaller image file (under 800KB).`);
+            }
+          } else {
+            throw new Error('Upload cancelled. Please choose a smaller image file.');
+          }
+        }
+      }
+
+      // For non-image files larger than 800KB, warn user but allow upload
+      if (!file.type.startsWith('image/') && file.size > MAX_FILE_SIZE) {
+        const proceed = confirm(
+          `File size is ${formatFileSize(file.size)}. Large files will likely fail to upload.\n\n` +
+          `Would you like to continue anyway?`
+        );
+        if (!proceed) {
+          throw new Error('Upload cancelled by user');
+        }
+      }
+
+      // Convert to base64
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.onload = function(evt) {
+          const fileData = evt.target.result;
+          
+          // Final size check for Firestore compatibility
+          if (!validateFileSize(fileData)) {
+            const sizeAfterBase64 = new Blob([fileData]).size;
+            reject(new Error(
+              `File is still too large for database storage (${formatFileSize(sizeAfterBase64)}).\n\n` +
+              `Database limit is 800KB. Please choose a smaller file.`
+            ));
+            return;
+          }
+          
+          resolve({
+            data: fileData,
+            name: file.name,
+            type: file.type,
+            size: processedFile.size,
+            originalSize: file.size
+          });
+        };
+        
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(processedFile);
+      });
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    window.viewInventoryFile = function(itemId) {
+      const item = currentItems.find(i => i.id === itemId);
+      
+      if (!item) {
+        alert('Item not found.');
+        return;
+      }
+      
+      if (!item.fileData) {
+        alert('No file data available for this item.');
+        return;
+      }
+
+      const fileName = item.fileName || 'Unknown File';
+      const mimeMatch = item.fileData.match(/^data:([^;]+);/);
+      const mimeType = mimeMatch ? mimeMatch[1] : '';
+      
+      if (mimeType.startsWith('image/')) {
+        showImageModal(item.fileData, fileName, mimeType);
+      } else if (mimeType === 'application/pdf') {
+        showPdfModal(item.fileData, fileName);
+      } else if (mimeType.startsWith('text/')) {
+        showTextModal(item.fileData, fileName);
+      } else {
+        downloadFile(item.fileData, fileName);
+      }
+    };
+
+    window.editInventoryItem = function(itemId) {
+      const item = currentItems.find(i => i.id === itemId);
+      if (!item) return;
+
+      // Set edit mode
+      currentEditIndex = itemId;
+      
+      // Fill form with item data
+      $('#itemName').val(item.name);
+      $('#itemAmount').val(item.amount);
+      $('#itemFileName').text(item.fileName || '');
+      
+      // File input is optional in edit mode
+      $('#itemFile').prop('required', false);
+
+      // Update UI for edit mode
+      enterEditMode();
+
+      // Scroll to form and focus
+      $('html, body').animate({ 
+        scrollTop: $('#inventoryFormContainer').offset().top - 20 
+      }, 300);
+      $('#itemName').focus();
+    };
+
+    window.confirmDeleteItem = function(itemId) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        deleteInventoryItem(itemId);
+        
+        // If we're editing the deleted item, cancel edit mode
+        if (currentEditIndex === itemId) {
+          cancelEditMode();
+        }
+      }
+    };
+
+    window.cancelEditMode = function() {
+      exitEditMode();
+      showStatusMessage('Edit cancelled', 'info');
+    };
+
+    // Edit mode functions
+    function enterEditMode() {
+      const $container = $('#inventoryFormContainer');
+      const $submitBtn = $('#submitBtn');
+      const $editIndicator = $('#editIndicator');
+      
+      // Update form styling
+      $container.addClass('edit-mode');
+      $editIndicator.addClass('active');
+      
+      // Update button text and styling
+      $submitBtn.removeClass('btn-add').addClass('btn-update');
+      $submitBtn.find('i').attr('class', 'bi bi-arrow-repeat');
+      
+      // Update button text for both desktop and mobile
+      $submitBtn.find('.btn-text.d-none.d-lg-inline').text('Update Item');
+      $submitBtn.find('.btn-text.d-lg-none').text('UPDATE');
+      
+      // Add cancel button
+      addCancelButton();
+      
+      // Re-render table to highlight editing row
+      renderInventoryTable();
+    }
+
+    function exitEditMode() {
+      const $container = $('#inventoryFormContainer');
+      const $submitBtn = $('#submitBtn');
+      const $editIndicator = $('#editIndicator');
+      
+      // Reset edit state
+      currentEditIndex = null;
+      
+      // Update form styling
+      $container.removeClass('edit-mode');
+      $editIndicator.removeClass('active');
+      
+      // Reset button styling and text
+      $submitBtn.removeClass('btn-update').addClass('btn-add');
+      $submitBtn.find('i').attr('class', 'bi bi-plus-circle');
+      
+      // Reset button text for both desktop and mobile
+      $submitBtn.find('.btn-text.d-none.d-lg-inline').text('Add Item');
+      $submitBtn.find('.btn-text.d-lg-none').text('ADD');
+      
+      // Reset form
+      $('#inventoryForm')[0].reset();
+      $('#itemFileName').text('');
+      $('#itemFile').prop('required', true);
+      
+      // Remove cancel button
+      removeCancelButton();
+      
+      // Re-render table
+      renderInventoryTable();
+    }
+
+    function addCancelButton() {
+      if ($('#cancelEditBtn').length === 0) {
+        const cancelBtn = `
+          <div class="col-12 mt-2">
+            <button type="button" class="btn btn-outline-secondary" id="cancelEditBtn" onclick="cancelEditMode()">
+              <i class="bi bi-x-circle me-2"></i>Cancel Edit
+            </button>
+          </div>
+        `;
+        $('#inventoryForm .row').append(cancelBtn);
+      }
+    }
+
+    function removeCancelButton() {
+      $('#cancelEditBtn').parent().remove();
+    }
+
+    // File modal functions
+    function showImageModal(fileData, fileName, fileType) {
+      if (!/^data:image\//.test(fileData)) {
+        alert('Invalid image data format.');
+        return;
+      }
+
+      const imageHtml = `
+        <div class="file-info">
+          <strong>File:</strong> ${escapeHtml(fileName)}<br>
+          <strong>Type:</strong> ${escapeHtml(fileType)}<br>
+          <strong>Click image to zoom</strong>
+        </div>
+        <div style="text-align: center;">
+          <img src="${fileData}" 
+               alt="${escapeHtml(fileName)}" 
+               class="file-modal-image"
+               onload="handleImageLoad(this)"
+               onerror="handleImageError(this)"
+               onclick="toggleImageZoom(this)">
+        </div>
+      `;
+      
+      showFileModal(imageHtml, fileName, 'image-container');
+    }
+
+    function showPdfModal(fileData, fileName) {
+      const pdfHtml = `
+        <div class="file-info">
+          <strong>File:</strong> ${escapeHtml(fileName)}<br>
+          <strong>Type:</strong> PDF Document
+        </div>
+        <iframe src="${fileData}" 
+                style="width:100%;height:70vh;border:none;border-radius:8px;"
+                title="${escapeHtml(fileName)}">
+          <p>Your browser doesn't support PDFs. 
+             <a href="${fileData}" download="${fileName}">Download the PDF</a> instead.</p>
+        </iframe>
+      `;
+      
+      showFileModal(pdfHtml, fileName);
+    }
+
+    function showTextModal(fileData, fileName) {
+      let textContent = '';
+      try {
+        if (fileData.startsWith('data:text/')) {
+          const base64Data = fileData.split(',')[1];
+          textContent = atob(base64Data);
+        } else {
+          textContent = 'Unable to display text content.';
+        }
+      } catch (error) {
+        textContent = 'Error reading text file.';
+      }
+
+      const textHtml = `
+        <div class="file-info">
+          <strong>File:</strong> ${escapeHtml(fileName)}<br>
+          <strong>Type:</strong> Text Document
+        </div>
+        <pre style="max-height:60vh;overflow:auto;background:#f8f9fa;padding:1rem;border-radius:8px;font-size:0.9rem;">${escapeHtml(textContent)}</pre>
+      `;
+      
+      showFileModal(textHtml, fileName);
+    }
+
+    function downloadFile(fileData, fileName) {
+      try {
+        const link = document.createElement('a');
+        link.href = fileData;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        alert('Error downloading file: ' + error.message);
+      }
+    }
+
+    function showFileModal(contentHtml, title, extraClass = '') {
+      // Remove existing modal
+      $('#fileViewModal').remove();
+      
+      const modalHtml = `
+        <div class="modal fade" id="fileViewModal" tabindex="-1">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">${escapeHtml(title)}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body ${extraClass}" style="overflow:auto;">
+                ${contentHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      $('body').append(modalHtml);
+      const modal = new bootstrap.Modal(document.getElementById('fileViewModal'));
+      modal.show();
+      
+      // Clean up when modal is hidden
+      $('#fileViewModal').on('hidden.bs.modal', function() {
+        $('#fileViewModal').remove();
+      });
+    }
+
+    // Image handling functions
+    window.handleImageError = function(img) {
+      img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+      img.onerror = null;
+    };
+
+    window.handleImageLoad = function(img) {
+      img.classList.add('loaded');
+    };
+
+    window.toggleImageZoom = function(img) {
+      img.classList.toggle('zoomed');
+    };
+
+    // Document ready function
+    $(document).ready(function() {
+      // Show selected file name and size info
+      $('#itemFile').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+          const sizeFormatted = formatFileSize(file.size);
+          let sizeInfo = ` (${sizeFormatted})`;
+          let className = 'text-muted';
+          
+          // Color coding and warnings based on file size
+          if (file.size > MAX_UPLOAD_SIZE) {
+            sizeInfo += ' - ⚠️ Too large!';
+            className = 'text-danger';
+          } else if (file.size > MAX_FILE_SIZE) {
+            if (file.type.startsWith('image/')) {
+              sizeInfo += ' - 🔄 Will be compressed';
+              className = 'text-warning';
+            } else {
+              sizeInfo += ' - ⚠️ Large file';
+              className = 'text-warning';
+            }
+          } else {
+            sizeInfo += ' - ✅ Good size';
+            className = 'text-success';
+          }
+          
+          $('#itemFileName').html(`${file.name}<span class="${className}">${sizeInfo}</span>`);
+        } else {
+          $('#itemFileName').text('');
+        }
+      });
+
+      // Form submission handler
+      $('#inventoryForm').on('submit', async function(e) {
         e.preventDefault();
         
-        const $submitBtn = $('.btn-add');
+        const $submitBtn = $('#submitBtn');
         const $icon = $submitBtn.find('i');
         const originalIcon = $icon.attr('class');
         
-        // Add loading state
+        // Show loading state
         $submitBtn.addClass('loading');
         $icon.attr('class', 'bi bi-arrow-clockwise');
-        
+
         const name = $('#itemName').val().trim();
-        const qty = parseInt($('#itemQty').val(), 10);
-        const status = $('#itemStatus').val();
-        
-        if (!name || isNaN(qty) || qty < 0) {
+        const amount = parseFloat($('#itemAmount').val());
+        const fileInput = $('#itemFile')[0];
+        const file = fileInput.files[0];
+
+        // Validation
+        if (!name || isNaN(amount) || amount < 0) {
           alert('Please enter valid item details.');
-          $submitBtn.removeClass('loading');
-          $icon.attr('class', originalIcon);
+          resetButtonState();
           return;
         }
-        
-        // Simulate processing time for better UX
-        setTimeout(() => {
-          addInventoryItem(name, qty, status);
-          this.reset();
-          
-          // Remove loading state
+
+        // Check if file is required (not in edit mode or no existing file)
+        if (currentEditIndex === null && !file) {
+          alert('Please upload a file.');
+          resetButtonState();
+          return;
+        }
+
+        function resetButtonState() {
           $submitBtn.removeClass('loading');
           $icon.attr('class', originalIcon);
+        }
+
+        async function handleSuccess(fileData, fileName, fileType) {
+          const $submitBtn = $('#submitBtn');
           
-          // Brief success animation
-          $submitBtn.find('.btn-text').text('Added!');
-          setTimeout(() => {
-            $submitBtn.find('.btn-text').text('Add Item');
-          }, 1000);
-        }, 500);
-      });
-
-      // Responsive menu fix for mobile
-      $('.navbar-nav .nav-link').on('click', function() {
-        var navbarCollapse = $('#navbarNav');
-        if (navbarCollapse.hasClass('show')) {
-          var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse[0]);
-          bsCollapse.hide();
-        }
-      });
-    });
-
-    // Enhanced file upload and extraction logic
-    $(function() {
-      const $fileInput = $('#fileInput');
-      const $fileLabel = $('#fileUploadLabel');
-      const $fileText = $fileLabel.find('.file-upload-text');
-      const $fileIcon = $fileLabel.find('i');
-      const $fileName = $('#fileUploadFilename');
-      const $ocrProgress = $('#ocrProgress');
-      const $ocrProgressBar = $('#ocrProgressBar');
-
-      function resetUploadButton() {
-        $fileLabel.removeClass('uploading success error');
-        $fileIcon.removeClass().addClass('bi bi-upload');
-        $fileText.text('Upload Bill/Stock File');
-        $fileName.text('');
-        $ocrProgress.hide();
-        $ocrProgressBar.css('width', '0%');
-        $('.image-preview').remove(); // Remove image preview
-      }
-
-      function setUploadState(state, text, iconClass) {
-        $fileLabel.removeClass('uploading success error').addClass(state);
-        $fileIcon.removeClass().addClass(iconClass);
-        $fileText.text(text);
-      }
-
-      // Add image preview functionality
-      function showImagePreview(file) {
-        if (file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            // Remove existing preview
-            $('.image-preview').remove();
-            
-            const preview = $(`
-              <div class="image-preview mt-3 p-3 bg-light rounded">
-                <h6 class="mb-2">Image Preview:</h6>
-                <img src="${e.target.result}" alt="Uploaded image" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <div class="mt-2">
-                  <small class="text-muted">
-                    <i class="bi bi-info-circle me-1"></i>
-                    For best results, ensure text is clear and well-lit
-                  </small>
-                </div>
-              </div>
-            `);
-            
-            $('.file-upload-wrapper').after(preview);
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-
-      $fileInput.on('change', function(e) {
-        const file = this.files[0];
-        if (!file) return;
-        
-        $fileName.text(file.name);
-        showImagePreview(file); // Show preview for images
-        setUploadState('uploading', 'Processing...', 'bi bi-arrow-repeat');
-
-        // Handle different file types
-        if (file.type.startsWith('text/') || file.name.match(/\.(csv|txt|log|ini|conf|md|yaml|yml)$/i)) {
-          // Read as text
-          const reader = new FileReader();
-          reader.onload = function(evt) {
-            setUploadState('uploading', 'Extracting items...', 'bi bi-arrow-repeat');
-            setTimeout(() => {
-              try {
-                const result = extractInventoryFromText(evt.target.result);
-                if (result.success) {
-                  setUploadState('success', `Added ${result.count} items!`, 'bi bi-check-circle');
-                  showStatusMessage(`Successfully extracted ${result.count} items from ${file.name}`, 'success');
-                } else {
-                  setUploadState('error', 'No valid items found', 'bi bi-exclamation-circle');
-                  showStatusMessage('No valid inventory items found in the file. Please check the format.', 'error');
-                }
-              } catch (err) {
-                setUploadState('error', 'Failed to process file', 'bi bi-x-circle');
-                showStatusMessage('Error processing file: ' + err.message, 'error');
-              }
-              setTimeout(resetUploadButton, 3000);
-            }, 500);
-          };
-          reader.onerror = function() {
-            setUploadState('error', 'Failed to read file', 'bi bi-x-circle');
-            showStatusMessage('Error reading file. Please try again.', 'error');
-            setTimeout(resetUploadButton, 3000);
-          };
-          reader.readAsText(file);
-        } else if (file.type.startsWith('image/')) {
-          // Enhanced OCR processing for images
-          $ocrProgress.show();
-          setUploadState('uploading', 'Initializing OCR...', 'bi bi-eye');
-          
-          processImageWithOCR(file)
-            .then(result => {
-              if (result.success) {
-                setUploadState('success', `Added ${result.count} items!`, 'bi bi-check-circle');
-                showStatusMessage(`Successfully extracted ${result.count} items from image using OCR`, 'success');
-              } else {
-                setUploadState('error', 'No items found in image', 'bi bi-exclamation-circle');
-                showStatusMessage('No inventory items detected in the image. Make sure the text is clear and readable.', 'error');
-              }
-            })
-            .catch(err => {
-              console.error('OCR Error:', err);
-              setUploadState('error', 'OCR processing failed', 'bi bi-x-circle');
-              showStatusMessage('Failed to process image: ' + (err.message || 'Unknown error'), 'error');
-            })
-            .finally(() => {
-              $ocrProgress.hide();
-              setTimeout(resetUploadButton, 3000);
-            });
-        } else {
-          // Unsupported file type
-          setUploadState('error', 'Unsupported file type', 'bi bi-file-x');
-          showStatusMessage('Please upload a text file (.txt, .csv) or image file (.jpg, .png) for inventory extraction.', 'error');
-          setTimeout(resetUploadButton, 3000);
-        }
-      });
-
-      // Enhanced OCR processing function
-      async function processImageWithOCR(file) {
-        return new Promise((resolve, reject) => {
           try {
-            // Initialize Tesseract worker
-            const worker = Tesseract.createWorker({
-              logger: (progress) => {
-                if (progress.status === 'recognizing text') {
-                  const percentage = Math.round(progress.progress * 100);
-                  $ocrProgressBar.css('width', `${percentage}%`);
-                  setUploadState('uploading', `Processing image... ${percentage}%`, 'bi bi-eye');
-                } else if (progress.status === 'loading tesseract core') {
-                  setUploadState('uploading', 'Loading OCR engine...', 'bi bi-download');
-                } else if (progress.status === 'initializing tesseract') {
-                  setUploadState('uploading', 'Initializing OCR...', 'bi bi-gear');
-                } else if (progress.status === 'initializing api') {
-                  setUploadState('uploading', 'Starting text recognition...', 'bi bi-play-circle');
-                }
-              }
-            });
-
-            (async () => {
-              try {
-                await worker.load();
-                await worker.loadLanguage('eng');
-                await worker.initialize('eng');
-                
-                // Configure OCR settings for better accuracy
-                await worker.setParameters({
-                  tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:-()[]{}/',
-                  tessedit_pageseg_mode: Tesseract.PSM.AUTO,
-                });
-
-                const { data: { text, confidence } } = await worker.recognize(file);
-                await worker.terminate();
-
-                console.log('OCR Confidence:', confidence);
-                console.log('Extracted Text:', text);
-
-                if (confidence < 30) {
-                  throw new Error('Low confidence in text recognition. Please use a clearer image.');
-                }
-
-                const result = extractInventoryFromText(text);
-                resolve(result);
-              } catch (error) {
-                await worker.terminate();
-                reject(error);
-              }
-            })();
-          } catch (error) {
-            reject(error);
-          }
-        });
-      }
-
-      // Enhanced extraction function (fix: move inside $(function) and call properly)
-      function extractInventoryFromText(text) {
-        // Enhanced extraction patterns
-        const patterns = [
-          // Pattern 1: Item Name: Quantity (e.g., "Rice: 10", "Oil: 5kg")
-          /^([A-Za-z\s\-_\.]+)[\s]*:[\s]*(\d{1,5})(?:kg|g|lbs|pieces|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
-          // Pattern 2: Item Name, Quantity (e.g., "Rice, 10", "Oil, 5")
-          /^([A-Za-z\s\-_\.]+),[\s]*(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
-          // Pattern 3: Item Name - Quantity (e.g., "Rice - 10", "Oil - 5kg")
-          /^([A-Za-z\s\-_\.]+)[\s]*-[\s]*(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
-          // Pattern 4: Quantity Item Name (e.g., "10 Rice", "5 Oil")
-          /^(\d{1,5})[\s]+([A-Za-z\s\-_\.]+?)(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i,
-          // Pattern 5: Item Name Quantity (space separated, e.g., "Rice 10", "Oil 5")
-          /^([A-Za-z\s\-_\.]+?)[\s]+(\d{1,5})(?:kg|g|lbs|pieces?|pcs|units?|bottles?|packets?|boxes?|cans?)?[\s]*$/i
-        ];
-
-        let added = 0;
-        const addedItems = new Set();
-        const lines = text.split(/\r?\n/).filter(l => l.trim());
-
-        lines.forEach(line => {
-          line = line.trim();
-          if (!line || line.length < 3) return;
-          for (let pattern of patterns) {
-            pattern.lastIndex = 0;
-            const match = pattern.exec(line);
-            if (match) {
-              let name, qty;
-              if (pattern.source.startsWith('^(\\d')) {
-                qty = parseInt(match[1]);
-                name = match[2].trim();
-              } else {
-                name = match[1].trim();
-                qty = parseInt(match[2]);
-              }
-              name = name.replace(/[^\w\s\-]/g, '').trim();
-              if (name && name.length > 1 && !isNaN(qty) && qty >= 0 && qty <= 10000) {
-                const itemKey = name.toLowerCase();
-                if (!addedItems.has(itemKey)) {
-                  addedItems.add(itemKey);
-                  addInventoryItem(name, qty, qty > 0 ? 'in-stock' : 'out-stock');
-                  added++;
-                }
-                break;
-              }
+            if (currentEditIndex !== null) {
+              // Update existing item
+              await updateInventoryItem(currentEditIndex, name, amount, fileData, fileName, fileType);
+              
+              // Show temporary success text
+              $submitBtn.find('.btn-text.d-none.d-lg-inline').text('Updated!');
+              $submitBtn.find('.btn-text.d-lg-none').text('UPDATED!');
+              
+              setTimeout(() => {
+                exitEditMode(); // This will reset button text back to "Add Item"
+              }, 1000);
+              
+            } else {
+              // Add new item
+              await addInventoryItem(name, amount, fileData, fileName, fileType);
+              $('#inventoryForm')[0].reset();
+              $('#itemFileName').text('');
+              
+              // Show temporary success text
+              $submitBtn.find('.btn-text.d-none.d-lg-inline').text('Added!');
+              $submitBtn.find('.btn-text.d-lg-none').text('ADDED!');
+              
+              setTimeout(() => {
+                $submitBtn.find('.btn-text.d-none.d-lg-inline').text('Add Item');
+                $submitBtn.find('.btn-text.d-lg-none').text('ADD');
+              }, 1000);
             }
+            
+            resetButtonState();
+            
+          } catch (error) {
+            resetButtonState();
           }
-        });
+        }
 
-        return {
-          success: added > 0,
-          count: added
-        };
-      }
+        if (file) {
+          // Process file with compression and validation
+          try {
+            const processedFile = await processFile(file);
+            await handleSuccess(processedFile.data, processedFile.name, processedFile.type);
+          } catch (error) {
+            alert('File processing error: ' + error.message);
+            resetButtonState();
+          }
+        } else {
+          // No new file (edit mode only)
+          await handleSuccess();
+        }
+      });
 
-      // Handle drag and drop
-      const $uploadArea = $('.file-upload-wrapper');
+      // Drag and drop functionality
+      const $formContainer = $('#inventoryFormContainer');
       
-      $uploadArea.on('dragover', function(e) {
+      $formContainer.on('dragover', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $fileLabel.addClass('uploading');
+        $(this).addClass('drag-over');
       });
       
-      $uploadArea.on('dragleave', function(e) {
+      $formContainer.on('dragleave', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $fileLabel.removeClass('uploading');
+        $(this).removeClass('drag-over');
       });
       
-      $uploadArea.on('drop', function(e) {
+      $formContainer.on('drop', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $fileLabel.removeClass('uploading');
+        $(this).removeClass('drag-over');
         
         const files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
-          $fileInput[0].files = files;
-          $fileInput.trigger('change');
+          $('#itemFile')[0].files = files;
+          $('#itemFile').trigger('change');
         }
-      });
-
-      // Sample data button for testing
-      const $sampleBtn = $(`
-        <button class="btn btn-outline-secondary btn-sm" id="addSampleData">
-          <i class="bi bi-database-add me-1"></i>Add Sample Data
-        </button>
-      `);
-      
-      $('.file-upload-wrapper').append($sampleBtn);
-      
-      $sampleBtn.on('click', function() {
-        const sampleData = [
-          { name: 'Rice', qty: 25, status: 'in-stock' },
-          { name: 'Cooking Oil', qty: 10, status: 'in-stock' },
-          { name: 'Chicken Breast', qty: 15, status: 'in-stock' },
-          { name: 'Tomatoes', qty: 8, status: 'in-stock' },
-          { name: 'Onions', qty: 12, status: 'in-stock' },
-          { name: 'Salt', qty: 0, status: 'out-stock' },
-          { name: 'Black Pepper', qty: 3, status: 'in-stock' },
-          { name: 'Garlic', qty: 6, status: 'in-stock' },
-          { name: 'Soy Sauce', qty: 0, status: 'out-stock' },
-          { name: 'Noodles', qty: 20, status: 'in-stock' }
-        ];
-        
-        sampleData.forEach(item => addInventoryItem(item.name, item.qty, item.status));
-        showStatusMessage(`Added ${sampleData.length} sample inventory items`, 'success');
       });
     });
 
-    // Add keyboard shortcuts
+    // Keyboard shortcuts
     $(document).on('keydown', function(e) {
       // Ctrl/Cmd + U for upload
       if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
         e.preventDefault();
-        $('#fileInput').click();
+        $('#itemFile').click();
       }
       
       // Ctrl/Cmd + N for new item (focus on name input)
       if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
         e.preventDefault();
+        if (currentEditIndex !== null) {
+          cancelEditMode();
+        }
         $('#itemName').focus();
       }
-    });
-
-    // Auto-save draft while typing
-    let saveTimeout;
-    $('#itemName, #itemQty').on('input', function() {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        const draft = {
-          name: $('#itemName').val(),
-          qty: $('#itemQty').val(),
-          status: $('#itemStatus').val()
-        };
-        localStorage.setItem('bamboo_inventory_draft', JSON.stringify(draft));
-      }, 1000);
-    });
-
-    // Restore draft on page load
-    $(document).ready(function() {
-      const draft = JSON.parse(localStorage.getItem('bamboo_inventory_draft') || '{}');
-      if (draft.name) {
-        $('#itemName').val(draft.name);
-        $('#itemQty').val(draft.qty);
-        $('#itemStatus').val(draft.status);
+      
+      // Escape to cancel edit mode or close modal
+      if (e.key === 'Escape') {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('fileViewModal'));
+        if (modal) {
+          modal.hide();
+        } else if (currentEditIndex !== null) {
+          cancelEditMode();
+        }
       }
     });
 
-    // Clear draft when form is submitted
-    $('#inventoryForm').on('submit', function() {
-      localStorage.removeItem('bamboo_inventory_draft');
-    });
+    // Initial setup - Initialize Firebase when page loads
+    showLoadingOverlay('Connecting to database...');
+    initializeFirebase();
+
   </script>
 </body>
 </html>
