@@ -68,9 +68,12 @@
       align-items: center;
       margin-bottom: 1rem;
     }
-    .table-info h5 {
+    .customer-info h5 {
       color: #2d4a35;
       margin: 0;
+    }
+    .customer-info small {
+      color: #6c757d;
     }
     .status-paid {
       background: linear-gradient(135deg, #d1e7dd 0%, #75b798 100%);
@@ -95,6 +98,30 @@
       background: #4a7c59;
       color: white;
       border: none;
+    }
+    .item-type-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .food-badge {
+      background: rgba(74, 124, 89, 0.1);
+      color: #4a7c59;
+    }
+    .cake-badge {
+      background: rgba(233, 30, 99, 0.1);
+      color: #e91e63;
+    }
+    .section-divider {
+      border-top: 2px solid #e9ecef;
+      margin: 1rem 0;
+      padding-top: 1rem;
+    }
+    .section-header {
+      font-weight: 700;
+      color: #4a7c59;
+      margin-bottom: 0.5rem;
     }
     .total-section {
       background: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
@@ -144,6 +171,24 @@
       background: white;
       border-radius: 15px;
       box-shadow: 0 4px 20px rgba(74, 124, 89, 0.1);
+    }
+    .order-summary {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .summary-row:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 1.1rem;
     }
     /* Print styles */
     @media print {
@@ -278,6 +323,38 @@
       color: #4a7c59;
       font-weight: 600;
     }
+    #printable-bill .section-break {
+      border-top: 1px dashed #ccc;
+      margin: 0.8rem 0;
+      padding-top: 0.5rem;
+    }
+    #printable-bill .section-title {
+      font-weight: 700;
+      color: #4a7c59;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+    .bill-table-container {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+    }
+    .bill-details .btn {
+      transition: all 0.3s ease;
+    }
+    .bill-details .btn:hover {
+      transform: translateY(-1px);
+    }
+    .alert-success {
+      border: 1px solid #d1e7dd;
+      background: linear-gradient(135deg, #d1e7dd 0%, #a3d9a4 100%);
+      color: #0f5132;
+      font-weight: 600;
+    }
+    .flex-fill {
+      flex: 1 1 auto;
+    }
   </style>
 </head>
 <body>
@@ -294,7 +371,7 @@
 <div class="header">
   <div class="container">
     <h1>💰 Billing Dashboard</h1>
-    <p>Process payments and manage customer bills</p>
+    <p>Process payments for combined food & cake orders</p>
   </div>
 </div>
 
@@ -332,13 +409,14 @@
     <button class="filter-tab active" onclick="filterBills('all', event)">All Bills</button>
     <button class="filter-tab" onclick="filterBills('unpaid', event)">Unpaid</button>
     <button class="filter-tab" onclick="filterBills('paid', event)">Paid</button>
+    <button class="filter-tab" onclick="filterBills('ready', event)">Ready to Bill</button>
   </div>
 
   <div id="billsContainer">
     <div class="no-bills">
       <div style="font-size: 4rem; margin-bottom: 1rem;">🧾</div>
       <h3>No Bills Yet</h3>
-      <p>Bills will appear when orders are ready from kitchen</p>
+      <p>Bills will appear when unified orders are ready</p>
     </div>
   </div>
 </div>
@@ -351,7 +429,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <p id="paymentInfo">Table X - ₹XXX</p>
+        <p id="paymentInfo">Customer - ₹XXX</p>
         <h6>Payment Method</h6>
         <div class="row">
           <div class="col-6 col-md-3 mb-2">
@@ -391,13 +469,17 @@
 <!-- Printable bill template (hidden, filled dynamically) -->
 <div id="printable-bill"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">    // Make functions globally available
+    window.toggleDetails = toggleDetails;
+    window.formatOrderTime = formatOrderTime;
+    window.formatPaymentTime = formatPaymentTime;
+  </script>
 <!-- Firebase App (the core Firebase SDK) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <!-- Firebase Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-  // TODO: Replace with your Firebase project config
+  // Firebase project config
   const firebaseConfig = {
     apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
     authDomain: "bamboo-15c88.firebaseapp.com", 
@@ -414,60 +496,54 @@
   let selectedBill = null;
   let selectedPaymentMethod = null;
 
-  // Helper to normalize bill data from both collections
-  function normalizeBill(doc, data, type) {
-    return {
-      id: doc.id,
-      billType: type, // 'food' or 'cake'
-      tableNumber: data.tableNumber || data.table || '-',
-      customerName: data.customerName || '',
-      items: data.items || {},
-      total: data.total || (data.items ? Object.values(data.items).reduce((sum, i) => sum + (i.price * i.qty), 0) : 0),
-      paid: !!data.paid,
-      paidAt: data.paidAt,
-      paymentMethod: data.paymentMethod,
-      status: data.status,
-      createdAt: data.createdAt
-    };
-  }
-
-  // Listen to both food_orders and cakes_orders, merge for display
+  // Listen to unified orders for billing
   function listenToBills() {
-    let foodBills = [];
-    let cakeBills = [];
-    // Food Orders
-    db.collection('food_orders')
-      .where('status', '==', 'ready')
+    db.collection('unified_orders')
       .onSnapshot(snapshot => {
-        foodBills = [];
+        bills = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          foodBills.push(normalizeBill(doc, data, 'food'));
+          // Only show orders that are ready for billing
+          if (isReadyForBilling(data)) {
+            bills.push({
+              id: doc.id,
+              customerName: data.customerName || 'Unknown Customer',
+              customerPhone: data.customerPhone || '',
+              tableNumber: data.tableNumber || '-',
+              allItems: data.allItems || {},
+              foodItems: data.foodItems || {},
+              cakeItems: data.cakeItems || {},
+              foodTotal: data.foodTotal || 0,
+              cakeTotal: data.cakeTotal || 0,
+              totalAmount: data.totalAmount || 0,
+              paid: !!data.paid,
+              paidAt: data.paidAt,
+              paymentMethod: data.paymentMethod,
+              status: data.status,
+              foodStatus: data.foodStatus,
+              cakeStatus: data.cakeStatus,
+              createdAt: data.createdAt,
+              billGenerated: data.billGenerated || false
+            });
+          }
         });
-        mergeAndRenderBills(foodBills, cakeBills);
-      });
-    // Cake Orders
-    db.collection('cake_orders')
-      .where('status', '==', 'ready')
-      .onSnapshot(snapshot => {
-        cakeBills = [];
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          cakeBills.push(normalizeBill(doc, data, 'cake'));
+        
+        // Sort by createdAt desc
+        bills.sort((a, b) => {
+          const aTime = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : 0;
+          const bTime = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : 0;
+          return bTime - aTime;
         });
-        mergeAndRenderBills(foodBills, cakeBills);
+        
+        renderBills();
+        updateStats();
       });
   }
 
-  function mergeAndRenderBills(foodBills, cakeBills) {
-    // Merge and sort by createdAt desc (if available)
-    bills = [...foodBills, ...cakeBills].sort((a, b) => {
-      const aTime = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : 0;
-      const bTime = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : 0;
-      return bTime - aTime;
-    });
-    renderBills();
-    updateStats();
+  // Check if order is ready for billing
+  function isReadyForBilling(orderData) {
+    // Order must have overall status of 'ready'
+    return orderData.status === 'ready';
   }
 
   // Start listeners
@@ -476,64 +552,154 @@
   function renderBills(filter = 'all') {
     const container = document.getElementById('billsContainer');
     let filtered = bills;
+    
     if (filter === 'unpaid') filtered = bills.filter(b => !b.paid);
     if (filter === 'paid') filtered = bills.filter(b => b.paid);
+    if (filter === 'ready') filtered = bills.filter(b => !b.paid && !b.billGenerated);
 
     if (filtered.length === 0) {
       container.innerHTML = `
         <div class="no-bills">
           <div style="font-size: 4rem; margin-bottom: 1rem;">🧾</div>
-          <h3>No Bills Yet</h3>
-          <p>Bills will appear when orders are ready from kitchen or cake counter</p>
+          <h3>No ${filter === 'all' ? '' : filter.charAt(0).toUpperCase() + filter.slice(1)} Bills</h3>
+          <p>Bills will appear when unified orders are ready for billing</p>
         </div>`;
       return;
     }
 
-    container.innerHTML = filtered.map(bill => `
+    container.innerHTML = filtered.map(bill => createBillCard(bill)).join('');
+  }
+
+  function createBillCard(bill) {
+    const hasFoodItems = Object.keys(bill.foodItems).length > 0;
+    const hasCakeItems = Object.keys(bill.cakeItems).length > 0;
+    
+    return `
       <div class="bill-card">
         <div class="bill-header">
-          <div class="table-info">
-            <h5>${bill.billType === 'cake' ? 'Cake Order' : 'Table ' + bill.tableNumber}</h5>
-            <div>${bill.customerName}</div>
+          <div class="customer-info">
+            <h5><i class="bi bi-person me-2"></i>${bill.customerName}</h5>
+            <small>
+              <i class="bi bi-table me-1"></i>Table ${bill.tableNumber} • 
+              <i class="bi bi-telephone me-1"></i>${bill.customerPhone || 'N/A'} •
+              <i class="bi bi-clock me-1"></i>${formatOrderTime(bill.createdAt)}
+            </small>
+            <div class="mt-1">
+              ${hasFoodItems ? '<span class="badge bg-success me-1">Food</span>' : ''}
+              ${hasCakeItems ? '<span class="badge bg-danger me-1">Cake</span>' : ''}
+            </div>
           </div>
           <div>
             <span class="${bill.paid ? 'status-paid' : 'status-unpaid'}">
+              <i class="bi bi-${bill.paid ? 'check-circle' : 'clock'} me-1"></i>
               ${bill.paid ? 'Paid' : 'Unpaid'}
             </span>
           </div>
         </div>
-        <div>
-          <table class="table bill-table">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${Object.entries(bill.items || {}).map(([itemName, item]) => `
-                <tr>
-                  <td>${itemName}</td>
-                  <td>${item.qty}</td>
-                  <td>₹${item.price}</td>
-                  <td>₹${item.qty * item.price}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-          <div class="total-section d-flex justify-content-between align-items-center">
-            <div><b>Total</b></div>
-            <div><b>₹${bill.total || 0}</b></div>
+        
+        <div class="order-summary">
+          <div class="summary-row">
+            <span><i class="bi bi-utensils me-2"></i>Food Items (${Object.keys(bill.foodItems).length})</span>
+            <span>₹${bill.foodTotal}</span>
           </div>
-          <div class="mt-2 d-flex gap-2">
-            ${!bill.paid ? `<button class="btn btn-pay" onclick="openPaymentModal('${bill.id}','${bill.billType}')">Pay</button>` : ''}
-            <button class="btn btn-print" onclick="printBill('${bill.id}')" type="button">Print</button>
+          <div class="summary-row">
+            <span><i class="bi bi-cake2 me-2"></i>Cake Items (${Object.keys(bill.cakeItems).length})</span>
+            <span>₹${bill.cakeTotal}</span>
+          </div>
+          <div class="summary-row">
+            <span><strong><i class="bi bi-calculator me-2"></i>Total Amount</strong></span>
+            <span><strong>₹${bill.totalAmount}</strong></span>
           </div>
         </div>
+
+        <div class="bill-details" style="margin: 1rem 0;">
+          <button class="btn btn-outline-primary btn-sm" onclick="toggleDetails('${bill.id}')" style="width: 100%;">
+            <i class="bi bi-eye me-2"></i>View Item Details
+          </button>
+          <div id="details-${bill.id}" class="bill-table-container" style="display: none; margin-top: 1rem;">
+            <table class="table bill-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Type</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${generateItemRows(bill.allItems)}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="total-section d-flex justify-content-between align-items-center">
+          <div><b><i class="bi bi-receipt me-2"></i>Grand Total</b></div>
+          <div><b>₹${bill.totalAmount}</b></div>
+        </div>
+        
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          ${!bill.paid ? `
+            <button class="btn btn-pay flex-fill" onclick="openPaymentModal('${bill.id}')">
+              <i class="bi bi-credit-card me-2"></i>Process Payment
+            </button>
+          ` : `
+            <div class="alert alert-success mb-0 flex-fill">
+              <i class="bi bi-check-circle me-2"></i>
+              Paid via ${bill.paymentMethod ? bill.paymentMethod.toUpperCase() : 'Unknown'} 
+              ${bill.paidAt ? 'on ' + formatPaymentTime(bill.paidAt) : ''}
+            </div>
+          `}
+          <button class="btn btn-print" onclick="printBill('${bill.id}')" type="button">
+            <i class="bi bi-printer me-2"></i>Print
+          </button>
+        </div>
       </div>
-    `).join('');
+    `;
+  }
+
+  function toggleDetails(billId) {
+    const detailsDiv = document.getElementById(`details-${billId}`);
+    const button = detailsDiv.previousElementSibling;
+    
+    if (detailsDiv.style.display === 'none') {
+      detailsDiv.style.display = 'block';
+      button.innerHTML = '<i class="bi bi-eye-slash me-2"></i>Hide Item Details';
+    } else {
+      detailsDiv.style.display = 'none';
+      button.innerHTML = '<i class="bi bi-eye me-2"></i>View Item Details';
+    }
+  }
+
+  function formatOrderTime(timestamp) {
+    if (!timestamp) return 'Unknown time';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleString();
+  }
+
+  function formatPaymentTime(timestamp) {
+    if (!timestamp) return '';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleString();
+  }
+
+  function generateItemRows(allItems) {
+    return Object.entries(allItems || {}).map(([itemName, item]) => {
+      const itemType = item.itemType || 'food';
+      const badgeClass = itemType === 'cake' ? 'cake-badge' : 'food-badge';
+      const typeLabel = itemType === 'cake' ? 'Cake' : 'Food';
+      
+      return `
+        <tr>
+          <td>${itemName}</td>
+          <td><span class="item-type-badge ${badgeClass}">${typeLabel}</span></td>
+          <td>${item.qty}</td>
+          <td>₹${item.price}</td>
+          <td>₹${item.qty * item.price}</td>
+        </tr>
+      `;
+    }).join('');
   }
 
   function updateStats() {
@@ -546,7 +712,7 @@
       return dt.toDateString() === today.toDateString();
     };
     const paidToday = paid.filter(b => isToday(b.paidAt));
-    const revenue = paidToday.reduce((sum, b) => sum + (b.total || 0), 0);
+    const revenue = paidToday.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
     const avg = paidToday.length ? (revenue / paidToday.length) : 0;
 
     document.getElementById('unpaidCount').textContent = unpaid.length;
@@ -561,13 +727,14 @@
     renderBills(type);
   }
 
-  function openPaymentModal(billId, billType) {
+  function openPaymentModal(billId) {
     selectedBillId = billId;
     selectedBill = bills.find(b => b.id === billId);
-    selectedBill.billType = billType || selectedBill.billType;
     selectedPaymentMethod = null;
+    
     document.getElementById('paymentInfo').textContent =
-      `${selectedBill.billType === 'cake' ? 'Cake Order' : 'Table ' + selectedBill.tableNumber} - ₹${selectedBill.total}`;
+      `${selectedBill.customerName} - Table ${selectedBill.tableNumber} - ₹${selectedBill.totalAmount}`;
+    
     document.querySelectorAll('.payment-method').forEach(el => {
       el.classList.remove('border-success', 'bg-success', 'text-white');
       el.onclick = function() {
@@ -584,26 +751,30 @@
       alert('Select a payment method');
       return;
     }
-    const bill = bills.find(b => b.id === selectedBillId);
-    const collection = bill.billType === 'cake' ? 'cake_orders' : 'food_orders';
-    db.collection(collection).doc(selectedBillId).update({
+    
+    db.collection('unified_orders').doc(selectedBillId).update({
       paid: true,
       paidAt: firebase.firestore.FieldValue.serverTimestamp(),
-      paymentMethod: selectedPaymentMethod
+      paymentMethod: selectedPaymentMethod,
+      billGenerated: true
     }).then(() => {
       bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+    }).catch(err => {
+      alert('Error processing payment: ' + err.message);
     });
   }
 
-  // Print only the selected bill in a nice format
+  // Print unified bill
   function printBill(billId) {
     const bill = bills.find(b => b.id === billId);
     if (!bill) return;
+    
     const now = new Date();
     const dateStr = now.toLocaleDateString();
     const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    const billTitle = bill.billType === 'cake' ? 'Cake Order' : 'Table ' + bill.tableNumber;
+    const hasFoodItems = Object.keys(bill.foodItems).length > 0;
+    const hasCakeItems = Object.keys(bill.cakeItems).length > 0;
 
     // Build printable bill HTML
     const html = `
@@ -613,11 +784,19 @@
           <div class="subtitle">Fine Dine & Family Restaurant</div>
           <div class="bill-meta">Bill Date: ${dateStr} &nbsp; ${timeStr}</div>
         </div>
+        
         <div class="bill-info">
-          <div><b>${billTitle}</b></div>
-          <div><b>Customer:</b> ${bill.customerName || '-'}</div>
-          <div><b>Status:</b> ${bill.paid ? 'Paid' : 'Unpaid'}</div>
+          <div><b>Customer:</b> ${bill.customerName}</div>
+          <div><b>Table:</b> ${bill.tableNumber}</div>
+          <div><b>Phone:</b> ${bill.customerPhone || 'N/A'}</div>
           <div><b>Order ID:</b> ${bill.id.slice(-6).toUpperCase()}</div>
+          <div><b>Status:</b> ${bill.paid ? 'Paid' : 'Unpaid'}</div>
+          <div><b>Payment:</b> ${bill.paymentMethod ? bill.paymentMethod.toUpperCase() : '-'}</div>
+        </div>
+
+        ${hasFoodItems ? `
+        <div class="section-break">
+          <div class="section-title">🍽️ Food Items</div>
         </div>
         <table class="bill-table">
           <thead>
@@ -629,7 +808,7 @@
             </tr>
           </thead>
           <tbody>
-            ${Object.entries(bill.items || {}).map(([itemName, item]) => `
+            ${Object.entries(bill.foodItems).map(([itemName, item]) => `
               <tr>
                 <td>${itemName}</td>
                 <td>${item.qty}</td>
@@ -638,19 +817,71 @@
               </tr>
             `).join('')}
             <tr class="total-row">
-              <td colspan="3" style="text-align:right;">Total</td>
-              <td>₹${bill.total || 0}</td>
+              <td colspan="3" style="text-align:right;">Food Subtotal</td>
+              <td>₹${bill.foodTotal}</td>
             </tr>
           </tbody>
         </table>
-        <div class="summary-section">
-          <span class="label">Payment Method:</span>
-          <span class="value">${bill.paymentMethod ? bill.paymentMethod.toUpperCase() : '-'}</span>
+        ` : ''}
+
+        ${hasCakeItems ? `
+        <div class="section-break">
+          <div class="section-title">🍰 Cake Items</div>
         </div>
+        <table class="bill-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Object.entries(bill.cakeItems).map(([itemName, item]) => `
+              <tr>
+                <td>${itemName}</td>
+                <td>${item.qty}</td>
+                <td>₹${item.price}</td>
+                <td>₹${item.qty * item.price}</td>
+              </tr>
+            `).join('')}
+            <tr class="total-row">
+              <td colspan="3" style="text-align:right;">Cake Subtotal</td>
+              <td>₹${bill.cakeTotal}</td>
+            </tr>
+          </tbody>
+        </table>
+        ` : ''}
+
+        <div class="section-break">
+          <table class="bill-table">
+            <tr class="total-row">
+              <td colspan="3" style="text-align:right; font-size: 1.2rem;">GRAND TOTAL</td>
+              <td style="font-size: 1.2rem;">₹${bill.totalAmount}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="summary-section">
+          <span class="label">Items Count:</span>
+          <span class="value">${Object.keys(bill.allItems).length} items</span>
+        </div>
+        <div class="summary-section">
+          <span class="label">Order Time:</span>
+          <span class="value">${formatOrderTime(bill.createdAt)}</span>
+        </div>
+        ${bill.paid ? `
+        <div class="summary-section">
+          <span class="label">Payment Time:</span>
+          <span class="value">${formatPaymentTime(bill.paidAt)}</span>
+        </div>
+        ` : ''}
         <div class="summary-section">
           <span class="label">GST Included</span>
           <span class="value">Yes</span>
         </div>
+        
         <div class="thankyou">Thank you for dining with us!<br>We hope to see you again!</div>
         <div class="signature">Signature: ____________________</div>
         <div class="footer">For feedback: 1800-000-000 &nbsp; | &nbsp; bamboo-garden.com</div>
