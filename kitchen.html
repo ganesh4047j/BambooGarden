@@ -23,6 +23,8 @@
       --shadow-light: 0 4px 20px rgba(74, 124, 89, 0.1);
       --shadow-medium: 0 8px 30px rgba(74, 124, 89, 0.15);
       --gradient-green: linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+      --cake-pink: #e91e63;
+      --cake-light: #f8bbd9;
     }
 
     * {
@@ -147,6 +149,10 @@
       height: 6px;
     }
 
+    .order-card.has-cake-items::before {
+      background: linear-gradient(90deg, var(--bamboo-green) 0%, var(--bamboo-green) 50%, var(--cake-pink) 50%, var(--cake-pink) 100%);
+    }
+
     .order-card:hover {
       transform: translateY(-5px);
       box-shadow: var(--shadow-medium);
@@ -161,14 +167,24 @@
       gap: 1rem;
     }
 
-    .table-info {
+    .customer-info {
       flex: 1;
     }
 
-    .table-number {
-      font-size: 1.5rem;
+    .customer-name {
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--bamboo-dark);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .table-number {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #6c757d;
       margin-bottom: 0.25rem;
       display: flex;
       align-items: center;
@@ -199,10 +215,16 @@
       border: 1px solid #ffeaa7;
     }
 
-    .status-preparing {
+    .status-food-preparing {
       background: linear-gradient(135deg, #cff4fc 0%, #74c0fc 100%);
       color: #055160;
       border: 1px solid #74c0fc;
+    }
+
+    .status-cake-preparing {
+      background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+      color: #721c24;
+      border: 1px solid #f5c6cb;
     }
 
     .status-ready {
@@ -211,11 +233,37 @@
       border: 1px solid #75b798;
     }
 
-    .order-items {
+    .order-summary {
       background: #f8f9fa;
       border-radius: 15px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
+    }
+
+    .summary-section {
+      margin-bottom: 1rem;
+    }
+
+    .summary-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-weight: 700;
+      color: var(--bamboo-dark);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .food-section .section-title {
+      color: var(--bamboo-green);
+    }
+
+    .cake-section .section-title {
+      color: var(--cake-pink);
     }
 
     .order-item {
@@ -249,10 +297,32 @@
       font-weight: 600;
     }
 
+    .cake-section .item-quantity {
+      background: var(--cake-light);
+      color: var(--cake-pink);
+    }
+
     .item-price {
       font-weight: 600;
       color: var(--bamboo-dark);
       font-size: 1.1rem;
+    }
+
+    .section-subtotal {
+      background: rgba(74, 124, 89, 0.1);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--bamboo-dark);
+    }
+
+    .cake-section .section-subtotal {
+      background: rgba(233, 30, 99, 0.1);
+      color: var(--cake-pink);
     }
 
     .order-total {
@@ -267,7 +337,6 @@
       box-shadow: var(--shadow-light);
     }
 
-    /* Button Container for proper alignment */
     .order-actions {
       display: flex;
       gap: 0.75rem;
@@ -298,8 +367,12 @@
       color: white;
     }
 
-    .status-btn.preparing {
+    .status-btn.food-preparing {
       background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+    }
+
+    .status-btn.cake-preparing {
+      background: linear-gradient(135deg, #e91e63 0%, #f8bbd9 100%);
     }
 
     .status-btn.ready {
@@ -454,6 +527,43 @@
       background: #dc3545;
     }
 
+    .item-type-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .food-badge {
+      background: rgba(74, 124, 89, 0.1);
+      color: #4a7c59;
+    }
+
+    .cake-badge {
+      background: rgba(233, 30, 99, 0.1);
+      color: #e91e63;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-dot.pending { background: #ffc107; }
+    .status-dot.preparing { background: #17a2b8; }
+    .status-dot.ready { background: #28a745; }
+
     /* Mobile Responsive Styles */
     @media (max-width: 768px) {
       .dashboard-title {
@@ -476,7 +586,7 @@
         font-size: 1rem;
       }
       
-      .order-items {
+      .order-summary {
         padding: 1rem;
       }
       
@@ -504,7 +614,6 @@
         padding: 2rem 1rem;
       }
 
-      /* Mobile Button Alignment */
       .order-actions {
         flex-direction: column;
         gap: 0.5rem;
@@ -536,64 +645,6 @@
         z-index: 1002 !important;
       }
     }
-
-    /* Extra Small Mobile Screens */
-    @media (max-width: 480px) {
-      .order-card {
-        padding: 0.75rem;
-        border-radius: 15px;
-      }
-
-      .order-actions {
-        gap: 0.4rem;
-      }
-
-      .status-btn, .cancel-btn {
-        padding: 0.65rem 0.8rem;
-        font-size: 0.9rem;
-        border-radius: 20px;
-      }
-
-      .dashboard-title {
-        font-size: 1.6rem;
-      }
-
-      .table-number {
-        font-size: 1.2rem;
-      }
-
-      .order-total {
-        padding: 0.8rem 1rem;
-        font-size: 1.1rem;
-      }
-    }
-
-    /* Very Small Screens */
-    @media (max-width: 360px) {
-      .order-card {
-        padding: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .order-actions {
-        gap: 0.3rem;
-      }
-
-      .status-btn, .cancel-btn {
-        padding: 0.6rem 0.7rem;
-        font-size: 0.85rem;
-        border-radius: 18px;
-      }
-
-      .order-items {
-        padding: 0.75rem;
-      }
-
-      .order-total {
-        padding: 0.7rem;
-        font-size: 1rem;
-      }
-    }
   </style>
 </head>
 <body>
@@ -601,7 +652,7 @@
   <div class="dashboard-header">
     <div class="container">
       <h1 class="dashboard-title">🔥 Kitchen Dashboard</h1>
-      <p class="dashboard-subtitle">Monitor and manage incoming orders in real-time</p>
+      <p class="dashboard-subtitle">Monitor and manage orders in real-time</p>
     </div>
   </div>
 
@@ -640,7 +691,8 @@
     <div class="filter-tabs">
       <button class="filter-tab active" onclick="filterOrders('all')">All Orders</button>
       <button class="filter-tab" onclick="filterOrders('pending')">Pending</button>
-      <button class="filter-tab" onclick="filterOrders('preparing')">Preparing</button>
+      <button class="filter-tab" onclick="filterOrders('food-preparing')">Food Preparing</button>
+      <button class="filter-tab" onclick="filterOrders('cake-preparing')">Cake Preparing</button>
       <button class="filter-tab" onclick="filterOrders('ready')">Ready</button>
     </div>
 
@@ -649,7 +701,7 @@
       <div class="no-orders">
         <div class="no-orders-icon">🍽️</div>
         <h3>No Orders Yet</h3>
-        <p>Waiting for new orders from waiters...</p>
+        <p>Waiting for new unified orders from waiters...</p>
         <small class="text-muted">Orders will appear here automatically when submitted</small>
       </div>
     </div>
@@ -663,7 +715,7 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Firebase Configuration (same as waiter.html)
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
       authDomain: "bamboo-15c88.firebaseapp.com",
@@ -678,9 +730,8 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Firestore collections
-    const foodOrdersCollection = db.collection("food_orders");
-    const cakeOrdersCollection = db.collection("cake_orders");
+    // Firestore collection for unified orders
+    const unifiedOrdersCollection = db.collection("unified_orders");
 
     // State
     let orders = {};
@@ -710,52 +761,36 @@
       }, 3000);
     }
 
-    // Fetch orders from Firestore
+    // Fetch unified orders from Firestore
     async function fetchOrdersFromFirestore() {
       try {
-        const [foodSnapshot, cakeSnapshot] = await Promise.all([
-          foodOrdersCollection.orderBy('timestamp', 'desc').get(),
-          cakeOrdersCollection.orderBy('timestamp', 'desc').get()
-        ]);
+        const snapshot = await unifiedOrdersCollection
+          .orderBy('createdAt', 'desc')
+          .get();
 
         const newOrders = {};
         
-        // Process food orders
-        foodSnapshot.forEach(doc => {
+        snapshot.forEach(doc => {
           const data = doc.data();
           const orderId = doc.id;
           
           newOrders[orderId] = {
             id: orderId,
             docId: doc.id,
-            table: data.table,
-            items: data.items,
-            total: data.total,
+            customerName: data.customerName,
+            customerPhone: data.customerPhone,
+            tableNumber: data.tableNumber,
+            allItems: data.allItems || {},
+            foodItems: data.foodItems || {},
+            cakeItems: data.cakeItems || {},
+            foodTotal: data.foodTotal || 0,
+            cakeTotal: data.cakeTotal || 0,
+            totalAmount: data.totalAmount || 0,
             status: data.status || 'pending',
-            timestamp: data.timestamp,
+            foodStatus: data.foodStatus || 'not_applicable',
+            cakeStatus: data.cakeStatus || 'not_applicable',
+            createdAt: data.createdAt,
             waiterSubmitted: data.waiterSubmitted,
-            type: 'food',
-            isNew: !knownOrderIds.has(orderId) && data.status === 'pending'
-          };
-          
-          knownOrderIds.add(orderId);
-        });
-
-        // Process cake orders
-        cakeSnapshot.forEach(doc => {
-          const data = doc.data();
-          const orderId = doc.id;
-          
-          newOrders[orderId] = {
-            id: orderId,
-            docId: doc.id,
-            table: data.table,
-            items: data.items,
-            total: data.total,
-            status: data.status || 'pending',
-            timestamp: data.timestamp,
-            waiterSubmitted: data.waiterSubmitted,
-            type: 'cake',
             isNew: !knownOrderIds.has(orderId) && data.status === 'pending'
           };
           
@@ -769,7 +804,11 @@
         if (newOrdersDetected && lastOrderCount > 0) {
           const newOrdersList = Object.values(newOrders).filter(order => order.isNew);
           newOrdersList.forEach(order => {
-            showNewOrderAlert(order.table, order.type);
+            const hasFoodItems = Object.keys(order.foodItems).length > 0;
+            const hasCakeItems = Object.keys(order.cakeItems).length > 0;
+            const orderType = hasFoodItems && hasCakeItems ? 'Combined' : 
+                             hasFoodItems ? 'Food' : 'Cake';
+            showNewOrderAlert(order.customerName, order.tableNumber, orderType);
             playNotificationSound();
           });
         }
@@ -789,26 +828,46 @@
     }
 
     // Update order status in Firestore
-    async function updateOrderStatus(orderId, newStatus) {
+    async function updateOrderStatus(orderId, statusType, newStatus) {
       try {
         const order = orders[orderId];
         if (!order) return;
 
-        const collection = order.type === 'food' ? foodOrdersCollection : cakeOrdersCollection;
+        const updateData = {};
+        updateData[`${statusType}Status`] = newStatus;
+        updateData[`${statusType}${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}At`] = firebase.firestore.FieldValue.serverTimestamp();
+
+        // Check if both food and cake (if applicable) are ready
+        const hasFood = Object.keys(order.foodItems).length > 0;
+        const hasCake = Object.keys(order.cakeItems).length > 0;
         
-        await collection.doc(order.docId).update({
-          status: newStatus,
-          [`${newStatus}At`]: new Date().toISOString()
-        });
+        let newOverallStatus = order.status;
+        
+        if (statusType === 'food' && newStatus === 'ready') {
+          if (!hasCake || order.cakeStatus === 'ready' || order.cakeStatus === 'not_applicable') {
+            newOverallStatus = 'ready';
+          }
+        } else if (statusType === 'cake' && newStatus === 'ready') {
+          if (!hasFood || order.foodStatus === 'ready' || order.foodStatus === 'not_applicable') {
+            newOverallStatus = 'ready';
+          }
+        }
+
+        if (newOverallStatus !== order.status) {
+          updateData.status = newOverallStatus;
+        }
+
+        await unifiedOrdersCollection.doc(order.docId).update(updateData);
 
         // Update local state
-        order.status = newStatus;
+        order[`${statusType}Status`] = newStatus;
+        order.status = newOverallStatus;
         order.isNew = false;
 
         updateStats();
         renderOrders();
         
-        console.log(`Order ${orderId} status updated to ${newStatus}`);
+        console.log(`Order ${orderId} ${statusType} status updated to ${newStatus}`);
         
       } catch (error) {
         console.error('Error updating order status:', error);
@@ -816,7 +875,7 @@
       }
     }
 
-    function showNewOrderAlert(tableNumber, orderType) {
+    function showNewOrderAlert(customerName, tableNumber, orderType) {
       // Remove existing alert if any
       const existingAlert = document.querySelector('.new-order-alert');
       if (existingAlert) {
@@ -828,7 +887,8 @@
       alert.className = 'new-order-alert';
       alert.innerHTML = `
         <i class="bi bi-bell-fill me-2"></i>
-        <strong>New ${orderType.toUpperCase()} Order!</strong> Table ${tableNumber}
+        <strong>New ${orderType} Order!</strong><br>
+        ${customerName} - Table ${tableNumber}
       `;
       
       document.body.appendChild(alert);
@@ -876,7 +936,7 @@
           <div class="no-orders">
             <div class="no-orders-icon">🍽️</div>
             <h3>No Orders Yet</h3>
-            <p>Waiting for new orders from waiters...</p>
+            <p>Waiting for new unified orders from waiters...</p>
             <small class="text-muted">Orders will appear here automatically when submitted</small>
           </div>
         `;
@@ -887,7 +947,12 @@
       
       // Filter orders based on current filter
       const filteredOrders = orderEntries.filter(([id, order]) => {
-        return currentFilter === 'all' || order.status === currentFilter;
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'pending') return order.status === 'pending';
+        if (currentFilter === 'food-preparing') return order.foodStatus === 'preparing';
+        if (currentFilter === 'cake-preparing') return order.cakeStatus === 'preparing';
+        if (currentFilter === 'ready') return order.status === 'ready';
+        return false;
       });
 
       if (filteredOrders.length === 0) {
@@ -902,7 +967,11 @@
       }
 
       // Sort orders by timestamp (newest first)
-      filteredOrders.sort(([,a], [,b]) => new Date(b.timestamp) - new Date(a.timestamp));
+      filteredOrders.sort(([,a], [,b]) => {
+        const aTime = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) : 0;
+        const bTime = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) : 0;
+        return bTime - aTime;
+      });
 
       filteredOrders.forEach(([orderId, order]) => {
         ordersHtml += createOrderCard(orderId, order);
@@ -912,76 +981,177 @@
     }
 
     function createOrderCard(orderId, order) {
-      const timestamp = new Date(order.timestamp);
+      const timestamp = order.createdAt ? (order.createdAt.toDate ? order.createdAt.toDate() : new Date(order.createdAt)) : new Date();
       const timeDiff = Math.floor((Date.now() - timestamp.getTime()) / (1000 * 60));
       const timeAgo = timeDiff === 0 ? 'Just now' : `${timeDiff} mins ago`;
       
-      let itemsHtml = '';
-      Object.entries(order.items).forEach(([itemName, itemData]) => {
-        const emoji = getItemEmoji(itemName);
-        itemsHtml += `
-          <div class="order-item">
-            <span class="item-name">${emoji} ${itemName}</span>
-            <span class="item-quantity">×${itemData.qty}</span>
-            <span class="item-price">₹${itemData.qty * itemData.price}</span>
-          </div>
-        `;
-      });
-
-      const statusClass = `status-${order.status}`;
-      const newOrderClass = order.isNew ? 'new-order' : '';
-      const orderTypeIcon = order.type === 'cake' ? '🍰' : '🍽️';
+      const hasFoodItems = Object.keys(order.foodItems).length > 0;
+      const hasCakeItems = Object.keys(order.cakeItems).length > 0;
       
+      let foodItemsHtml = '';
+      let cakeItemsHtml = '';
+      
+      // Generate food items
+      if (hasFoodItems) {
+        Object.entries(order.foodItems).forEach(([itemName, itemData]) => {
+          const emoji = getItemEmoji(itemName);
+          foodItemsHtml += `
+            <div class="order-item">
+              <span class="item-name">${emoji} ${itemName}</span>
+              <span class="item-quantity">×${itemData.qty}</span>
+              <span class="item-price">₹${itemData.qty * itemData.price}</span>
+            </div>
+          `;
+        });
+      }
+
+      // Generate cake items
+      if (hasCakeItems) {
+        Object.entries(order.cakeItems).forEach(([itemName, itemData]) => {
+          const emoji = getItemEmoji(itemName);
+          cakeItemsHtml += `
+            <div class="order-item">
+              <span class="item-name">${emoji} ${itemName}</span>
+              <span class="item-quantity">×${itemData.qty}</span>
+              <span class="item-price">₹${itemData.qty * itemData.price}</span>
+            </div>
+          `;
+        });
+      }
+
+      const newOrderClass = order.isNew ? 'new-order' : '';
+      const hasCakeClass = hasCakeItems ? 'has-cake-items' : '';
+      
+      // Determine overall status for badge
+      let statusClass = 'status-pending';
+      let statusText = 'Pending';
+      
+      if (order.status === 'ready') {
+        statusClass = 'status-ready';
+        statusText = 'Ready';
+      } else if (order.foodStatus === 'preparing' || order.cakeStatus === 'preparing') {
+        statusClass = order.foodStatus === 'preparing' ? 'status-food-preparing' : 'status-cake-preparing';
+        statusText = 'Preparing';
+      }
+
+      // Generate action buttons
       let buttonHtml = '';
-      if (order.status === 'pending') {
-        buttonHtml = `
-          <div class="order-actions">
-            <button class="status-btn" onclick="updateStatus('${orderId}')">
-              <i class="bi bi-play-circle me-2"></i>Start Preparing
-            </button>
-            <button class="cancel-btn" onclick="cancelOrder('${orderId}')">
-              <i class="bi bi-x-circle me-2"></i>Cancel
-            </button>
-          </div>
+      
+      if (hasFoodItems && order.foodStatus === 'pending') {
+        buttonHtml += `
+          <button class="status-btn" onclick="updateStatus('${orderId}', 'food')">
+            <i class="bi bi-play-circle me-2"></i>Start Food
+          </button>
         `;
-      } else if (order.status === 'preparing') {
-        buttonHtml = `
-          <div class="order-actions">
-            <button class="status-btn preparing" onclick="updateStatus('${orderId}')">
-              <i class="bi bi-check-circle me-2"></i>Mark as Ready
-            </button>
-          </div>
+      }
+      
+      if (hasCakeItems && order.cakeStatus === 'pending') {
+        buttonHtml += `
+          <button class="status-btn cake-preparing" onclick="updateStatus('${orderId}', 'cake')">
+            <i class="bi bi-cake2 me-2"></i>Start Cake
+          </button>
+        `;
+      }
+      
+      if (hasFoodItems && order.foodStatus === 'preparing') {
+        buttonHtml += `
+          <button class="status-btn food-preparing" onclick="updateStatus('${orderId}', 'food')">
+            <i class="bi bi-check-circle me-2"></i>Food Ready
+          </button>
+        `;
+      }
+      
+      if (hasCakeItems && order.cakeStatus === 'preparing') {
+        buttonHtml += `
+          <button class="status-btn cake-preparing" onclick="updateStatus('${orderId}', 'cake')">
+            <i class="bi bi-check-circle me-2"></i>Cake Ready
+          </button>
+        `;
+      }
+
+      if (order.status === 'pending') {
+        buttonHtml += `
+          <button class="cancel-btn" onclick="cancelOrder('${orderId}')">
+            <i class="bi bi-x-circle me-2"></i>Cancel
+          </button>
         `;
       }
 
       return `
-        <div class="order-card ${newOrderClass}" data-status="${order.status}" id="${orderId}">
+        <div class="order-card ${newOrderClass} ${hasCakeClass}" data-status="${order.status}" id="${orderId}">
           <div class="order-header">
-            <div class="table-info">
+            <div class="customer-info">
+              <div class="customer-name">
+                <i class="bi bi-person"></i>
+                ${order.customerName}
+              </div>
               <div class="table-number">
                 <i class="bi bi-table"></i>
-                Table ${order.table} ${orderTypeIcon}
-                <small class="badge bg-secondary ms-2">${order.type.toUpperCase()}</small>
+                Table ${order.tableNumber}
+                ${hasFoodItems ? '<span class="item-type-badge food-badge">Food</span>' : ''}
+                ${hasCakeItems ? '<span class="item-type-badge cake-badge">Cake</span>' : ''}
               </div>
               <div class="order-time">
                 <i class="bi bi-clock"></i>
                 ${timestamp.toLocaleTimeString()} - ${timeAgo}
               </div>
+              ${order.customerPhone ? `
+                <div class="order-time">
+                  <i class="bi bi-telephone"></i>
+                  ${order.customerPhone}
+                </div>
+              ` : ''}
             </div>
             <span class="status-badge ${statusClass}" id="status-${orderId}">
-              ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              ${statusText}
             </span>
           </div>
 
-          <div class="order-items">
-            ${itemsHtml}
+          <div class="order-summary">
+            ${hasFoodItems ? `
+              <div class="summary-section food-section">
+                <div class="section-title">
+                  🍽️ Food Items
+                  <div class="status-indicator">
+                    <span class="status-dot ${order.foodStatus}"></span>
+                    ${order.foodStatus.charAt(0).toUpperCase() + order.foodStatus.slice(1)}
+                  </div>
+                </div>
+                ${foodItemsHtml}
+                <div class="section-subtotal">
+                  <span>Food Subtotal</span>
+                  <span>₹${order.foodTotal}</span>
+                </div>
+              </div>
+            ` : ''}
+            
+            ${hasCakeItems ? `
+              <div class="summary-section cake-section">
+                <div class="section-title">
+                  🍰 Cake Items
+                  <div class="status-indicator">
+                    <span class="status-dot ${order.cakeStatus}"></span>
+                    ${order.cakeStatus.charAt(0).toUpperCase() + order.cakeStatus.slice(1)}
+                  </div>
+                </div>
+                ${cakeItemsHtml}
+                <div class="section-subtotal">
+                  <span>Cake Subtotal</span>
+                  <span>₹${order.cakeTotal}</span>
+                </div>
+              </div>
+            ` : ''}
           </div>
 
           <div class="order-total">
-            Total: ₹${order.total}
+            Grand Total: ₹${order.totalAmount}
           </div>
 
-          ${buttonHtml}
+          ${buttonHtml ? `
+            <div class="order-actions">
+              ${buttonHtml}
+            </div>
+          ` : ''}
         </div>
       `;
     }
@@ -1008,7 +1178,10 @@
         'strawberry': '🍓',
         'cream': '🥛',
         'brownie': '🍫',
-        'cheese': '🧀'
+        'cheese': '🧀',
+        'truffle': '🍫',
+        'velvet': '❤️',
+        'mousse': '🍨'
       };
 
       const lowerName = itemName.toLowerCase();
@@ -1020,84 +1193,68 @@
       return '🍽️'; // Default emoji
     }
 
-    async function updateStatus(orderId) {
+    async function updateStatus(orderId, itemType) {
       const order = orders[orderId];
       if (!order) return;
 
       const card = document.getElementById(orderId);
       const badge = document.getElementById(`status-${orderId}`);
-      const button = card.querySelector('.status-btn');
+      const buttons = card.querySelectorAll('.status-btn');
 
       // Show loading state
-      if (button) {
-        button.disabled = true;
-        button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Updating...';
-      }
+      buttons.forEach(button => {
+        if (button.onclick.toString().includes(itemType)) {
+          button.disabled = true;
+          button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Updating...';
+        }
+      });
 
       try {
-        if (order.status === 'pending') {
-          await updateOrderStatus(orderId, 'preparing');
-
-          badge.className = 'status-badge status-preparing';
-          badge.innerText = 'Preparing';
-
-          if (button) {
-            button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
-            button.className = 'status-btn preparing';
-            button.disabled = false;
-          }
-
-          // Add cooking animation
-          card.style.background = 'linear-gradient(45deg, #fff 25%, #f8f9fa 25%, #f8f9fa 50%, #fff 50%, #fff 75%, #f8f9fa 75%)';
-          card.style.backgroundSize = '20px 20px';
-          card.style.animation = 'slide 2s linear infinite';
-          card.classList.remove('new-order');
-
-        } else if (order.status === 'preparing') {
-          await updateOrderStatus(orderId, 'ready');
-
-          badge.className = 'status-badge status-ready';
-          badge.innerText = 'Ready';
-
-          const actionsContainer = card.querySelector('.order-actions');
-          if (actionsContainer) actionsContainer.remove();
-
-          // Add completion effect
-          card.style.background = 'white';
-          card.style.animation = 'none';
-          card.style.border = '2px solid #28a745';
-
-          // Add ready notification
-          const readyNotification = document.createElement('div');
-          readyNotification.className = 'alert alert-success animate__animated animate__bounceIn';
-          readyNotification.innerHTML = '<strong>🎉 Order Ready!</strong> This order is ready to be served.';
-          readyNotification.style.marginTop = '1rem';
-          card.appendChild(readyNotification);
+        const currentStatus = order[`${itemType}Status`];
+        
+        if (currentStatus === 'pending') {
+          await updateOrderStatus(orderId, itemType, 'preparing');
+        } else if (currentStatus === 'preparing') {
+          await updateOrderStatus(orderId, itemType, 'ready');
         }
+        
+        // Re-render to update the UI
+        renderOrders();
         
       } catch (error) {
         console.error('Error updating status:', error);
-        if (button) {
-          button.disabled = false;
-          button.innerHTML = order.status === 'pending' ? 
-            '<i class="bi bi-play-circle me-2"></i>Start Preparing' :
-            '<i class="bi bi-check-circle me-2"></i>Mark as Ready';
-        }
+        buttons.forEach(button => {
+          if (button.onclick.toString().includes(itemType)) {
+            button.disabled = false;
+            const currentStatus = order[`${itemType}Status`];
+            if (currentStatus === 'pending') {
+              button.innerHTML = itemType === 'food' ? 
+                '<i class="bi bi-play-circle me-2"></i>Start Food' :
+                '<i class="bi bi-cake2 me-2"></i>Start Cake';
+            } else {
+              button.innerHTML = itemType === 'food' ?
+                '<i class="bi bi-check-circle me-2"></i>Food Ready' :
+                '<i class="bi bi-check-circle me-2"></i>Cake Ready';
+            }
+          }
+        });
       }
     }
 
-    // Add cancel order function
+    // Cancel order function
     async function cancelOrder(orderId) {
       const order = orders[orderId];
       if (!order) return;
-      if (!confirm('Are you sure you want to cancel this order?')) return;
+      
+      const confirmMessage = `Cancel order for ${order.customerName} - Table ${order.tableNumber}?`;
+      if (!confirm(confirmMessage)) return;
 
-      const collection = order.type === 'food' ? foodOrdersCollection : cakeOrdersCollection;
       try {
-        await collection.doc(order.docId).update({
+        await unifiedOrdersCollection.doc(order.docId).update({
           status: 'cancelled',
-          cancelledAt: new Date().toISOString()
+          cancelledAt: firebase.firestore.FieldValue.serverTimestamp()
         });
+        
         order.status = 'cancelled';
         order.isNew = false;
         updateStats();
@@ -1110,7 +1267,9 @@
 
     function updateStats() {
       const pendingOrders = Object.values(orders).filter(o => o.status === 'pending').length;
-      const preparingOrders = Object.values(orders).filter(o => o.status === 'preparing').length;
+      const preparingOrders = Object.values(orders).filter(o => 
+        o.foodStatus === 'preparing' || o.cakeStatus === 'preparing'
+      ).length;
       const readyOrders = Object.values(orders).filter(o => o.status === 'ready').length;
       const totalOrders = Object.keys(orders).length;
 
@@ -1157,7 +1316,6 @@
         '<i class="bi bi-volume-up me-2"></i>Sound On' :
         '<i class="bi bi-volume-mute me-2"></i>Sound Off';
 
-      // Responsive position: desktop absolute, mobile fixed
       soundButton.style.cssText = `
         position: absolute;
         top: 3.5rem;
@@ -1167,7 +1325,7 @@
       header.style.position = 'relative';
       header.appendChild(soundButton);
 
-      // Mobile: move to fixed position at bottom right
+      // Mobile positioning
       function updateSoundBtnPosition() {
         if (window.innerWidth <= 768) {
           soundButton.style.position = 'fixed';
@@ -1189,42 +1347,19 @@
       window.addEventListener('resize', updateSoundBtnPosition);
     }
 
-    // Real-time listener for orders
-    function setupRealtimeListeners() {
-      // Listen to food orders
-      foodOrdersCollection.orderBy('timestamp', 'desc').onSnapshot(
+    // Real-time listener for unified orders
+    function setupRealtimeListener() {
+      unifiedOrdersCollection.orderBy('createdAt', 'desc').onSnapshot(
         (snapshot) => {
-          console.log('Food orders updated');
+          console.log('Unified orders updated');
           fetchOrdersFromFirestore();
         },
         (error) => {
-          console.error('Error listening to food orders:', error);
-          showConnectionStatus('Food orders sync error', true);
-        }
-      );
-
-      // Listen to cake orders
-      cakeOrdersCollection.orderBy('timestamp', 'desc').onSnapshot(
-        (snapshot) => {
-          console.log('Cake orders updated');
-          fetchOrdersFromFirestore();
-        },
-        (error) => {
-          console.error('Error listening to cake orders:', error);
-          showConnectionStatus('Cake orders sync error', true);
+          console.error('Error listening to unified orders:', error);
+          showConnectionStatus('Orders sync error', true);
         }
       );
     }
-
-    // Add cooking animation keyframes
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slide {
-        0% { background-position: 0 0; }
-        100% { background-position: 40px 40px; }
-      }
-    `;
-    document.head.appendChild(style);
 
     // Initialize
     document.addEventListener('DOMContentLoaded', async function() {
@@ -1232,7 +1367,7 @@
       
       try {
         await fetchOrdersFromFirestore();
-        setupRealtimeListeners();
+        setupRealtimeListener();
         addSoundToggle();
         
         // Update time stamps every minute
@@ -1262,9 +1397,9 @@
         }
       }
       
-      // Press numbers 1-4 to filter orders
-      if (e.key >= '1' && e.key <= '4') {
-        const filters = ['all', 'pending', 'preparing', 'ready'];
+      // Press numbers 1-5 to filter orders
+      if (e.key >= '1' && e.key <= '5') {
+        const filters = ['all', 'pending', 'food-preparing', 'cake-preparing', 'ready'];
         const filterIndex = parseInt(e.key) - 1;
         if (filterIndex < filters.length) {
           currentFilter = filters[filterIndex];
@@ -1281,7 +1416,7 @@
     window.getOrderSummary = function() {
       const totalOrders = Object.keys(orders).length;
       const completedOrders = Object.values(orders).filter(o => o.status === 'ready').length;
-      const totalRevenue = Object.values(orders).reduce((sum, order) => sum + order.total, 0);
+      const totalRevenue = Object.values(orders).reduce((sum, order) => sum + order.totalAmount, 0);
       
       const summary = {
         totalOrders,
@@ -1293,49 +1428,6 @@
       
       console.log('Kitchen Summary:', summary);
       return summary;
-    };
-
-    // Emergency clear all orders function (for testing)
-    window.clearAllOrders = async function() {
-      if (!confirm('Are you sure you want to clear all orders? This cannot be undone.')) {
-        return;
-      }
-
-      try {
-        // Get all documents from both collections
-        const [foodSnapshot, cakeSnapshot] = await Promise.all([
-          foodOrdersCollection.get(),
-          cakeOrdersCollection.get()
-        ]);
-
-        // Create batch delete operations
-        const batch = db.batch();
-        
-        foodSnapshot.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-        
-        cakeSnapshot.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-
-        // Execute batch delete
-        await batch.commit();
-        
-        // Clear local state
-        orders = {};
-        knownOrderIds.clear();
-        lastOrderCount = 0;
-        
-        updateStats();
-        renderOrders();
-        
-        showConnectionStatus('All orders cleared successfully!');
-        
-      } catch (error) {
-        console.error('Error clearing orders:', error);
-        showConnectionStatus('Failed to clear orders', true);
-      }
     };
 
     // Connection health check
@@ -1361,52 +1453,9 @@
       showConnectionStatus('You are offline', true);
     });
 
-    // Cleanup old completed orders (older than 24 hours)
-    async function cleanupOldOrders() {
-      try {
-        const oneDayAgo = new Date();
-        oneDayAgo.setDate(oneDayAgo.getDate() - 1);
-        
-        const [foodSnapshot, cakeSnapshot] = await Promise.all([
-          foodOrdersCollection
-            .where('status', '==', 'ready')
-            .where('timestamp', '<', oneDayAgo.toISOString())
-            .get(),
-          cakeOrdersCollection
-            .where('status', '==', 'ready')
-            .where('timestamp', '<', oneDayAgo.toISOString())
-            .get()
-        ]);
-
-        const batch = db.batch();
-        let deleteCount = 0;
-
-        foodSnapshot.forEach(doc => {
-          batch.delete(doc.ref);
-          deleteCount++;
-        });
-
-        cakeSnapshot.forEach(doc => {
-          batch.delete(doc.ref);
-          deleteCount++;
-        });
-
-        if (deleteCount > 0) {
-          await batch.commit();
-          console.log(`Cleaned up ${deleteCount} old orders`);
-        }
-
-      } catch (error) {
-        console.error('Error during cleanup:', error);
-      }
-    }
-
-    // Run cleanup every 4 hours
-    setInterval(cleanupOldOrders, 4 * 60 * 60 * 1000);
-
     // Export functions for testing
     window.fetchOrdersFromFirestore = fetchOrdersFromFirestore;
-    window.setupRealtimeListeners = setupRealtimeListeners;
+    window.setupRealtimeListener = setupRealtimeListener;
   </script>
 </body>
 </html>
