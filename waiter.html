@@ -135,7 +135,7 @@
         z-index: 2;
       }
 
-      .table-selector {
+      .customer-info {
         background: white;
         border-radius: 20px;
         padding: 2rem;
@@ -144,17 +144,17 @@
         border: 1px solid rgba(74, 124, 89, 0.1);
       }
 
-      .table-selector label {
+      .customer-info label {
         font-weight: 600;
         color: var(--bamboo-dark);
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
 
-      .form-select {
+      .form-control, .form-select {
         border: 2px solid #e9ecef;
         border-radius: 15px;
         padding: 1rem 1.5rem;
@@ -163,7 +163,7 @@
         background-color: #f8f9fa;
       }
 
-      .form-select:focus {
+      .form-control:focus, .form-select:focus {
         border-color: var(--bamboo-green);
         box-shadow: 0 0 0 0.2rem rgba(74, 124, 89, 0.25);
         background-color: white;
@@ -688,6 +688,21 @@
           gap: 1rem;
         }
       }
+
+      .order-type-display {
+        background: rgba(74, 124, 89, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--bamboo-dark);
+        margin-left: 0.5rem;
+      }
+
+      .cake-type {
+        background: rgba(233, 30, 99, 0.1);
+        color: var(--cake-pink);
+      }
     </style>
   </head>
   <body>
@@ -701,27 +716,45 @@
     </div>
 
     <div class="container animate__animated animate__fadeInUp">
-      <!-- Table Selector -->
-      <div class="table-selector">
-        <label for="tableSelect" class="form-label">
-          <i class="bi bi-table"></i>
-          Select Table
-        </label>
-        <select class="form-select" id="tableSelect">
-          <option selected disabled>Choose a table number</option>
-          <option value="1">Table 1</option>
-          <option value="2">Table 2</option>
-          <option value="3">Table 3</option>
-          <option value="4">Table 4</option>
-          <option value="5">Table 5</option>
-          <option value="6">Table 6</option>
-          <option value="7">Table 7</option>
-          <option value="8">Table 8</option>
-          <option value="9">Table 9</option>
-          <option value="10">Table 10</option>
-          <option value="11">Table 11</option>
-          <option value="12">Table 12</option>
-        </select>
+      <!-- Customer Information -->
+      <div class="customer-info">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="customerName" class="form-label">
+              <i class="bi bi-person"></i>
+              Customer Name
+            </label>
+            <input type="text" class="form-control" id="customerName" placeholder="Enter customer name">
+          </div>
+          <div class="col-md-4">
+            <label for="customerPhone" class="form-label">
+              <i class="bi bi-telephone"></i>
+              Phone Number
+            </label>
+            <input type="tel" class="form-control" id="customerPhone" placeholder="Enter phone number">
+          </div>
+          <div class="col-md-4">
+            <label for="tableSelect" class="form-label">
+              <i class="bi bi-table"></i>
+              Table Number
+            </label>
+            <select class="form-select" id="tableSelect">
+              <option selected disabled>Choose a table number</option>
+              <option value="1">Table 1</option>
+              <option value="2">Table 2</option>
+              <option value="3">Table 3</option>
+              <option value="4">Table 4</option>
+              <option value="5">Table 5</option>
+              <option value="6">Table 6</option>
+              <option value="7">Table 7</option>
+              <option value="8">Table 8</option>
+              <option value="9">Table 9</option>
+              <option value="10">Table 10</option>
+              <option value="11">Table 11</option>
+              <option value="12">Table 12</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- Menu Type Selector -->
@@ -1110,11 +1143,7 @@
           { name: "Grilled Chicken Burger", price: 160, icon: "🍔" },
           { name: "Mexican Double Cheese Burger", price: 180, icon: "🍔" },
           { name: "Fiery Spicy Chicken Burger", price: 170, icon: "🍔" },
-          {
-            name: "Fried Chicken Burger With Bbq Sauce",
-            price: 160,
-            icon: "🍔",
-          },
+          { name: "Fried Chicken Burger With Bbq Sauce", price: 160, icon: "🍔" },
           { name: "Cheese And Mushrooms Hot Dog", price: 140, icon: "🌭" },
           { name: "Cheese And Paneer", price: 140, icon: "🌭" },
           { name: "Bon Bon Spl Foot Long", price: 170, icon: "🌭" },
@@ -1238,12 +1267,7 @@
           { name: "Caramel", pricePerKg: 800, icon: "🍮" },
           { name: "Choco Truffle", pricePerKg: 950, icon: "🍫", mustTry: true },
           { name: "Light Chocolate", pricePerKg: 750, icon: "🍫" },
-          {
-            name: "Mocha Walnut",
-            pricePerKg: 950,
-            icon: "☕🌰",
-            mustTry: true,
-          },
+          { name: "Mocha Walnut", pricePerKg: 950, icon: "☕🌰", mustTry: true },
           { name: "Vanilla Fresh Cream", pricePerKg: 550, icon: "🍦" },
           { name: "Strawberry", pricePerKg: 750, icon: "🍓" },
           { name: "Blueberry", pricePerKg: 750, icon: "🫐" },
@@ -1251,22 +1275,12 @@
           { name: "Fig & Honey", pricePerKg: 800, icon: "🍯" },
           { name: "Vanilla Nougatine", pricePerKg: 800, icon: "🍦" },
           { name: "Tex Mex Choco Nuts", pricePerKg: 950, icon: "🌰" },
-          {
-            name: "Choco Nutty Cracks",
-            pricePerKg: 950,
-            icon: "🍫🌰",
-            mustTry: true,
-          },
+          { name: "Choco Nutty Cracks", pricePerKg: 950, icon: "🍫🌰", mustTry: true },
           { name: "Blueberry Apple Gateaux", pricePerKg: 750, icon: "🫐🍏" },
           { name: "Choco Root", pricePerKg: 750, icon: "🍫" },
           { name: "Choco Symphony", pricePerKg: 800, icon: "🍫" },
           { name: "Pineapple Gateaux", pricePerKg: 750, icon: "🍍" },
-          {
-            name: "Harlequin Berry",
-            pricePerKg: 950,
-            icon: "🍓🫐",
-            mustTry: true,
-          },
+          { name: "Harlequin Berry", pricePerKg: 950, icon: "🍓🫐", mustTry: true },
           { name: "Choco Gulkandh", pricePerKg: 950, icon: "🌹🍫" },
           { name: "Seasonal Fruit Gateaux", pricePerKg: 850, icon: "🍇🍊" },
           { name: "Black Currant", pricePerKg: 800, icon: "🫐" },
@@ -1279,38 +1293,18 @@
           { name: "Red Velvet", pricePerKg: 1100, icon: "❤️🍰", mustTry: true },
           { name: "Choco Galaxy", pricePerKg: 1200, icon: "🌌🍫" },
           { name: "Hazelnut Gateaux", pricePerKg: 1200, icon: "🌰" },
-          {
-            name: "Missipe Fudge",
-            pricePerKg: 1500,
-            icon: "🍫",
-            mustTry: true,
-          },
+          { name: "Missipe Fudge", pricePerKg: 1500, icon: "🍫", mustTry: true },
           { name: "Lychees & Peaches", pricePerKg: 1000, icon: "🍑" },
           { name: "Fruits and Nuts", pricePerKg: 1000, icon: "🍇🌰" },
         ],
 
         dryCakes: [
           { name: "Banana Walnut", pricePerKg: 1000, icon: "🍌🌰" },
-          {
-            name: "American Osborne",
-            pricePerKg: 950,
-            icon: "🇺🇸🍰",
-            mustTry: true,
-          },
+          { name: "American Osborne", pricePerKg: 950, icon: "🇺🇸🍰", mustTry: true },
           { name: "Fudge Brownie", pricePerKg: 950, icon: "🍫" },
           { name: "Brownie", pricePerKg: 900, icon: "🍫" },
-          {
-            name: "Death by Chocolate",
-            pricePerKg: 1000,
-            icon: "💀🍫",
-            mustTry: true,
-          },
-          {
-            name: "French Cake",
-            pricePerKg: 1000,
-            icon: "🇫🇷🍰",
-            mustTry: true,
-          },
+          { name: "Death by Chocolate", pricePerKg: 1000, icon: "💀🍫", mustTry: true },
+          { name: "French Cake", pricePerKg: 1000, icon: "🇫🇷🍰", mustTry: true },
           { name: "Dates & Walnuts", pricePerKg: 1000, icon: "🌰" },
           { name: "Choco Osborne", pricePerKg: 1000, icon: "🍫" },
         ],
@@ -1338,7 +1332,7 @@
           { name: "Brownie Piece", price: 75, icon: "🍫" },
           { name: "Dead Pie Piece", price: 75, icon: "💀🥧" },
           { name: "Choco Fantasy Piece", price: 75, icon: "🍫✨" },
-          { name: "Moose Cakes Piece", price: 60, icon: "🍨" }, // (Mousse spelling corrected)
+          { name: "Moose Cakes Piece", price: 60, icon: "🍨" },
           { name: "American Osborn Piece", price: 75, icon: "🇺🇸🍰" },
           { name: "Choco Osborn Piece", price: 75, icon: "🍫🍰" },
         ],
@@ -1357,7 +1351,7 @@
       let currentCakeCategory = "all";
       let currentMenuType = "food";
 
-      // 1. Firebase config (replace with your own config)
+      // Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
         authDomain: "bamboo-15c88.firebaseapp.com",
@@ -1370,22 +1364,22 @@
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
 
-      // 2. Firestore collections
-      const foodOrdersCollection = db.collection("food_orders");
-      const cakeOrdersCollection = db.collection("cake_orders");
+      // NEW: Unified orders collection
+      const unifiedOrdersCollection = db.collection("unified_orders");
 
       // Make updateQuantity globally available
-      window.updateQuantity = function (
-        itemName,
-        price,
-        change,
-        weight = null
-      ) {
+      window.updateQuantity = function (itemName, price, change, weight = null, itemType = 'food') {
         const itemKey = weight ? `${itemName} (${weight}kg)` : itemName;
         const finalPrice = weight ? price * weight : price;
 
         if (!selectedItems[itemKey]) {
-          selectedItems[itemKey] = { qty: 0, price: finalPrice };
+          selectedItems[itemKey] = { 
+            qty: 0, 
+            price: finalPrice, 
+            itemType: itemType,
+            unitPrice: price,
+            weight: weight || null
+          };
         }
 
         selectedItems[itemKey].qty += change;
@@ -1398,13 +1392,8 @@
         renderOrderSummary();
       };
 
-      window.updateCakeQuantity = function (
-        itemName,
-        pricePerKg,
-        weight,
-        change
-      ) {
-        updateQuantity(itemName, pricePerKg, change, weight);
+      window.updateCakeQuantity = function (itemName, pricePerKg, weight, change) {
+        updateQuantity(itemName, pricePerKg, change, weight, 'cake');
       };
 
       $(document).ready(function () {
@@ -1454,13 +1443,21 @@
           filterMenuItems(searchTerm, "cake");
         });
 
-        // Submit order
+        // Submit unified order
         $("#submitOrder")
           .off("click")
           .on("click", async function () {
+            const customerName = $("#customerName").val().trim();
+            const customerPhone = $("#customerPhone").val().trim();
             const tableNo = $("#tableSelect").val();
+
+            // Validation
+            if (!customerName) {
+              alert("⚠️ Please enter customer name!");
+              return;
+            }
             if (!tableNo) {
-              alert("⚠️ Please select a table first!");
+              alert("⚠️ Please select a table!");
               return;
             }
             if (Object.keys(selectedItems).length === 0) {
@@ -1474,30 +1471,71 @@
             btn.prop("disabled", true);
 
             const orderId = Date.now();
-            const orderData = {
+            
+            // Separate items by type
+            const foodItems = {};
+            const cakeItems = {};
+            let foodTotal = 0;
+            let cakeTotal = 0;
+
+            Object.entries(selectedItems).forEach(([itemName, itemData]) => {
+              const itemTotal = itemData.qty * itemData.price;
+              
+              if (itemData.itemType === 'cake') {
+                cakeItems[itemName] = itemData;
+                cakeTotal += itemTotal;
+              } else {
+                foodItems[itemName] = itemData;
+                foodTotal += itemTotal;
+              }
+            });
+
+            const unifiedOrderData = {
               id: orderId,
-              table: tableNo,
-              items: selectedItems,
-              total: calculateTotal(),
-              timestamp: new Date().toISOString(),
-              waiterSubmitted: new Date().toLocaleTimeString(),
+              customerName: customerName,
+              customerPhone: customerPhone,
+              tableNumber: tableNo,
+              
+              // Combined order data
+              allItems: selectedItems,
+              totalAmount: calculateTotal(),
+              
+              // Separated data for kitchen/counter processing
+              foodItems: foodItems,
+              cakeItems: cakeItems,
+              foodTotal: foodTotal,
+              cakeTotal: cakeTotal,
+              
+              // Status tracking
               status: "pending",
+              foodStatus: Object.keys(foodItems).length > 0 ? "pending" : "not_applicable",
+              cakeStatus: Object.keys(cakeItems).length > 0 ? "pending" : "not_applicable",
+              
+              // Timestamps
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              waiterSubmitted: new Date().toLocaleTimeString(),
+              
+              // Payment tracking
+              paid: false,
+              paidAt: null,
+              paymentMethod: null,
+              
+              // Billing status
+              billGenerated: false
             };
 
-            // Save to Firestore
             try {
-              // Decide which collection to use based on menu type
-              if (currentMenuType === "food") {
-                await foodOrdersCollection.add(orderData);
-              } else {
-                await cakeOrdersCollection.add(orderData);
-              }
-              // Simulate order submission
+              // Save unified order to Firestore
+              await unifiedOrdersCollection.add(unifiedOrderData);
+              
+              // Simulate processing
               setTimeout(() => {
                 selectedItems = {};
                 renderOrderSummary();
+                $("#customerName").val("");
+                $("#customerPhone").val("");
                 $("#tableSelect").val("");
-                showOrderSuccessToast(tableNo, orderId);
+                showOrderSuccessToast(customerName, tableNo, orderId);
                 btn.html(originalText);
                 btn.prop("disabled", true);
               }, 1000);
@@ -1557,9 +1595,7 @@
         const quantity = selectedItems[item.name]?.qty || 0;
 
         return `
-          <div class="food-item-card food-item" data-name="${
-            item.name
-          }" data-category="${category}">
+          <div class="food-item-card food-item" data-name="${item.name}" data-category="${category}">
             <div class="item-header">
               <div class="item-info">
                 <div class="item-name">
@@ -1569,15 +1605,11 @@
               </div>
             </div>
             <div class="item-controls">
-              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
+              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1, null, 'food')" ${quantity <= 0 ? "disabled" : ""}>
                 <i class="bi bi-dash"></i>
               </button>
               <div class="qty-display">${quantity}</div>
-              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, 1)">
+              <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1, null, 'food')">
                 <i class="bi bi-plus"></i>
               </button>
             </div>
@@ -1594,9 +1626,7 @@
           : "";
 
         return `
-          <div class="food-item-card cake-item" data-name="${
-            item.name
-          }" data-category="${category}">
+          <div class="food-item-card cake-item" data-name="${item.name}" data-category="${category}">
             <div class="item-header">
               <div class="item-info">
                 <div class="item-name">
@@ -1605,11 +1635,7 @@
                 <div class="item-price">${priceText}</div>
               </div>
             </div>
-            ${
-              item.pricePerKg
-                ? createWeightSelector(item)
-                : createSimpleControls(item)
-            }
+            ${item.pricePerKg ? createWeightSelector(item) : createSimpleControls(item)}
             ${item.pricePerKg ? createCakeOrderedItems(item.name) : ""}
           </div>
         `;
@@ -1620,51 +1646,24 @@
           <div class="weight-selector">
             <small class="text-muted mb-2 d-block">Select weight:</small>
             <div class="weight-option">
-              <input type="radio" name="weight_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}" value="0.5" id="weight_05_${item.name.replace(/\s+/g, "_")}">
-              <label for="weight_05_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}">0.5 kg - ₹${item.pricePerKg * 0.5}</label>
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, "_")}" value="0.5" id="weight_05_${item.name.replace(/\s+/g, "_")}">
+              <label for="weight_05_${item.name.replace(/\s+/g, "_")}">0.5 kg - ₹${item.pricePerKg * 0.5}</label>
             </div>
             <div class="weight-option">
-              <input type="radio" name="weight_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}" value="1" id="weight_1_${item.name.replace(
-          /\s+/g,
-          "_"
-        )}" checked>
-              <label for="weight_1_${item.name.replace(/\s+/g, "_")}">1 kg - ₹${
-          item.pricePerKg
-        }</label>
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, "_")}" value="1" id="weight_1_${item.name.replace(/\s+/g, "_")}" checked>
+              <label for="weight_1_${item.name.replace(/\s+/g, "_")}">1 kg - ₹${item.pricePerKg}</label>
             </div>
             <div class="weight-option">
-              <input type="radio" name="weight_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}" value="1.5" id="weight_15_${item.name.replace(/\s+/g, "_")}">
-              <label for="weight_15_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}">1.5 kg - ₹${item.pricePerKg * 1.5}</label>
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, "_")}" value="1.5" id="weight_15_${item.name.replace(/\s+/g, "_")}">
+              <label for="weight_15_${item.name.replace(/\s+/g, "_")}">1.5 kg - ₹${item.pricePerKg * 1.5}</label>
             </div>
             <div class="weight-option">
-              <input type="radio" name="weight_${item.name.replace(
-                /\s+/g,
-                "_"
-              )}" value="2" id="weight_2_${item.name.replace(/\s+/g, "_")}">
-              <label for="weight_2_${item.name.replace(/\s+/g, "_")}">2 kg - ₹${
-          item.pricePerKg * 2
-        }</label>
+              <input type="radio" name="weight_${item.name.replace(/\s+/g, "_")}" value="2" id="weight_2_${item.name.replace(/\s+/g, "_")}">
+              <label for="weight_2_${item.name.replace(/\s+/g, "_")}">2 kg - ₹${item.pricePerKg * 2}</label>
             </div>
           </div>
           <div class="item-controls cake-add-controls">
-            <button class="cake-add-btn" onclick="addCakeToOrder('${
-              item.name
-            }', ${item.pricePerKg}, '${item.name.replace(/\s+/g, "_")}')">
+            <button class="cake-add-btn" onclick="addCakeToOrder('${item.name}', ${item.pricePerKg}, '${item.name.replace(/\s+/g, "_")}')">
               <i class="bi bi-plus-circle me-2"></i>Add to Order
             </button>
           </div>
@@ -1696,9 +1695,7 @@
                   <i class="bi bi-dash"></i>
                 </button>
                 <span class="ordered-qty">${item.qty}</span>
-                <button class="ordered-qty-btn" onclick="addMoreCakeToOrder('${itemKey}', ${
-            item.price / (item.qty || 1)
-          })">
+                <button class="ordered-qty-btn" onclick="addMoreCakeToOrder('${itemKey}', ${item.price / (item.qty || 1)})">
                   <i class="bi bi-plus"></i>
                 </button>
               </div>
@@ -1711,9 +1708,7 @@
       }
 
       window.addCakeToOrder = function (itemName, pricePerKg, itemId) {
-        const selectedWeight = $(
-          `input[name="weight_${itemId}"]:checked`
-        ).val();
+        const selectedWeight = $(`input[name="weight_${itemId}"]:checked`).val();
         if (!selectedWeight) {
           alert("Please select a weight first!");
           return;
@@ -1726,7 +1721,6 @@
         $(`input[name="weight_${itemId}"]`).prop("checked", false);
         $(`#weight_1_${itemId}`).prop("checked", true);
 
-        // Re-render the cake menu to show updated ordered items
         renderCakeMenu();
       };
 
@@ -1743,7 +1737,7 @@
 
       window.addMoreCakeToOrder = function (itemKey, price) {
         if (!selectedItems[itemKey]) {
-          selectedItems[itemKey] = { qty: 0, price: price };
+          selectedItems[itemKey] = { qty: 0, price: price, itemType: 'cake' };
         }
         selectedItems[itemKey].qty += 1;
         renderCakeMenu();
@@ -1755,15 +1749,11 @@
 
         return `
           <div class="item-controls">
-            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, -1)" ${quantity <= 0 ? "disabled" : ""}>
+            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, -1, null, 'cake')" ${quantity <= 0 ? "disabled" : ""}>
               <i class="bi bi-dash"></i>
             </button>
             <div class="qty-display">${quantity}</div>
-            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${
-          item.price
-        }, 1)">
+            <button class="qty-btn" onclick="updateQuantity('${item.name}', ${item.price}, 1, null, 'cake')">
               <i class="bi bi-plus"></i>
             </button>
           </div>
@@ -1787,10 +1777,22 @@
         }
 
         let itemsHtml = "";
-        Object.entries(selectedItems).forEach(([name, { qty, price }]) => {
+        let foodCount = 0;
+        let cakeCount = 0;
+
+        Object.entries(selectedItems).forEach(([name, { qty, price, itemType }]) => {
+          const typeClass = itemType === 'cake' ? 'cake-type' : '';
+          const typeLabel = itemType === 'cake' ? 'Cake' : 'Food';
+          
+          if (itemType === 'cake') cakeCount++;
+          else foodCount++;
+
           itemsHtml += `
             <div class="order-item">
-              <span class="order-item-name">${name}</span>
+              <span class="order-item-name">
+                ${name}
+                <span class="order-type-display ${typeClass}">${typeLabel}</span>
+              </span>
               <span class="order-item-qty">×${qty}</span>
               <span class="order-item-price">₹${qty * price}</span>
             </div>
@@ -1803,6 +1805,7 @@
           ${itemsHtml}
           <div class="order-total">
             Total: ₹${total}
+            <br><small>Food items: ${foodCount} | Cake items: ${cakeCount}</small>
           </div>
         `);
 
@@ -1850,7 +1853,7 @@
       });
 
       // Enhanced success toast with order details
-      function showOrderSuccessToast(tableNo, orderId) {
+      function showOrderSuccessToast(customerName, tableNo, orderId) {
         $(".custom-toast").remove();
 
         const customToast = $(`
@@ -1859,10 +1862,8 @@
               <div class="d-flex">
                 <div class="toast-body">
                   <i class="bi bi-check-circle-fill me-2"></i>
-                  <strong>Order #${orderId
-                    .toString()
-                    .slice(-4)} submitted!</strong><br>
-                  <small>Table ${tableNo} • Sent to kitchen • ${new Date().toLocaleTimeString()}</small>
+                  <strong>Order #${orderId.toString().slice(-4)} submitted!</strong><br>
+                  <small>${customerName} • Table ${tableNo} • Sent to kitchen & counter • ${new Date().toLocaleTimeString()}</small>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
               </div>
@@ -1879,157 +1880,26 @@
         });
       }
 
-      // Add real-time order status checking
-      function checkOrderStatus() {
-        const orderHistory = JSON.parse(
-          localStorage.getItem("bamboo_order_history") || "[]"
-        );
-        const kitchenOrders = JSON.parse(
-          localStorage.getItem("bamboo_kitchen_orders") || "{}"
-        );
-
-        Object.values(kitchenOrders).forEach((order) => {
-          if (order.status === "ready") {
-            showOrderReadyNotification(order.table, order.id);
-          }
-        });
-      }
-
-      function showOrderReadyNotification(tableNo, orderId) {
-        const notificationKey = `notified_${orderId}`;
-        if (localStorage.getItem(notificationKey)) {
-          return;
+      // Customer name validation
+      $("#customerName").on("input", function() {
+        const name = $(this).val().trim();
+        if (name.length > 0) {
+          $(this).removeClass("is-invalid").addClass("is-valid");
+        } else {
+          $(this).removeClass("is-valid").addClass("is-invalid");
         }
+      });
 
-        localStorage.setItem(notificationKey, "true");
-
-        const notification = $(`
-          <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1000;">
-            <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert" style="min-width: 300px;">
-              <h6 class="mb-1">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Order Ready! 🎉</strong>
-              </h6>
-              <p class="mb-0">Table ${tableNo} order is ready for serving</p>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-          </div>
-        `);
-
-        $("body").append(notification);
-
-        setTimeout(() => {
-          notification.find(".alert").alert("close");
-        }, 8000);
-
-        notification.find(".alert").on("closed.bs.alert", function () {
-          notification.remove();
-        });
-      }
-
-      // Check order status every 5 seconds
-      setInterval(checkOrderStatus, 5000);
-
-      // Add order history view
-      function showOrderHistory() {
-        const orderHistory = JSON.parse(
-          localStorage.getItem("bamboo_order_history") || "[]"
-        );
-
-        if (orderHistory.length === 0) {
-          alert("No orders submitted yet today.");
-          return;
-        }
-
-        let historyHtml = `
-          <div class="order-history-modal">
-            <div class="modal-header">
-              <h5>Today's Orders</h5>
-              <button type="button" class="btn-close" onclick="closeOrderHistory()"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-        `;
-
-        orderHistory.reverse().forEach((order) => {
-          const itemCount = Object.keys(order.items).length;
-          const itemsText =
-            Object.keys(order.items).slice(0, 2).join(", ") +
-            (itemCount > 2 ? ` and ${itemCount - 2} more` : "");
-
-          historyHtml += `
-            <div class="border-bottom py-2 mb-2">
-              <div class="d-flex justify-content-between">
-                <strong>Table ${order.table} • Order #${order.id
-            .toString()
-            .slice(-4)}</strong>
-                <span class="badge bg-success">₹${order.total}</span>
-              </div>
-              <small class="text-muted">
-                ${itemsText} • ${new Date(order.timestamp).toLocaleString()}
-              </small>
-            </div>
-          `;
-        });
-
-        historyHtml += `
-            </div>
-            <div class="modal-footer">
-              <small class="text-muted">Total: ${orderHistory.length} orders today</small>
-            </div>
-          </div>
-        `;
-
-        const modal = $(`
-          <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-               style="background: rgba(0,0,0,0.5); z-index: 1050;">
-            <div class="bg-white rounded-3 p-0 shadow-lg" style="max-width: 500px; width: 90%;">
-              ${historyHtml}
-            </div>
-          </div>
-        `);
-
-        $("body").append(modal);
-      }
-
-      function closeOrderHistory() {
-        $(".position-fixed").has(".order-history-modal").remove();
-      }
-
-      window.showOrderHistory = showOrderHistory;
-      window.closeOrderHistory = closeOrderHistory;
-
-      // Add order history button to navbar
-      setTimeout(() => {
-        const historyButton = $(`
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="showOrderHistory()">
-              <i class="bi bi-clock-history me-2"></i>History
-            </a>
-          </li>
-        `);
-        $(".navbar-nav").append(historyButton);
-      }, 1000);
-
-      // Add keyboard shortcuts
-      $(document).keydown(function (e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === "h") {
-          e.preventDefault();
-          showOrderHistory();
-        }
-
-        // Switch between food and cake menu with Tab
-        if (
-          e.key === "Tab" &&
-          !e.shiftKey &&
-          !$(e.target).is("input, select, button")
-        ) {
-          e.preventDefault();
-          const currentActive = $(".menu-type-btn.active").data("menu");
-          if (currentActive === "food") {
-            $(".menu-type-btn[data-menu='cake']").click();
-          } else {
-            $(".menu-type-btn[data-menu='food']").click();
-          }
+      // Phone validation
+      $("#customerPhone").on("input", function() {
+        const phone = $(this).val().trim();
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (phoneRegex.test(phone)) {
+          $(this).removeClass("is-invalid").addClass("is-valid");
+        } else if (phone.length > 0) {
+          $(this).removeClass("is-valid").addClass("is-invalid");
+        } else {
+          $(this).removeClass("is-valid is-invalid");
         }
       });
     </script>
