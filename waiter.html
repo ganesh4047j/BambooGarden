@@ -1547,6 +1547,56 @@
           });
       });
 
+      // --- Real-time listener for ready orders ---
+      function listenForReadyOrders() {
+        // Listen for orders for this session/table that are marked ready and not yet notified
+        db.collection("unified_orders")
+          .where("status", "==", "ready")
+          .where("waiterNotified", "!=", true)
+          .onSnapshot(snapshot => {
+            snapshot.forEach(doc => {
+              const order = doc.data();
+              // Only notify if this waiter/table is relevant (optional: filter by table/customer if needed)
+              showReadyNotification(order);
+
+              // Mark as notified so waiter doesn't get repeated notifications
+              db.collection("unified_orders").doc(doc.id).update({
+                waiterNotified: true
+              }).then(() => {
+                // Optionally, send a message to server (could be a webhook or other system)
+                // For now, just log
+                console.log(`Order ready notification sent for Table ${order.tableNumber}, Order #${doc.id}`);
+              });
+            });
+          });
+      }
+
+      // Show notification/toast to waiter
+      function showReadyNotification(order) {
+        $(".ready-toast").remove();
+        const readyToast = $(`
+          <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 12">
+            <div class="toast align-items-center text-white bg-info border-0 ready-toast" role="alert">
+              <div class="d-flex">
+                <div class="toast-body">
+                  <i class="bi bi-bell-fill me-2"></i>
+                  <strong>Order Ready!</strong><br>
+                  <small>Table ${order.tableNumber} • ${order.customerName || "Customer"}<br>
+                  Please serve the order.</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
+            </div>
+          </div>
+        `);
+        $("body").append(readyToast);
+        const toast = new bootstrap.Toast(readyToast.find(".toast"));
+        toast.show();
+        readyToast.find(".toast").on("hidden.bs.toast", function () {
+          readyToast.remove();
+        });
+      }
+
       function renderCurrentMenu() {
         if (currentMenuType === "food") {
           renderFoodMenu();
@@ -1902,6 +1952,8 @@
           $(this).removeClass("is-valid is-invalid");
         }
       });
+
+      listenForReadyOrders();
     </script>
   </body>
 </html>
