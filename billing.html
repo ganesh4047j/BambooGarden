@@ -146,6 +146,21 @@
       border-radius: 25px;
       font-weight: 600;
     }
+    .btn-discount {
+      background: linear-gradient(135deg, #e91e63 0%, #ffb6b9 100%);
+      color: white !important;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(233,30,99,0.08);
+      transition: all 0.3s ease;
+    }
+    .btn-discount:hover {
+      background: linear-gradient(135deg, #c2185b 0%, #e91e63 100%);
+      color: #fff !important;
+      transform: translateY(-2px);
+    }
     .filter-tabs {
       background: white;
       border-radius: 15px;
@@ -574,6 +589,24 @@
     const hasFoodItems = Object.keys(bill.foodItems).length > 0;
     const hasCakeItems = Object.keys(bill.cakeItems).length > 0;
     
+    // Discount section
+    let discountHtml = '';
+    if (!bill.discountApplied) {
+      discountHtml = `
+        <button class="btn btn-discount flex-fill" onclick="applyDiscount('${bill.id}')">
+          <i class="bi bi-percent me-2"></i>Apply 10% Discount
+        </button>
+      `;
+    } else {
+      discountHtml = `
+        <div class="alert alert-info mb-0 flex-fill">
+          <i class="bi bi-percent me-2"></i>
+          10% Discount Applied: -₹${bill.discountAmount}<br>
+          <b>Actual Amount: ₹${bill.discountedTotal}</b>
+        </div>
+      `;
+    }
+
     return `
       <div class="bill-card">
         <div class="bill-header">
@@ -636,10 +669,11 @@
         
         <div class="total-section d-flex justify-content-between align-items-center">
           <div><b><i class="bi bi-receipt me-2"></i>Grand Total</b></div>
-          <div><b>₹${bill.totalAmount}</b></div>
+          <div><b>₹${bill.discountApplied ? bill.discountedTotal : bill.totalAmount}</b></div>
         </div>
         
         <div class="mt-3 d-flex gap-2 flex-wrap">
+          ${discountHtml}
           ${!bill.paid ? `
             <button class="btn btn-pay flex-fill" onclick="openPaymentModal('${bill.id}')">
               <i class="bi bi-credit-card me-2"></i>Process Payment
@@ -731,9 +765,10 @@
     selectedBillId = billId;
     selectedBill = bills.find(b => b.id === billId);
     selectedPaymentMethod = null;
-    
+
+    const amount = selectedBill.discountApplied ? selectedBill.discountedTotal : selectedBill.totalAmount;
     document.getElementById('paymentInfo').textContent =
-      `${selectedBill.customerName} - Table ${selectedBill.tableNumber} - ₹${selectedBill.totalAmount}`;
+      `${selectedBill.customerName} - Table ${selectedBill.tableNumber} - ₹${amount}`;
     
     document.querySelectorAll('.payment-method').forEach(el => {
       el.classList.remove('border-success', 'bg-success', 'text-white');
@@ -751,12 +786,15 @@
       alert('Select a payment method');
       return;
     }
-    
+    const bill = bills.find(b => b.id === selectedBillId);
+    const amount = bill.discountApplied ? bill.discountedTotal : bill.totalAmount;
+
     db.collection('unified_orders').doc(selectedBillId).update({
       paid: true,
       paidAt: firebase.firestore.FieldValue.serverTimestamp(),
       paymentMethod: selectedPaymentMethod,
-      billGenerated: true
+      billGenerated: true,
+      paidAmount: amount
     }).then(() => {
       bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
     }).catch(err => {
@@ -775,6 +813,7 @@
 
     const hasFoodItems = Object.keys(bill.foodItems).length > 0;
     const hasCakeItems = Object.keys(bill.cakeItems).length > 0;
+    const grandTotal = bill.discountApplied ? bill.discountedTotal : bill.totalAmount;
 
     // Build printable bill HTML
     const html = `
@@ -858,8 +897,14 @@
           <table class="bill-table">
             <tr class="total-row">
               <td colspan="3" style="text-align:right; font-size: 1.2rem;">GRAND TOTAL</td>
-              <td style="font-size: 1.2rem;">₹${bill.totalAmount}</td>
+              <td style="font-size: 1.2rem;">₹${grandTotal}</td>
             </tr>
+            ${bill.discountApplied ? `
+              <tr>
+                <td colspan="3" style="text-align:right; color:#e91e63;">10% Discount</td>
+                <td style="color:#e91e63;">-₹${bill.discountAmount}</td>
+              </tr>
+            ` : ''}
           </table>
         </div>
 
@@ -902,6 +947,33 @@
       printable.innerHTML = '';
     }, 500);
   }
+
+  // Add discount logic
+  function applyDiscount(billId) {
+    const bill = bills.find(b => b.id === billId);
+    if (!bill || bill.discountApplied) return;
+
+    const discountAmount = Math.round(bill.totalAmount * 0.10);
+    const discountedTotal = bill.totalAmount - discountAmount;
+
+    // Update Firestore
+    db.collection('unified_orders').doc(billId).update({
+      discountApplied: true,
+      discountAmount: discountAmount,
+      discountedTotal: discountedTotal
+    }).then(() => {
+      // Update local bill and re-render
+      bill.discountApplied = true;
+      bill.discountAmount = discountAmount;
+      bill.discountedTotal = discountedTotal;
+      renderBills();
+    }).catch(err => {
+      alert('Error applying discount: ' + err.message);
+    });
+  }
+
+  // Make discount function global
+  window.applyDiscount = applyDiscount;
 </script>
 </body>
 </html>
