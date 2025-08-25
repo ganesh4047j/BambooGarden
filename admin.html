@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon">
+    <link rel="shortcut icon" href="bg_img.PNG" type="image/x-icon" />
     <!-- Bootstrap 5 -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -122,7 +122,7 @@
       .summary-card h6,
       .summary-card h3 {
         color: #fff !important;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
       }
       .summary-card.text-danger {
         background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
@@ -228,7 +228,11 @@
         letter-spacing: 0.5px;
       }
       .badge.cake-badge {
-        background: linear-gradient(135deg, var(--cake-pink) 0%, var(--cake-light) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--cake-pink) 0%,
+          var(--cake-light) 100%
+        );
         color: white;
         font-weight: 600;
         font-size: 0.85rem;
@@ -350,7 +354,8 @@
         .summary-card {
           margin-bottom: 0.5rem;
         }
-        .btn, .btn-sm {
+        .btn,
+        .btn-sm {
           font-size: 0.95rem;
           padding: 0.35rem 0.7rem;
         }
@@ -403,7 +408,8 @@
         .summary-card {
           margin-bottom: 0.3rem;
         }
-        .btn, .btn-sm {
+        .btn,
+        .btn-sm {
           font-size: 0.85rem;
           padding: 0.25rem 0.5rem;
         }
@@ -458,7 +464,8 @@
         }
       }
       @media (max-width: 400px) {
-        .dashboard-card, .table-responsive {
+        .dashboard-card,
+        .table-responsive {
           overflow-x: auto;
         }
         .table {
@@ -569,10 +576,16 @@
 
       <!-- Unified Orders Table -->
       <div class="dashboard-card mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 flex-wrap"
+        >
           <h5>🧾 Unified Orders (Waiter)</h5>
           <div>
-            <button id="exportOrdersBtn" class="btn btn-sm" title="Export Orders">
+            <button
+              id="exportOrdersBtn"
+              class="btn btn-sm"
+              title="Export Orders"
+            >
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -598,10 +611,16 @@
 
       <!-- Kitchen Orders Table -->
       <div class="dashboard-card mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 flex-wrap"
+        >
           <h5>👨‍🍳 Kitchen Orders Status</h5>
           <div>
-            <button id="exportKitchenBtn" class="btn btn-sm" title="Export Kitchen Orders">
+            <button
+              id="exportKitchenBtn"
+              class="btn btn-sm"
+              title="Export Kitchen Orders"
+            >
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -627,10 +646,16 @@
 
       <!-- Groceries Table -->
       <div class="dashboard-card">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 flex-wrap"
+        >
           <h5>🛒 Today's Groceries & Products Registered</h5>
           <div>
-            <button id="exportGroceriesBtn" class="btn btn-sm" title="Export Groceries">
+            <button
+              id="exportGroceriesBtn"
+              class="btn btn-sm"
+              title="Export Groceries"
+            >
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -654,10 +679,16 @@
 
       <!-- Billing Summary and Table (Split into Food Orders and Cake Orders as per existing structure) -->
       <div class="dashboard-card mb-4" id="billingTableCard">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 flex-wrap"
+        >
           <h5>💳 Today's Food Orders Billing</h5>
           <div>
-            <button id="exportBillingBtn" class="btn btn-sm" title="Export Billing">
+            <button
+              id="exportBillingBtn"
+              class="btn btn-sm"
+              title="Export Billing"
+            >
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -682,10 +713,16 @@
         </div>
       </div>
       <div class="dashboard-card mb-4" id="cakeBillingTableCard">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3 flex-wrap"
+        >
           <h5>🍰 Today's Cake Orders Billing</h5>
           <div>
-            <button id="exportCakeBillingBtn" class="btn btn-sm" title="Export Cake Billing">
+            <button
+              id="exportCakeBillingBtn"
+              class="btn btn-sm"
+              title="Export Cake Billing"
+            >
               <i class="bi bi-download me-1"></i> Export XLSX
             </button>
           </div>
@@ -721,11 +758,11 @@
       // Firebase config
       const firebaseConfig = {
         apiKey: "AIzaSyDY3XhrG-2Cj9y2QvW0RB9afjnW1k-NL6E",
-        authDomain: "bamboo-15c88.firebaseapp.com", 
+        authDomain: "bamboo-15c88.firebaseapp.com",
         projectId: "bamboo-15c88",
         storageBucket: "bamboo-15c88.firebasestorage.app",
         messagingSenderId: "491968003258",
-        appId: "1:491968003258:web:903605a044306b45745683"
+        appId: "1:491968003258:web:903605a044306b45745683",
       };
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
@@ -733,8 +770,8 @@
       // Utility: convert Firestore Timestamp to JS Date
       function toDate(ts) {
         if (!ts) return null;
-        if (typeof ts.toDate === 'function') return ts.toDate();
-        if (typeof ts === 'string') return new Date(ts);
+        if (typeof ts.toDate === "function") return ts.toDate();
+        if (typeof ts === "string") return new Date(ts);
         if (ts.seconds !== undefined && ts.nanoseconds !== undefined) {
           return new Date(ts.seconds * 1000 + Math.floor(ts.nanoseconds / 1e6));
         }
@@ -744,12 +781,12 @@
       // Utility: format time
       function formatTime(ts) {
         const d = toDate(ts);
-        if (!d || isNaN(d.getTime())) return '';
-        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (!d || isNaN(d.getTime())) return "";
+        return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       }
       function formatDate(ts) {
         const d = toDate(ts);
-        if (!d || isNaN(d.getTime())) return '';
+        if (!d || isNaN(d.getTime())) return "";
         return d.toLocaleDateString();
       }
 
@@ -760,79 +797,107 @@
       let cakeBills = [];
 
       // --- Real-time Listeners ---
-      
+
       // Listen to unified orders
-      db.collection('unified_orders').onSnapshot(snapshot => {
-        console.log('🔄 Unified Orders Snapshot received, docs count:', snapshot.size);
-        
-        unifiedOrders = [];
-        // Removed date filtering - show all orders
-        console.log('📅 Showing all orders (no date filtering)');
-        
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          console.log('📋 Raw order data:', doc.id, data);
-          
-          const processedOrder = { 
-            id: doc.id, 
-            ...data, 
-            customerName: data.customerName || 'Unknown Customer',
-            tableNumber: data.tableNumber || '-',
-            customerPhone: data.customerPhone || ''
-          };
-          
-          console.log('✅ Processed order added:', processedOrder);
-          unifiedOrders.push(processedOrder);
-        });
-        
-        console.log('📊 Total unified orders:', unifiedOrders.length);
-        console.log('📋 All unified orders:', unifiedOrders);
-        
-        renderUnifiedOrders();
-        renderKitchenOrders();
-        updateOrderStats();
-      }, error => {
-        console.error('❌ Error listening to unified orders:', error);
-      });
+      db.collection("unified_orders").onSnapshot(
+        (snapshot) => {
+          console.log(
+            "🔄 Unified Orders Snapshot received, docs count:",
+            snapshot.size
+          );
+
+          unifiedOrders = [];
+          // Removed date filtering - show all orders
+          console.log("📅 Showing all orders (no date filtering)");
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log("📋 Raw order data:", doc.id, data);
+
+            const processedOrder = {
+              id: doc.id,
+              ...data,
+              customerName: data.customerName || "Unknown Customer",
+              tableNumber: data.tableNumber || "-",
+              customerPhone: data.customerPhone || "",
+            };
+
+            console.log("✅ Processed order added:", processedOrder);
+            unifiedOrders.push(processedOrder);
+          });
+
+          console.log("📊 Total unified orders:", unifiedOrders.length);
+          console.log("📋 All unified orders:", unifiedOrders);
+
+          renderUnifiedOrders();
+          renderKitchenOrders();
+          updateOrderStats();
+        },
+        (error) => {
+          console.error("❌ Error listening to unified orders:", error);
+        }
+      );
 
       // Listen to inventory (groceries) - removed date filtering
-      db.collection('inventory').onSnapshot(snapshot => {
-        console.log('🛒 Inventory Snapshot received, docs count:', snapshot.size);
-        
-        groceries = [];
-        // Removed date filtering - show all inventory items
-        console.log('🛒 Showing all inventory items (no date filtering)');
-        
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          console.log('🛒 Raw inventory data:', doc.id, data);
-          
-          groceries.push({ id: doc.id, ...data });
-          console.log('✅ Grocery item added:', { id: doc.id, ...data });
-        });
-        
-        console.log('🛒 Total groceries:', groceries.length);
-        renderGroceries();
-      }, error => {
-        console.error('❌ Error listening to inventory:', error);
-      });
+      db.collection("inventory").onSnapshot(
+        (snapshot) => {
+          console.log(
+            "🛒 Inventory Snapshot received, docs count:",
+            snapshot.size
+          );
+
+          groceries = [];
+          // Removed date filtering - show all inventory items
+          console.log("🛒 Showing all inventory items (no date filtering)");
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log("🛒 Raw inventory data:", doc.id, data);
+
+            groceries.push({ id: doc.id, ...data });
+            console.log("✅ Grocery item added:", { id: doc.id, ...data });
+          });
+
+          console.log("🛒 Total groceries:", groceries.length);
+          renderGroceries();
+        },
+        (error) => {
+          console.error("❌ Error listening to inventory:", error);
+        }
+      );
 
       // Extract food and cake billing from unified orders for billing tables
       function extractBillingData() {
-        console.log('💰 Extracting billing data from', unifiedOrders.length, 'unified orders');
-        
+        console.log(
+          "💰 Extracting billing data from",
+          unifiedOrders.length,
+          "unified orders"
+        );
+
         foodBills = [];
         cakeBills = [];
-        
-        unifiedOrders.forEach(order => {
-          console.log('🔍 Processing order for billing:', order.id, order);
-          
-          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
-          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
-          
-          console.log('🍽️ Has food items:', hasFoodItems, 'Food items:', order.foodItems);
-          console.log('🍰 Has cake items:', hasCakeItems, 'Cake items:', order.cakeItems);
-          
+
+        unifiedOrders.forEach((order) => {
+          console.log("🔍 Processing order for billing:", order.id, order);
+
+          const hasFoodItems =
+            order.foodItems && Object.keys(order.foodItems).length > 0;
+          const hasCakeItems =
+            order.cakeItems && Object.keys(order.cakeItems).length > 0;
+
+          console.log(
+            "🍽️ Has food items:",
+            hasFoodItems,
+            "Food items:",
+            order.foodItems
+          );
+          console.log(
+            "🍰 Has cake items:",
+            hasCakeItems,
+            "Cake items:",
+            order.cakeItems
+          );
+
           // Create food billing entry if order has food items
           if (hasFoodItems) {
             const foodBill = {
@@ -843,12 +908,12 @@
               paid: !!order.paid,
               paidAt: order.paidAt,
               createdAt: order.createdAt,
-              paymentMethod: order.paymentMethod
+              paymentMethod: order.paymentMethod,
             };
             foodBills.push(foodBill);
-            console.log('✅ Food bill created:', foodBill);
+            console.log("✅ Food bill created:", foodBill);
           }
-          
+
           // Create cake billing entry if order has cake items
           if (hasCakeItems) {
             const cakeBill = {
@@ -859,16 +924,16 @@
               paid: !!order.paid,
               paidAt: order.paidAt,
               createdAt: order.createdAt,
-              paymentMethod: order.paymentMethod
+              paymentMethod: order.paymentMethod,
             };
             cakeBills.push(cakeBill);
-            console.log('✅ Cake bill created:', cakeBill);
+            console.log("✅ Cake bill created:", cakeBill);
           }
         });
-        
-        console.log('💰 Total food bills:', foodBills.length, foodBills);
-        console.log('🍰 Total cake bills:', cakeBills.length, cakeBills);
-        
+
+        console.log("💰 Total food bills:", foodBills.length, foodBills);
+        console.log("🍰 Total cake bills:", cakeBills.length, cakeBills);
+
         renderFoodBilling();
         renderCakeBilling();
         updateRevenueStats();
@@ -876,120 +941,174 @@
 
       // --- Render Functions ---
       function renderUnifiedOrders() {
-        console.log('🎨 Rendering unified orders, count:', unifiedOrders.length);
-        
+        console.log(
+          "🎨 Rendering unified orders, count:",
+          unifiedOrders.length
+        );
+
         const tbody = document.getElementById("ordersTableBody");
         if (!tbody) {
-          console.error('❌ ordersTableBody element not found!');
+          console.error("❌ ordersTableBody element not found!");
           return;
         }
-        
+
         if (unifiedOrders.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No unified orders for today</td></tr>';
-          console.log('📝 Empty state rendered for unified orders');
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="text-center text-muted">No unified orders for today</td></tr>';
+          console.log("📝 Empty state rendered for unified orders");
           return;
         }
-        
-        const html = unifiedOrders.map(order => {
-          console.log('🎨 Rendering order:', order.id, order);
-          
-          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
-          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
-          
-          let itemsDisplay = '';
-          if (hasFoodItems) {
-            itemsDisplay += Object.entries(order.foodItems)
-              .map(([name, item]) => `${name} ×${item.qty}`)
-              .join("<br>");
-          }
-          if (hasCakeItems) {
-            if (itemsDisplay) itemsDisplay += "<br>";
-            itemsDisplay += Object.entries(order.cakeItems)
-              .map(([name, item]) => `${name} ×${item.qty}`)
-              .join("<br>");
-          }
-          
-          console.log('🍽️ Items display for order', order.id, ':', itemsDisplay);
-          
-          return `
+
+        const html = unifiedOrders
+          .map((order) => {
+            console.log("🎨 Rendering order:", order.id, order);
+
+            const hasFoodItems =
+              order.foodItems && Object.keys(order.foodItems).length > 0;
+            const hasCakeItems =
+              order.cakeItems && Object.keys(order.cakeItems).length > 0;
+
+            let itemsDisplay = "";
+            if (hasFoodItems) {
+              itemsDisplay += Object.entries(order.foodItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join("<br>");
+            }
+            if (hasCakeItems) {
+              if (itemsDisplay) itemsDisplay += "<br>";
+              itemsDisplay += Object.entries(order.cakeItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join("<br>");
+            }
+
+            console.log(
+              "🍽️ Items display for order",
+              order.id,
+              ":",
+              itemsDisplay
+            );
+
+            return `
             <tr>
               <td>
                 ${order.customerName}
-                ${hasFoodItems ? '<span class="badge food-badge">Food</span>' : ''}
-                ${hasCakeItems ? '<span class="badge cake-badge">Cake</span>' : ''}
+                ${
+                  hasFoodItems
+                    ? '<span class="badge food-badge">Food</span>'
+                    : ""
+                }
+                ${
+                  hasCakeItems
+                    ? '<span class="badge cake-badge">Cake</span>'
+                    : ""
+                }
               </td>
               <td>Table ${order.tableNumber}</td>
               <td>${itemsDisplay}</td>
               <td>${formatTime(order.createdAt)}</td>
               <td>&#8377;${order.totalAmount || 0}</td>
               <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${order.id}')">
+                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${
+                  order.id
+                }')">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
           `;
-        }).join("");
-        
+          })
+          .join("");
+
         tbody.innerHTML = html;
-        console.log('✅ Unified orders table rendered with', unifiedOrders.length, 'rows');
+        console.log(
+          "✅ Unified orders table rendered with",
+          unifiedOrders.length,
+          "rows"
+        );
       }
 
       function renderKitchenOrders() {
-        console.log('🍳 Rendering kitchen orders, count:', unifiedOrders.length);
-        
+        console.log(
+          "🍳 Rendering kitchen orders, count:",
+          unifiedOrders.length
+        );
+
         const tbody = document.getElementById("kitchenTableBody");
         if (!tbody) {
-          console.error('❌ kitchenTableBody element not found!');
+          console.error("❌ kitchenTableBody element not found!");
           return;
         }
-        
+
         if (unifiedOrders.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No kitchen orders for today</td></tr>';
-          console.log('📝 Empty state rendered for kitchen orders');
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="text-center text-muted">No kitchen orders for today</td></tr>';
+          console.log("📝 Empty state rendered for kitchen orders");
           return;
         }
-        
-        const html = unifiedOrders.map(order => {
-          const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
-          const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
-          
-          let itemsDisplay = '';
-          if (hasFoodItems) {
-            itemsDisplay += Object.entries(order.foodItems)
-              .map(([name, item]) => `${name} ×${item.qty}`)
-              .join("<br>");
-          }
-          if (hasCakeItems) {
-            if (itemsDisplay) itemsDisplay += "<br>";
-            itemsDisplay += Object.entries(order.cakeItems)
-              .map(([name, item]) => `${name} ×${item.qty}`)
-              .join("<br>");
-          }
-          
-          // Determine overall status
-          let statusBadge = '';
-          let statusText = '';
-          
-          if (order.status === 'ready') {
-            statusBadge = 'bg-success';
-            statusText = 'Ready';
-          } else if (order.foodStatus === 'preparing' || order.cakeStatus === 'preparing') {
-            statusBadge = 'bg-info';
-            statusText = 'Preparing';
-          } else {
-            statusBadge = 'bg-warning';
-            statusText = 'Pending';
-          }
-          
-          console.log('🍳 Kitchen order status for', order.id, ':', statusText, 'Food:', order.foodStatus, 'Cake:', order.cakeStatus);
-          
-          return `
+
+        const html = unifiedOrders
+          .map((order) => {
+            const hasFoodItems =
+              order.foodItems && Object.keys(order.foodItems).length > 0;
+            const hasCakeItems =
+              order.cakeItems && Object.keys(order.cakeItems).length > 0;
+
+            let itemsDisplay = "";
+            if (hasFoodItems) {
+              itemsDisplay += Object.entries(order.foodItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join("<br>");
+            }
+            if (hasCakeItems) {
+              if (itemsDisplay) itemsDisplay += "<br>";
+              itemsDisplay += Object.entries(order.cakeItems)
+                .map(([name, item]) => `${name} ×${item.qty}`)
+                .join("<br>");
+            }
+
+            // Determine overall status
+            let statusBadge = "";
+            let statusText = "";
+
+            if (order.status === "ready") {
+              statusBadge = "bg-success";
+              statusText = "Ready";
+            } else if (
+              order.foodStatus === "preparing" ||
+              order.cakeStatus === "preparing"
+            ) {
+              statusBadge = "bg-info";
+              statusText = "Preparing";
+            } else {
+              statusBadge = "bg-warning";
+              statusText = "Pending";
+            }
+
+            console.log(
+              "🍳 Kitchen order status for",
+              order.id,
+              ":",
+              statusText,
+              "Food:",
+              order.foodStatus,
+              "Cake:",
+              order.cakeStatus
+            );
+
+            return `
             <tr>
               <td>
                 ${order.customerName}
-                ${hasFoodItems ? '<span class="badge food-badge">Food</span>' : ''}
-                ${hasCakeItems ? '<span class="badge cake-badge">Cake</span>' : ''}
+                ${
+                  hasFoodItems
+                    ? '<span class="badge food-badge">Food</span>'
+                    : ""
+                }
+                ${
+                  hasCakeItems
+                    ? '<span class="badge cake-badge">Cake</span>'
+                    : ""
+                }
               </td>
               <td>Table ${order.tableNumber}</td>
               <td>${itemsDisplay}</td>
@@ -1000,165 +1119,214 @@
                 </span>
               </td>
               <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${order.id}')">
+                <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${
+                  order.id
+                }')">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
           `;
-        }).join("");
-        
+          })
+          .join("");
+
         tbody.innerHTML = html;
-        console.log('✅ Kitchen orders table rendered with', unifiedOrders.length, 'rows');
+        console.log(
+          "✅ Kitchen orders table rendered with",
+          unifiedOrders.length,
+          "rows"
+        );
       }
 
       function renderGroceries() {
-        console.log('🛒 Rendering groceries, count:', groceries.length);
-        
+        console.log("🛒 Rendering groceries, count:", groceries.length);
+
         const el = document.getElementById("groceriesCount");
         if (el) el.textContent = groceries.length;
-        
+
         const tbody = document.getElementById("groceriesTableBody");
         if (!tbody) {
-          console.error('❌ groceriesTableBody element not found!');
+          console.error("❌ groceriesTableBody element not found!");
           return;
         }
-        
+
         if (groceries.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No groceries registered today</td></tr>';
-          console.log('📝 Empty state rendered for groceries');
+          tbody.innerHTML =
+            '<tr><td colspan="4" class="text-center text-muted">No groceries registered today</td></tr>';
+          console.log("📝 Empty state rendered for groceries");
           return;
         }
-        
-        tbody.innerHTML = groceries.map(item => `
+
+        tbody.innerHTML = groceries
+          .map(
+            (item) => `
           <tr>
             <td>${item.name}</td>
-            <td>&#8377;${parseFloat(item.amount || 0).toLocaleString('en-IN')}</td>
+            <td>&#8377;${parseFloat(item.amount || 0).toLocaleString(
+              "en-IN"
+            )}</td>
             <td>
-              ${item.fileData && item.fileName
-                ? `<button type="button" class="btn btn-sm btn-outline-primary" title="View File" onclick="window.viewInventoryFileAdminById('${item.id}')">
+              ${
+                item.fileData && item.fileName
+                  ? `<button type="button" class="btn btn-sm btn-outline-primary" title="View File" onclick="window.viewInventoryFileAdminById('${item.id}')">
                     <i class="bi bi-eye"></i> View
                   </button>`
-                : '<span class="text-muted">No file</span>'
+                  : '<span class="text-muted">No file</span>'
               }
             </td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="deleteGrocery('${item.id}')">
+              <button class="btn btn-sm btn-danger" onclick="deleteGrocery('${
+                item.id
+              }')">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
-        `).join("");
-        
-        console.log('✅ Groceries table rendered with', groceries.length, 'rows');
+        `
+          )
+          .join("");
+
+        console.log(
+          "✅ Groceries table rendered with",
+          groceries.length,
+          "rows"
+        );
       }
 
       function updateOrderStats() {
-        console.log('📊 Updating order stats');
-        
+        console.log("📊 Updating order stats");
+
         const el1 = document.getElementById("totalOrders");
         if (el1) {
           el1.textContent = unifiedOrders.length;
-          console.log('📊 Total orders updated:', unifiedOrders.length);
+          console.log("📊 Total orders updated:", unifiedOrders.length);
         }
-        
-        const inProgressCount = unifiedOrders.filter(order => 
-          order.status !== 'ready' && order.status !== 'cancelled'
+
+        const inProgressCount = unifiedOrders.filter(
+          (order) => order.status !== "ready" && order.status !== "cancelled"
         ).length;
         const el2 = document.getElementById("kitchenInProgress");
         if (el2) {
           el2.textContent = inProgressCount;
-          console.log('📊 Kitchen in progress updated:', inProgressCount);
+          console.log("📊 Kitchen in progress updated:", inProgressCount);
         }
-        
+
         // Extract billing data whenever orders change
         extractBillingData();
       }
 
       // --- Billing Tables (maintaining existing separate structure) ---
       function renderFoodBilling() {
-        console.log('💰 Rendering food billing, count:', foodBills.length);
-        
-        const tbody = document.getElementById('foodBillingTableBody');
+        console.log("💰 Rendering food billing, count:", foodBills.length);
+
+        const tbody = document.getElementById("foodBillingTableBody");
         if (!tbody) {
-          console.error('❌ foodBillingTableBody element not found!');
+          console.error("❌ foodBillingTableBody element not found!");
           return;
         }
-        
+
         if (foodBills.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No food billing for today</td></tr>';
-          console.log('📝 Empty state rendered for food billing');
+          tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center text-muted">No food billing for today</td></tr>';
+          console.log("📝 Empty state rendered for food billing");
           return;
         }
-        
-        tbody.innerHTML = foodBills.map((bill, idx) => `
+
+        tbody.innerHTML = foodBills
+          .map(
+            (bill, idx) => `
           <tr>
             <td>${bill.billNumber || idx + 1}</td>
             <td>${bill.customerName}</td>
             <td>Table ${bill.tableNumber}</td>
-            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
+            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString(
+              "en-IN"
+            )}</td>
             <td>
-              <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
-                ${bill.paid ? 'Paid' : 'Unpaid'}
+              <span class="badge ${bill.paid ? "bg-success" : "bg-danger"}">
+                ${bill.paid ? "Paid" : "Unpaid"}
               </span>
             </td>
             <td>${formatTime(bill.paidAt || bill.createdAt)}</td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${bill.id}')">
+              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${
+                bill.id
+              }')">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
-        `).join("");
-        
-        console.log('✅ Food billing table rendered with', foodBills.length, 'rows');
+        `
+          )
+          .join("");
+
+        console.log(
+          "✅ Food billing table rendered with",
+          foodBills.length,
+          "rows"
+        );
       }
 
       function renderCakeBilling() {
-        console.log('🍰 Rendering cake billing, count:', cakeBills.length);
-        
-        const tbody = document.getElementById('cakeBillingTableBody');
+        console.log("🍰 Rendering cake billing, count:", cakeBills.length);
+
+        const tbody = document.getElementById("cakeBillingTableBody");
         if (!tbody) {
-          console.error('❌ cakeBillingTableBody element not found!');
+          console.error("❌ cakeBillingTableBody element not found!");
           return;
         }
-        
+
         if (cakeBills.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No cake billing for today</td></tr>';
-          console.log('📝 Empty state rendered for cake billing');
+          tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center text-muted">No cake billing for today</td></tr>';
+          console.log("📝 Empty state rendered for cake billing");
           return;
         }
-        
-        tbody.innerHTML = cakeBills.map((bill, idx) => `
+
+        tbody.innerHTML = cakeBills
+          .map(
+            (bill, idx) => `
           <tr>
             <td>${bill.billNumber || idx + 1}</td>
             <td>${bill.customerName}</td>
             <td>Table ${bill.tableNumber}</td>
-            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString('en-IN')}</td>
+            <td>&#8377;${parseFloat(bill.total || 0).toLocaleString(
+              "en-IN"
+            )}</td>
             <td>
-              <span class="badge ${bill.paid ? 'bg-success' : 'bg-danger'}">
-                ${bill.paid ? 'Paid' : 'Unpaid'}
+              <span class="badge ${bill.paid ? "bg-success" : "bg-danger"}">
+                ${bill.paid ? "Paid" : "Unpaid"}
               </span>
             </td>
             <td>${formatTime(bill.paidAt || bill.createdAt)}</td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${bill.id}')">
+              <button class="btn btn-sm btn-danger" onclick="deleteUnifiedOrder('${
+                bill.id
+              }')">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
-        `).join("");
-        
-        console.log('✅ Cake billing table rendered with', cakeBills.length, 'rows');
+        `
+          )
+          .join("");
+
+        console.log(
+          "✅ Cake billing table rendered with",
+          cakeBills.length,
+          "rows"
+        );
       }
 
       function updateRevenueStats() {
-        console.log('💰 Updating revenue stats');
-        
+        console.log("💰 Updating revenue stats");
+
         // Calculate total revenue from both food and cake
-        let totalRevenue = 0, totalPaid = 0, totalUnpaid = 0;
-        
-        unifiedOrders.forEach(order => {
+        let totalRevenue = 0,
+          totalPaid = 0,
+          totalUnpaid = 0;
+
+        unifiedOrders.forEach((order) => {
           const orderTotal = parseFloat(order.totalAmount) || 0;
           totalRevenue += orderTotal;
           if (order.paid) {
@@ -1167,61 +1335,363 @@
             totalUnpaid += orderTotal;
           }
         });
-        
-        console.log('💰 Revenue stats:', { totalRevenue, totalPaid, totalUnpaid });
-        
-        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
-        document.getElementById('totalPaid').textContent = '₹' + totalPaid.toLocaleString('en-IN');
-        document.getElementById('totalUnpaid').textContent = '₹' + totalUnpaid.toLocaleString('en-IN');
-        
-        console.log('✅ Revenue stats updated in UI');
+
+        console.log("💰 Revenue stats:", {
+          totalRevenue,
+          totalPaid,
+          totalUnpaid,
+        });
+
+        document.getElementById("totalRevenue").textContent =
+          "₹" + totalRevenue.toLocaleString("en-IN");
+        document.getElementById("totalPaid").textContent =
+          "₹" + totalPaid.toLocaleString("en-IN");
+        document.getElementById("totalUnpaid").textContent =
+          "₹" + totalUnpaid.toLocaleString("en-IN");
+
+        console.log("✅ Revenue stats updated in UI");
       }
 
       // --- Delete Functions ---
-      window.deleteUnifiedOrder = function(orderId) {
-        console.log('🗑️ Attempting to delete unified order:', orderId);
-        if (confirm('Delete this unified order?')) {
-          db.collection('unified_orders').doc(orderId).delete()
-            .then(() => {
-              console.log('✅ Successfully deleted unified order:', orderId);
-            })
-            .catch(error => {
-              console.error('❌ Error deleting unified order:', orderId, error);
-            });
-        }
-      };
 
-      window.deleteGrocery = function(groceryId) {
-        console.log('🗑️ Attempting to delete grocery:', groceryId);
-        if (confirm('Delete this grocery item?')) {
-          db.collection('inventory').doc(groceryId).delete()
-            .then(() => {
-              console.log('✅ Successfully deleted grocery:', groceryId);
-            })
-            .catch(error => {
-              console.error('❌ Error deleting grocery:', groceryId, error);
-            });
+      
+      window.debugFirestoreIds = function() {
+  console.log('🔍 DEBUG: Checking actual document IDs in Firestore...');
+  
+  // Method 1: Direct collection query
+  console.log('📊 Method 1: Direct collection.get()');
+  db.collection('unified_orders').get()
+    .then((querySnapshot) => {
+      console.log('📊 Direct query - Total documents found:', querySnapshot.size);
+      querySnapshot.forEach((doc) => {
+        console.log('📄 Direct - Document ID:', doc.id, 'Type:', typeof doc.id, 'Data:', {
+          customerName: doc.data().customerName,
+          totalAmount: doc.data().totalAmount
+        });
+      });
+    })
+    .catch((error) => {
+      console.error('❌ Error with direct query:', error);
+    });
+  
+  // Method 2: Check real-time listener data
+  console.log('📊 Method 2: Real-time listener data (unifiedOrders array)');
+  if (typeof unifiedOrders !== 'undefined' && unifiedOrders.length > 0) {
+    console.log('📊 Real-time listener - Total documents:', unifiedOrders.length);
+    unifiedOrders.forEach(order => {
+      console.log('📄 Real-time - Document ID:', order.id, 'Type:', typeof order.id, 'Data:', {
+        customerName: order.customerName,
+        totalAmount: order.totalAmount
+      });
+    });
+  } else {
+    console.log('❌ unifiedOrders array is empty or undefined');
+  }
+  
+  // Method 3: Try accessing the specific problematic document directly
+  const problematicId = '1756026816887';
+  console.log('📊 Method 3: Direct document access for problematic ID:', problematicId);
+  
+  db.collection('unified_orders').doc(problematicId).get()
+    .then((doc) => {
+      if (doc.exists) {
+        console.log('✅ Direct access SUCCESS for ID:', problematicId, 'Data:', doc.data());
+      } else {
+        console.log('❌ Direct access FAILED for ID:', problematicId, '- Document does not exist');
+        
+        // Method 4: Try with the number version
+        const numericId = parseInt(problematicId);
+        console.log('📊 Method 4: Trying numeric version:', numericId);
+        return db.collection('unified_orders').doc(String(numericId)).get();
+      }
+    })
+    .then((doc) => {
+      if (doc && doc.exists) {
+        console.log('✅ Numeric ID access SUCCESS:', doc.data());
+      } else if (doc) {
+        console.log('❌ Numeric ID access also FAILED');
+      }
+    })
+    .catch((error) => {
+      console.error('❌ Error with direct document access:', error);
+    });
+};
+
+// Let's also add a function to check if there are any filters or conditions affecting the real-time listener
+window.debugRealtimeListener = function() {
+  console.log('🔍 DEBUG: Checking real-time listener behavior...');
+  
+  // Create a fresh listener without any conditions to see all documents
+  db.collection('unified_orders').onSnapshot((snapshot) => {
+    console.log('📊 Fresh listener - Documents count:', snapshot.size);
+    snapshot.forEach((doc) => {
+      console.log('📄 Fresh listener - ID:', doc.id, 'Type:', typeof doc.id);
+      console.log('📄 Fresh listener - Data:', doc.data());
+    });
+  }, (error) => {
+    console.error('❌ Error with fresh listener:', error);
+  });
+};
+
+// ISSUE IDENTIFIED: The real-time listener is overriding Firestore document IDs
+// We need to fix the listener in your main code. Look for this section in your HTML:
+
+/*
+PROBLEM IN YOUR MAIN CODE:
+In the unified orders listener, you probably have something like:
+
+unifiedOrders.push({ 
+  id: doc.id,           // This should be the Firestore doc.id
+  ...data, 
+  // BUT somewhere the id is getting overridden with a timestamp or custom ID
+});
+
+SOLUTION:
+Make sure you're using the actual Firestore document ID (doc.id) and not overriding it.
+Change your listener from something like:
+
+const processedOrder = { 
+  id: doc.id, 
+  ...data,
+  // Remove any line that overwrites the id with data.someTimestamp or data.customId
+};
+
+To:
+
+const processedOrder = { 
+  id: doc.id,           // Keep this as the Firestore document ID
+  ...data,
+  firestoreId: doc.id,  // Add this for clarity
+  customId: data.customId || data.timestamp, // Move custom IDs to separate field
+};
+*/
+
+// Here's the corrected delete function that will work with actual Firestore IDs:
+window.deleteUnifiedOrder = function(orderId) {
+  console.log('🗑️ Attempting to delete unified order:', orderId, 'Type:', typeof orderId);
+  
+  // CRITICAL: We need to find the actual Firestore document ID
+  // The orderId passed here might be a custom ID, not the Firestore doc ID
+  
+  let actualFirestoreId = null;
+  
+  // First, find the actual Firestore document ID from our local array
+  if (typeof unifiedOrders !== 'undefined' && unifiedOrders.length > 0) {
+    const targetOrder = unifiedOrders.find(order => 
+      order.id == orderId || 
+      order.customId == orderId || 
+      order.timestamp == orderId ||
+      order.createdAt == orderId
+    );
+    
+    if (targetOrder) {
+      // Check if we have the actual Firestore ID stored
+      actualFirestoreId = targetOrder.firestoreId || targetOrder.id;
+      console.log('🔍 Found matching order in local array. Firestore ID should be:', actualFirestoreId);
+    }
+  }
+  
+  if (!actualFirestoreId) {
+    console.error('❌ Could not find actual Firestore document ID for order:', orderId);
+    
+    // Fallback: Try to find it by querying Firestore with known data
+    console.log('🔍 Fallback: Searching Firestore by order data...');
+    
+    db.collection('unified_orders').get()
+      .then((querySnapshot) => {
+        let found = false;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          // Try to match by various fields that might identify this order
+          if (data.customerName === 'Mirdula' && data.totalAmount === 250) {
+            console.log('✅ Found matching document by data. Actual Firestore ID:', doc.id);
+            actualFirestoreId = doc.id;
+            found = true;
+            
+            // Now delete it
+            if (confirm('Found the document! Are you sure you want to delete this order?')) {
+              deleteDocumentById(doc.id);
+            }
+          }
+        });
+        
+        if (!found) {
+          alert('Could not find the document to delete. Please check the console for details.');
         }
-      };
+      })
+      .catch(error => {
+        console.error('❌ Error searching for document:', error);
+        alert('Error searching for document: ' + error.message);
+      });
+    
+    return;
+  }
+  
+  if (confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+    deleteDocumentById(actualFirestoreId);
+  }
+};
+
+// Helper function to delete by actual Firestore document ID
+function deleteDocumentById(firestoreDocId) {
+  // Ensure the document ID is a string (Firestore requirement)
+  const docIdString = String(firestoreDocId);
+  console.log('🗑️ Deleting document with Firestore ID:', docIdString, 'Type:', typeof docIdString);
+  
+  const deleteButtons = document.querySelectorAll('.btn-danger');
+  deleteButtons.forEach(btn => {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+  });
+  
+  // First verify the document exists
+  db.collection('unified_orders').doc(docIdString).get()
+    .then((doc) => {
+      if (doc.exists) {
+        console.log('✅ Document exists, proceeding with deletion...');
+        console.log('📄 Document data:', doc.data());
+        return db.collection('unified_orders').doc(docIdString).delete();
+      } else {
+        console.log('❌ Document does not exist with ID:', docIdString);
+        // Let's try to find it by searching all documents
+        console.log('🔍 Searching all documents to find the right one...');
+        return db.collection('unified_orders').get().then((querySnapshot) => {
+          let foundDoc = null;
+          querySnapshot.forEach((doc) => {
+            console.log('📄 Checking document:', doc.id, 'Data:', doc.data());
+            // Try to match by customer name and amount
+            if (doc.data().customerName === 'Mirdula' && doc.data().totalAmount === 250) {
+              foundDoc = doc;
+              console.log('✅ Found matching document by data:', doc.id);
+            }
+          });
+          
+          if (foundDoc) {
+            console.log('🗑️ Deleting found document:', foundDoc.id);
+            return db.collection('unified_orders').doc(foundDoc.id).delete();
+          } else {
+            throw new Error('Document not found in database');
+          }
+        });
+      }
+    })
+    .then(() => {
+      console.log('✅ Successfully deleted document');
+      alert('Order deleted successfully!');
+    })
+    .catch(error => {
+      console.error('❌ Error deleting document:', docIdString, error);
+      alert('Error deleting order: ' + error.message);
+    })
+    .finally(() => {
+      // Re-enable buttons
+      deleteButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-trash"></i>';
+      });
+    });
+}
+
+window.deleteGrocery = function(groceryId) {
+  console.log('🗑️ Attempting to delete grocery:', groceryId, 'Type:', typeof groceryId);
+  
+  if (!groceryId) {
+    console.error('❌ No grocery ID provided');
+    alert('Error: No grocery ID provided');
+    return;
+  }
+  
+  // Ensure groceryId is treated as string
+  const groceryIdString = String(groceryId);
+  console.log('🗑️ Converting grocery ID to string:', groceryIdString);
+  
+  if (confirm('Are you sure you want to delete this grocery item? This action cannot be undone.')) {
+    console.log('🗑️ User confirmed deletion for grocery:', groceryIdString);
+    
+    // Show loading state
+    const deleteButtons = document.querySelectorAll(`[onclick="deleteGrocery('${groceryId}')"]`);
+    deleteButtons.forEach(btn => {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+    });
+    
+    // First, let's verify the document exists before trying to delete
+    console.log('🔍 Checking if document exists before deletion...');
+    
+    db.collection('inventory').doc(groceryIdString).get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log('✅ Document exists, proceeding with deletion...');
+          return db.collection('inventory').doc(groceryIdString).delete();
+        } else {
+          console.log('❌ Document does not exist in Firestore');
+          throw new Error('Document not found in database');
+        }
+      })
+      .then(() => {
+        console.log('✅ Successfully deleted grocery:', groceryIdString);
+        
+        // Verify deletion by checking if document still exists
+        return db.collection('inventory').doc(groceryIdString).get();
+      })
+      .then((doc) => {
+        if (!doc.exists) {
+          console.log('✅ Deletion verified - document no longer exists');
+        } else {
+          console.log('❌ Warning: Document still exists after deletion attempt');
+        }
+      })
+      .catch(error => {
+        console.error('❌ Error deleting grocery:', groceryIdString, error);
+        alert('Error deleting grocery item: ' + error.message);
+        
+        // Re-enable buttons on error
+        deleteButtons.forEach(btn => {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-trash"></i>';
+        });
+      });
+  } else {
+    console.log('🚫 User cancelled deletion for grocery:', groceryIdString);
+  }
+};
+
+// Also add a test function to verify Firebase connectivity
+window.testFirebaseConnection = function() {
+  console.log('🔥 Testing Firebase connection...');
+  
+  db.collection('unified_orders').limit(1).get()
+    .then((querySnapshot) => {
+      console.log('✅ Firebase connection test successful. Document count:', querySnapshot.size);
+      alert('Firebase connection is working correctly!');
+    })
+    .catch((error) => {
+      console.error('❌ Firebase connection test failed:', error);
+      alert('Firebase connection error: ' + error.message);
+    });
+};
 
       // For viewing grocery file by Firestore id (unchanged from original)
-      window.viewInventoryFileAdminById = function(id) {
-        console.log('👁️ Viewing file for grocery ID:', id);
-        const item = groceries.find(g => g.id === id);
+      window.viewInventoryFileAdminById = function (id) {
+        console.log("👁️ Viewing file for grocery ID:", id);
+        const item = groceries.find((g) => g.id === id);
         if (!item) {
-          console.error('❌ Grocery item not found:', id);
-          return alert('File not found');
+          console.error("❌ Grocery item not found:", id);
+          return alert("File not found");
         }
-        var fileType = item.fileType || '';
-        var fileName = item.fileName || 'Unknown File';
+        var fileType = item.fileType || "";
+        var fileName = item.fileName || "Unknown File";
         var mimeMatch = item.fileData.match(/^data:([^;]+);/);
-        var mimeType = mimeMatch ? mimeMatch[1] : '';
-        console.log('📄 File details:', { fileName, fileType, mimeType });
-        if (mimeType.startsWith('image/')) {
+        var mimeType = mimeMatch ? mimeMatch[1] : "";
+        console.log("📄 File details:", { fileName, fileType, mimeType });
+        if (mimeType.startsWith("image/")) {
           window.showImageModalAdmin(item.fileData, fileName, mimeType);
-        } else if (mimeType === 'application/pdf') {
+        } else if (mimeType === "application/pdf") {
           window.showPdfModalAdmin(item.fileData, fileName);
-        } else if (mimeType.startsWith('text/') || mimeType === 'application/json') {
+        } else if (
+          mimeType.startsWith("text/") ||
+          mimeType === "application/json"
+        ) {
           window.showTextModalAdmin(item.fileData, fileName);
         } else {
           window.downloadFileAdmin(item.fileData, fileName);
@@ -1230,19 +1700,19 @@
 
       // Export helpers
       function exportTableToXLSX(data, filename, sheetName) {
-        console.log('📤 Exporting to XLSX:', filename, 'Rows:', data.length);
+        console.log("📤 Exporting to XLSX:", filename, "Rows:", data.length);
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, sheetName);
         XLSX.writeFile(wb, filename);
-        console.log('✅ Export completed:', filename);
+        console.log("✅ Export completed:", filename);
       }
 
       document.addEventListener("DOMContentLoaded", function () {
-        console.log('🚀 DOM Content Loaded - Initializing Admin Dashboard');
-        console.log('🔥 Firebase initialized');
-        console.log('📅 Today\'s date:', new Date().toDateString());
-        
+        console.log("🚀 DOM Content Loaded - Initializing Admin Dashboard");
+        console.log("🔥 Firebase initialized");
+        console.log("📅 Today's date:", new Date().toDateString());
+
         // Initial renders
         renderUnifiedOrders();
         renderKitchenOrders();
@@ -1253,126 +1723,149 @@
         updateRevenueStats();
 
         // Export Unified Orders
-        document.getElementById("exportOrdersBtn").addEventListener("click", function () {
-          console.log('📤 Exporting unified orders');
-          const data = unifiedOrders.map(order => {
-            const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
-            const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
-            
-            let itemsText = '';
-            if (hasFoodItems) {
-              itemsText += Object.entries(order.foodItems)
-                .map(([name, item]) => `${name} ×${item.qty}`)
-                .join(", ");
-            }
-            if (hasCakeItems) {
-              if (itemsText) itemsText += ", ";
-              itemsText += Object.entries(order.cakeItems)
-                .map(([name, item]) => `${name} ×${item.qty}`)
-                .join(", ");
-            }
-            
-            return {
-              Customer: order.customerName,
-              Table: order.tableNumber,
-              Phone: order.customerPhone,
-              Items: itemsText,
-              Time: formatTime(order.createdAt),
-              Total: order.totalAmount,
-              'Food Total': order.foodTotal || 0,
-              'Cake Total': order.cakeTotal || 0
-            };
+        document
+          .getElementById("exportOrdersBtn")
+          .addEventListener("click", function () {
+            console.log("📤 Exporting unified orders");
+            const data = unifiedOrders.map((order) => {
+              const hasFoodItems =
+                order.foodItems && Object.keys(order.foodItems).length > 0;
+              const hasCakeItems =
+                order.cakeItems && Object.keys(order.cakeItems).length > 0;
+
+              let itemsText = "";
+              if (hasFoodItems) {
+                itemsText += Object.entries(order.foodItems)
+                  .map(([name, item]) => `${name} ×${item.qty}`)
+                  .join(", ");
+              }
+              if (hasCakeItems) {
+                if (itemsText) itemsText += ", ";
+                itemsText += Object.entries(order.cakeItems)
+                  .map(([name, item]) => `${name} ×${item.qty}`)
+                  .join(", ");
+              }
+
+              return {
+                Customer: order.customerName,
+                Table: order.tableNumber,
+                Phone: order.customerPhone,
+                Items: itemsText,
+                Time: formatTime(order.createdAt),
+                Total: order.totalAmount,
+                "Food Total": order.foodTotal || 0,
+                "Cake Total": order.cakeTotal || 0,
+              };
+            });
+            exportTableToXLSX(
+              data,
+              "UnifiedOrders_Today.xlsx",
+              "UnifiedOrders"
+            );
           });
-          exportTableToXLSX(data, "UnifiedOrders_Today.xlsx", "UnifiedOrders");
-        });
 
         // Export Kitchen Orders
-        document.getElementById("exportKitchenBtn").addEventListener("click", function () {
-          console.log('📤 Exporting kitchen orders');
-          const data = unifiedOrders.map(order => {
-            const hasFoodItems = order.foodItems && Object.keys(order.foodItems).length > 0;
-            const hasCakeItems = order.cakeItems && Object.keys(order.cakeItems).length > 0;
-            
-            let itemsText = '';
-            if (hasFoodItems) {
-              itemsText += Object.entries(order.foodItems)
-                .map(([name, item]) => `${name} ×${item.qty}`)
-                .join(", ");
-            }
-            if (hasCakeItems) {
-              if (itemsText) itemsText += ", ";
-              itemsText += Object.entries(order.cakeItems)
-                .map(([name, item]) => `${name} ×${item.qty}`)
-                .join(", ");
-            }
-            
-            let statusText = '';
-            if (order.status === 'ready') {
-              statusText = 'Ready';
-            } else if (order.foodStatus === 'preparing' || order.cakeStatus === 'preparing') {
-              statusText = 'Preparing';
-            } else {
-              statusText = 'Pending';
-            }
-            
-            return {
-              Customer: order.customerName,
-              Table: order.tableNumber,
-              Items: itemsText,
-              "Order Time": formatTime(order.createdAt),
-              Status: statusText,
-              'Food Status': order.foodStatus || 'N/A',
-              'Cake Status': order.cakeStatus || 'N/A'
-            };
+        document
+          .getElementById("exportKitchenBtn")
+          .addEventListener("click", function () {
+            console.log("📤 Exporting kitchen orders");
+            const data = unifiedOrders.map((order) => {
+              const hasFoodItems =
+                order.foodItems && Object.keys(order.foodItems).length > 0;
+              const hasCakeItems =
+                order.cakeItems && Object.keys(order.cakeItems).length > 0;
+
+              let itemsText = "";
+              if (hasFoodItems) {
+                itemsText += Object.entries(order.foodItems)
+                  .map(([name, item]) => `${name} ×${item.qty}`)
+                  .join(", ");
+              }
+              if (hasCakeItems) {
+                if (itemsText) itemsText += ", ";
+                itemsText += Object.entries(order.cakeItems)
+                  .map(([name, item]) => `${name} ×${item.qty}`)
+                  .join(", ");
+              }
+
+              let statusText = "";
+              if (order.status === "ready") {
+                statusText = "Ready";
+              } else if (
+                order.foodStatus === "preparing" ||
+                order.cakeStatus === "preparing"
+              ) {
+                statusText = "Preparing";
+              } else {
+                statusText = "Pending";
+              }
+
+              return {
+                Customer: order.customerName,
+                Table: order.tableNumber,
+                Items: itemsText,
+                "Order Time": formatTime(order.createdAt),
+                Status: statusText,
+                "Food Status": order.foodStatus || "N/A",
+                "Cake Status": order.cakeStatus || "N/A",
+              };
+            });
+            exportTableToXLSX(
+              data,
+              "KitchenOrders_Today.xlsx",
+              "KitchenOrders"
+            );
           });
-          exportTableToXLSX(data, "KitchenOrders_Today.xlsx", "KitchenOrders");
-        });
 
         // Export Groceries (unchanged)
-        document.getElementById("exportGroceriesBtn").addEventListener("click", function () {
-          console.log('📤 Exporting groceries');
-          const data = groceries.map(item => ({
-            Item: item.name,
-            Amount: item.amount
-          }));
-          exportTableToXLSX(data, "Groceries_Today.xlsx", "Groceries");
-        });
+        document
+          .getElementById("exportGroceriesBtn")
+          .addEventListener("click", function () {
+            console.log("📤 Exporting groceries");
+            const data = groceries.map((item) => ({
+              Item: item.name,
+              Amount: item.amount,
+            }));
+            exportTableToXLSX(data, "Groceries_Today.xlsx", "Groceries");
+          });
 
         // Export Food Billing
-        document.addEventListener('click', function(e) {
-          if (e.target.closest('#exportBillingBtn')) {
-            console.log('📤 Exporting food billing');
+        document.addEventListener("click", function (e) {
+          if (e.target.closest("#exportBillingBtn")) {
+            console.log("📤 Exporting food billing");
             const data = foodBills.map((bill, idx) => ({
-              'Bill #': bill.billNumber || (idx + 1),
+              "Bill #": bill.billNumber || idx + 1,
               Customer: bill.customerName,
               Table: bill.tableNumber,
               Total: bill.total,
-              Status: bill.paid ? 'Paid' : 'Unpaid',
-              'Payment Method': bill.paymentMethod || 'N/A',
-              Time: formatTime(bill.paidAt || bill.createdAt)
+              Status: bill.paid ? "Paid" : "Unpaid",
+              "Payment Method": bill.paymentMethod || "N/A",
+              Time: formatTime(bill.paidAt || bill.createdAt),
             }));
             exportTableToXLSX(data, "FoodBilling_Today.xlsx", "FoodBilling");
           }
         });
 
         // Export Cake Billing
-        document.getElementById("exportCakeBillingBtn").addEventListener("click", function () {
-          console.log('📤 Exporting cake billing');
-          const data = cakeBills.map((bill, idx) => ({
-            'Bill #': bill.billNumber || (idx + 1),
-            Customer: bill.customerName,
-            Table: bill.tableNumber,
-            Total: bill.total,
-            Status: bill.paid ? 'Paid' : 'Unpaid',
-            'Payment Method': bill.paymentMethod || 'N/A',
-            Time: formatTime(bill.paidAt || bill.createdAt)
-          }));
-          exportTableToXLSX(data, "CakeBilling_Today.xlsx", "CakeBilling");
-        });
+        document
+          .getElementById("exportCakeBillingBtn")
+          .addEventListener("click", function () {
+            console.log("📤 Exporting cake billing");
+            const data = cakeBills.map((bill, idx) => ({
+              "Bill #": bill.billNumber || idx + 1,
+              Customer: bill.customerName,
+              Table: bill.tableNumber,
+              Total: bill.total,
+              Status: bill.paid ? "Paid" : "Unpaid",
+              "Payment Method": bill.paymentMethod || "N/A",
+              Time: formatTime(bill.paidAt || bill.createdAt),
+            }));
+            exportTableToXLSX(data, "CakeBilling_Today.xlsx", "CakeBilling");
+          });
 
         // Refresh every 10 seconds for live monitoring
         setInterval(() => {
-          console.log('🔄 Auto-refresh triggered');
+          console.log("🔄 Auto-refresh triggered");
           renderUnifiedOrders();
           renderKitchenOrders();
           renderGroceries();
@@ -1383,34 +1876,43 @@
         }, 10000);
 
         // Fix for Bootstrap mobile menu toggling
-        document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
-          link.addEventListener('click', function() {
-            var navbarCollapse = document.getElementById('navbarNav');
-            if (navbarCollapse.classList.contains('show')) {
-              var bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
-              bsCollapse.hide();
-            }
+        document
+          .querySelectorAll(".navbar-nav .nav-link")
+          .forEach(function (link) {
+            link.addEventListener("click", function () {
+              var navbarCollapse = document.getElementById("navbarNav");
+              if (navbarCollapse.classList.contains("show")) {
+                var bsCollapse =
+                  bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
+                bsCollapse.hide();
+              }
+            });
           });
-        });
 
-        console.log('✅ Admin Dashboard initialization complete');
+        console.log("✅ Admin Dashboard initialization complete");
       });
 
       // File modal functions (unchanged from original)
       function escapeHtml(text) {
         const map = {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#039;'
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;",
         };
-        return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+        return String(text).replace(/[&<>"']/g, function (m) {
+          return map[m];
+        });
       }
 
-      window.showFileModalAdmin = function(contentHtml, title, extraClass = '') {
-        console.log('📂 Showing file modal:', title);
-        var oldModal = document.getElementById('fileViewModalAdmin');
+      window.showFileModalAdmin = function (
+        contentHtml,
+        title,
+        extraClass = ""
+      ) {
+        console.log("📂 Showing file modal:", title);
+        var oldModal = document.getElementById("fileViewModalAdmin");
         if (oldModal) oldModal.remove();
         var modalHtml = `
           <div class="modal fade" id="fileViewModalAdmin" tabindex="-1">
@@ -1420,27 +1922,33 @@
                   <h5 class="modal-title">${escapeHtml(title)}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body ${extraClass || ''}" style="overflow:auto;">
+                <div class="modal-body ${
+                  extraClass || ""
+                }" style="overflow:auto;">
                   ${contentHtml}
                 </div>
               </div>
             </div>
           </div>
         `;
-        var tempDiv = document.createElement('div');
+        var tempDiv = document.createElement("div");
         tempDiv.innerHTML = modalHtml;
         document.body.appendChild(tempDiv.firstElementChild);
-        var modal = new bootstrap.Modal(document.getElementById('fileViewModalAdmin'));
+        var modal = new bootstrap.Modal(
+          document.getElementById("fileViewModalAdmin")
+        );
         modal.show();
-        document.getElementById('fileViewModalAdmin').addEventListener('hidden.bs.modal', function() {
-          var m = document.getElementById('fileViewModalAdmin');
-          if (m) m.remove();
-        });
+        document
+          .getElementById("fileViewModalAdmin")
+          .addEventListener("hidden.bs.modal", function () {
+            var m = document.getElementById("fileViewModalAdmin");
+            if (m) m.remove();
+          });
       };
 
-      window.showImageModalAdmin = function(fileData, fileName, fileType) {
+      window.showImageModalAdmin = function (fileData, fileName, fileType) {
         if (!/^data:image\//.test(fileData)) {
-          alert('Invalid image data format.');
+          alert("Invalid image data format.");
           return;
         }
         var imageHtml = `
@@ -1457,10 +1965,10 @@
                  onclick="this.classList.toggle('zoomed')">
           </div>
         `;
-        window.showFileModalAdmin(imageHtml, fileName, 'image-container');
+        window.showFileModalAdmin(imageHtml, fileName, "image-container");
       };
 
-      window.showPdfModalAdmin = function(fileData, fileName) {
+      window.showPdfModalAdmin = function (fileData, fileName) {
         var pdfHtml = `
           <div class="file-info">
             <strong>File:</strong> ${escapeHtml(fileName)}<br>
@@ -1476,40 +1984,42 @@
         window.showFileModalAdmin(pdfHtml, fileName);
       };
 
-      window.showTextModalAdmin = function(fileData, fileName) {
-        var textContent = '';
+      window.showTextModalAdmin = function (fileData, fileName) {
+        var textContent = "";
         try {
-          if (fileData.startsWith('data:text/')) {
-            var base64Data = fileData.split(',')[1];
+          if (fileData.startsWith("data:text/")) {
+            var base64Data = fileData.split(",")[1];
             textContent = atob(base64Data);
           } else {
-            textContent = 'Unable to display text content.';
+            textContent = "Unable to display text content.";
           }
         } catch (error) {
-          textContent = 'Error reading text file.';
+          textContent = "Error reading text file.";
         }
         var textHtml = `
           <div class="file-info">
             <strong>File:</strong> ${escapeHtml(fileName)}<br>
             <strong>Type:</strong> Text Document
           </div>
-          <pre style="max-height:60vh;overflow:auto;background:#f8f9fa;padding:1rem;border-radius:8px;font-size:0.9rem;">${escapeHtml(textContent)}</pre>
+          <pre style="max-height:60vh;overflow:auto;background:#f8f9fa;padding:1rem;border-radius:8px;font-size:0.9rem;">${escapeHtml(
+            textContent
+          )}</pre>
         `;
         window.showFileModalAdmin(textHtml, fileName);
       };
 
-      window.downloadFileAdmin = function(fileData, fileName) {
-        console.log('⬇️ Downloading file:', fileName);
+      window.downloadFileAdmin = function (fileData, fileName) {
+        console.log("⬇️ Downloading file:", fileName);
         try {
-          var link = document.createElement('a');
+          var link = document.createElement("a");
           link.href = fileData;
           link.download = fileName;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
         } catch (error) {
-          console.error('❌ Error downloading file:', error);
-          alert('Error downloading file: ' + error.message);
+          console.error("❌ Error downloading file:", error);
+          alert("Error downloading file: " + error.message);
         }
       };
     </script>
